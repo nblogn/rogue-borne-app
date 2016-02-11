@@ -12,8 +12,6 @@ import Foundation
 import Darwin
 
 
-
-
 class Dungeon {
     
 
@@ -27,6 +25,7 @@ class Dungeon {
     let vwall:String = "|"
     let nothing:String = " "
 
+    var myDungeonDefaultRow = [String]()
     
     struct dungeonRoomLocation {
         var x1: Int = 0
@@ -36,30 +35,48 @@ class Dungeon {
     }
 
     
-    //Default init values. I'll make another one of these that will take config values. I think that's how this works.
+    
+    //============================================================//
+    //set init values
+    //============================================================//
+
+    //Default init values...
     init () {
 
+        //Default sizes
+        self.dungeonSizeWidth = 180
+        self.dungeonSizeHeight = 50
+        self.cellSizeHeight = 15
+        self.cellSizeWidth = 15
+        
         //create a default row for the dungeon, with "nothing" in each tile...
-        var myDungeonDefaultRow = [String](count:dungeonSizeWidth, repeatedValue:nothing)
+        self.myDungeonDefaultRow = [String](count:dungeonSizeWidth, repeatedValue:nothing)
 
-        dungeonSizeWidth = 180
-        dungeonSizeHeight = 50
-        cellSizeHeight = 15
-        cellSizeWidth = 15
         
     }
 
+    //Configurable init values...
+    init (dungeonSizeWidth: Int, dungeonSizeHeight: Int, cellSizeHeight: Int, cellSizeWidth: Int) {
+        self.dungeonSizeWidth = dungeonSizeWidth
+        self.dungeonSizeHeight = dungeonSizeHeight
+        self.cellSizeHeight = cellSizeHeight
+        self.cellSizeWidth = cellSizeWidth
+        
+        //create a default row for the dungeon, with "nothing" in each tile...
+        self.myDungeonDefaultRow = [String](count:dungeonSizeWidth, repeatedValue:nothing)
 
+    }
 
+    
     //============================================================//
     //create random rooms with max cell size...
+    //Algorithm: http://www.roguebasin.com/index.php?title=Grid_Based_Dungeon_Generator
     //============================================================//
-    func createRooms() -> [[String]]{
+    func createDungeonUsingCellMethod() -> [[String]]{
         
         ////
         //loop through by CELL ROWs and create random rooms stored within an array of room locations.
         //I might want to consider keeping this array for later use, right now I'm throwing it away.
-        //Maybe as part of the dungeon object (which will eventually be more than a string).
         ////
         
         //Calculate number of cells based on dungeon size
@@ -126,7 +143,7 @@ class Dungeon {
         ////
         
         //Temp dungeon to be returned
-        var generatedDungeon = [[String]](count: dungeonSizeHeight, repeatedValue:myDungeonDefaultRow)
+        var generatedDungeon = [[String]](count: dungeonSizeHeight, repeatedValue:self.myDungeonDefaultRow)
         
         //Reset the loopers
         numberOfHeightCellsIterator = 0
@@ -209,7 +226,22 @@ class Dungeon {
         
     }
 
+
+
+    //============================================================//
+    //create random rooms with cellular automota...
+    //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
+    //============================================================//
+    func createDungeonUsingCellularAutomota() -> [[String]] {
+        
+        return [[".","."],[".","."]]
+        
+    }
+
+
+//End Class
 }
+
 
 /*
 //Actually run the shit...
