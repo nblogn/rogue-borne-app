@@ -5,38 +5,13 @@
 //  Created by Joshua Wright on 2/10/16.
 //  Copyright © 2016 nblogn.com. All rights reserved.
 //
+//  Class for creating the procedural dungeon map
+//
 
 import Foundation
-
-
-//============================================================//
-//
-//: Rogueborne (working title) playground
-//: A playground to try out my board gen ideas for Rogueborne
-//
-//============================================================//
-
-
-//============================================================//
-//
-// Build level map via Arrays
-//
-//============================================================//
-
 import Darwin
 
 
-//Create a class for a "thing" that is in a certain dungeon tile
-//TODO: This should probably go in its own file???
-class dungeonTileObject {
-    
-    let floor:String = "."
-    let wall:String = "="
-    let vwall:String = "|"
-    let nothing:String = " "
-    
-    //Would monsters, or people inherit from this class?
-}
 
 
 class Dungeon {
