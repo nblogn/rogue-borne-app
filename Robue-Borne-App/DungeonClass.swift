@@ -27,6 +27,7 @@ import Darwin
 
 
 //Create a class for a "thing" that is in a certain dungeon tile
+//TODO: This should probably go in its own file???
 class dungeonTileObject {
     
     let floor:String = "."
@@ -42,10 +43,10 @@ class Dungeon {
     
 
     //Constants and initializers
-    let dungeonSizeWidth = 180
-    let dungeonSizeHeight = 50
-    let cellSizeHeight = 15
-    let cellSizeWidth = 15
+    let dungeonSizeWidth: Int
+    let dungeonSizeHeight: Int
+    let cellSizeHeight: Int
+    let cellSizeWidth: Int
     let floor:String = "."
     let wall:String = "="
     let vwall:String = "|"
@@ -60,12 +61,16 @@ class Dungeon {
     }
 
     
-    
+    //Default init values. I'll make another one of these that will take config values. I think that's how this works.
     init () {
-
 
         //create a default row for the dungeon, with "nothing" in each tile...
         var myDungeonDefaultRow = [String](count:dungeonSizeWidth, repeatedValue:nothing)
+
+        dungeonSizeWidth = 180
+        dungeonSizeHeight = 50
+        cellSizeHeight = 15
+        cellSizeWidth = 15
         
     }
 

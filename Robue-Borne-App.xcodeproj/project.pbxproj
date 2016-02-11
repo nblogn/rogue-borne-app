@@ -17,6 +17,7 @@
 		03C1DE8D1C6C3C8D00CDCF8F /* Robue_Borne_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE8C1C6C3C8D00CDCF8F /* Robue_Borne_AppTests.swift */; };
 		03C1DE981C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE971C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift */; };
 		03C1DEA61C6C420E00CDCF8F /* DungeonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA51C6C420E00CDCF8F /* DungeonClass.swift */; };
+		03C1DEA81C6C467500CDCF8F /* dungeonObjectClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA71C6C467500CDCF8F /* dungeonObjectClass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		03C1DE971C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Robue_Borne_AppUITests.swift; sourceTree = "<group>"; };
 		03C1DE991C6C3C8D00CDCF8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03C1DEA51C6C420E00CDCF8F /* DungeonClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DungeonClass.swift; sourceTree = "<group>"; };
+		03C1DEA71C6C467500CDCF8F /* dungeonObjectClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dungeonObjectClass.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,7 @@
 				03C1DE801C6C3C8D00CDCF8F /* LaunchScreen.storyboard */,
 				03C1DE831C6C3C8D00CDCF8F /* Info.plist */,
 				03C1DEA51C6C420E00CDCF8F /* DungeonClass.swift */,
+				03C1DEA71C6C467500CDCF8F /* dungeonObjectClass.swift */,
 			);
 			path = "Robue-Borne-App";
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				03C1DE781C6C3C8D00CDCF8F /* GameScene.swift in Sources */,
+				03C1DEA81C6C467500CDCF8F /* dungeonObjectClass.swift in Sources */,
 				03C1DE7A1C6C3C8D00CDCF8F /* GameViewController.swift in Sources */,
 				03C1DE741C6C3C8D00CDCF8F /* AppDelegate.swift in Sources */,
 				03C1DEA61C6C420E00CDCF8F /* DungeonClass.swift in Sources */,
