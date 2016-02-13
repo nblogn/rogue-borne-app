@@ -8,35 +8,36 @@
 
 import SpriteKit
 
-class GameScene: SKScene {
+class GameStartScene: SKScene {
+    
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, RogueBorne!"
+        myLabel.text = "RogueBorne"
         myLabel.fontSize = 45
+        myLabel.fontColor = SKColor.redColor()
         myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
         
         self.addChild(myLabel)
+        
+        let myClickToPlayLabel = SKLabelNode(fontNamed: "Cochin")
+        myClickToPlayLabel.text = "Click to Play"
+        myClickToPlayLabel.fontSize = 20
+        myClickToPlayLabel.fontColor = SKColor.blackColor()
+        myClickToPlayLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-40)
+        
+        self.addChild(myClickToPlayLabel)
+        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
        /* Called when a touch begins */
         
-        for touch in touches {
-            let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
-        }
+        let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+        let playScene = PlayScene(size: self.size)
+        self.view?.presentScene(playScene, transition: reveal)
+        
     }
    
     override func update(currentTime: CFTimeInterval) {
