@@ -13,12 +13,18 @@ import SpriteKit
 //-------------------------------------------------------------------------------------------//
 //
 //HANDY FUNCs I'm Probably going to need go here...
+//Grabbed these from the SK tutorial here
+//http://www.raywenderlich.com/119815/sprite-kit-swift-2-tutorial-for-beginners
 //
 //-------------------------------------------------------------------------------------------//
 
-//I probably need some conversions of array coordinates to CGPoint coordinate...
-func convertArrayXYtoCGPoint () -> CGPoint {
+//From me: I probably need some conversions of array coordinates to CGPoint coordinate...
+func convertBoardCoordinatetoCGPoint () -> CGPoint {
+
+    //bogus placeholder code
+    let cgpoint = CGPoint(x: 1,y: 2)
     
+    return cgpoint
 }
 
 /*Note: You may be wondering what the fancy syntax is here. Note that the category on Sprite Kit is just a single 32-bit integer, and acts as a bitmask. This is a fancy way of saying each of the 32-bits in the integer represents a single category (and hence you can have 32 categories max). Here you’re setting the first bit to indicate a monster, the next bit over to represent a projectile, and so on.*/
