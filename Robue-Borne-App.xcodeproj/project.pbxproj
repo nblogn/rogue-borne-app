@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0394FFFA1C702FCB00654A19 /* RB_Grass_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF51C702FCB00654A19 /* RB_Grass_2x.png */; };
+		0394FFFB1C702FCB00654A19 /* RB_Wall_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF61C702FCB00654A19 /* RB_Wall_2x.png */; };
+		0394FFFC1C702FCB00654A19 /* RB_Dude_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF71C702FCB00654A19 /* RB_Dude_2x.png */; };
+		0394FFFD1C702FCB00654A19 /* RB_Floor_Green_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF81C702FCB00654A19 /* RB_Floor_Green_2x.png */; };
+		0394FFFE1C702FCB00654A19 /* RB_Floor_Grey_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF91C702FCB00654A19 /* RB_Floor_Grey_2x.png */; };
 		03C1DE741C6C3C8D00CDCF8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE731C6C3C8D00CDCF8F /* AppDelegate.swift */; };
 		03C1DE761C6C3C8D00CDCF8F /* StartScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03C1DE751C6C3C8D00CDCF8F /* StartScene.sks */; };
 		03C1DE781C6C3C8D00CDCF8F /* StartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE771C6C3C8D00CDCF8F /* StartScene.swift */; };
@@ -39,6 +44,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0394FFF51C702FCB00654A19 /* RB_Grass_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Grass_2x.png; path = "Robue-Borne-App/RB_Grass_2x.png"; sourceTree = "<group>"; };
+		0394FFF61C702FCB00654A19 /* RB_Wall_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Wall_2x.png; path = "Robue-Borne-App/RB_Wall_2x.png"; sourceTree = "<group>"; };
+		0394FFF71C702FCB00654A19 /* RB_Dude_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Dude_2x.png; path = "Robue-Borne-App/RB_Dude_2x.png"; sourceTree = "<group>"; };
+		0394FFF81C702FCB00654A19 /* RB_Floor_Green_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Floor_Green_2x.png; path = "Robue-Borne-App/RB_Floor_Green_2x.png"; sourceTree = "<group>"; };
+		0394FFF91C702FCB00654A19 /* RB_Floor_Grey_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Floor_Grey_2x.png; path = "Robue-Borne-App/RB_Floor_Grey_2x.png"; sourceTree = "<group>"; };
 		03C1DE701C6C3C8D00CDCF8F /* Robue-Borne-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Robue-Borne-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C1DE731C6C3C8D00CDCF8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		03C1DE751C6C3C8D00CDCF8F /* StartScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartScene.sks; sourceTree = "<group>"; };
@@ -84,9 +94,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0394FFFF1C702FDC00654A19 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				0394FFF51C702FCB00654A19 /* RB_Grass_2x.png */,
+				0394FFF61C702FCB00654A19 /* RB_Wall_2x.png */,
+				0394FFF71C702FCB00654A19 /* RB_Dude_2x.png */,
+				0394FFF81C702FCB00654A19 /* RB_Floor_Green_2x.png */,
+				0394FFF91C702FCB00654A19 /* RB_Floor_Grey_2x.png */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
 		03C1DE671C6C3C8D00CDCF8F = {
 			isa = PBXGroup;
 			children = (
+				0394FFFF1C702FDC00654A19 /* Assets */,
 				03C1DE721C6C3C8D00CDCF8F /* Robue-Borne-App */,
 				03C1DE8B1C6C3C8D00CDCF8F /* Robue-Borne-AppTests */,
 				03C1DE961C6C3C8D00CDCF8F /* Robue-Borne-AppUITests */,
@@ -244,9 +267,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0394FFFA1C702FCB00654A19 /* RB_Grass_2x.png in Resources */,
 				03C1DE761C6C3C8D00CDCF8F /* StartScene.sks in Resources */,
 				03C1DE821C6C3C8D00CDCF8F /* LaunchScreen.storyboard in Resources */,
+				0394FFFE1C702FCB00654A19 /* RB_Floor_Grey_2x.png in Resources */,
+				0394FFFB1C702FCB00654A19 /* RB_Wall_2x.png in Resources */,
 				03C1DE7F1C6C3C8D00CDCF8F /* Assets.xcassets in Resources */,
+				0394FFFC1C702FCB00654A19 /* RB_Dude_2x.png in Resources */,
+				0394FFFD1C702FCB00654A19 /* RB_Floor_Green_2x.png in Resources */,
 				03C1DE7D1C6C3C8D00CDCF8F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
