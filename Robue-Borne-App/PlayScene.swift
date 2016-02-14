@@ -23,9 +23,9 @@ func convertBoardCoordinatetoCGPoint () -> CGPoint {
 
     //bogus placeholder code
     let cgpoint = CGPoint(x: 1,y: 2)
-    
     return cgpoint
 }
+
 
 /*Note: You may be wondering what the fancy syntax is here. Note that the category on Sprite Kit is just a single 32-bit integer, and acts as a bitmask. This is a fancy way of saying each of the 32-bits in the integer represents a single category (and hence you can have 32 categories max). Here you’re setting the first bit to indicate a monster, the next bit over to represent a projectile, and so on.*/
 
@@ -75,6 +75,7 @@ enum Tile: Int {
     
     case Ground
     case Wall
+    case Nothing
     
     var description:String {
         switch self {
@@ -82,15 +83,19 @@ enum Tile: Int {
             return "Ground"
         case Wall:
             return "Wall"
+        case Nothing:
+            return "Nothing"
         }
     }
     
     var image:String {
         switch self {
         case Ground:
-            return "ground"
+            return "RB_Floor_Green_2x"
         case Wall:
-            return "wall"
+            return "RB_Wall_2x"
+        case Nothing:
+            return "RB_Floor_Grey_2x"
             
         }
     } 
@@ -114,19 +119,15 @@ class PlayScene: SKScene {
     let view2D:SKSpriteNode
     let viewIso:SKSpriteNode
     
-    //These constants can be declared and set right away, as they are not instances. tiles is a nested array of ids that we will use to generate our tile map. Formatting the array like this allows us to visualise how the map will display. 1 represents a wall and 0 represents ground (walkable area), so this map indicates we are creating a simple, square area enclosed by 4 walls.
-    //JOSH: I need to replace this with the dungeon
-    let tiles = [
-        [1, 1, 1, 1, 1, 1],
-        [1 ,0, 0, 0, 0, 1],
-        [1 ,0, 0, 0, 0, 1],
-        [1 ,0, 0, 0, 0, 1],
-        [1 ,0, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1, 1]
-    ]
+    
+    //Will set this to the dungeon output, eventually just need to make the class include this...
+    var tiles: [[Int]]
+    
+    
     //tileSize is what it seems, the constant width and height of each tile.
     //JOSH: Sounds simple, but what measurement is this? Pixels? Arbitrary unit?
     let tileSize = (width:32, height:32)
+    
     
     //Our class initialisation. Assigning SKSpriteNode instances to our view constants, the standard super.init code (required when subclassing SKScene) and then we centre our scenes anchorPoint (this is just a preference).
     override init(size: CGSize) {
@@ -134,8 +135,12 @@ class PlayScene: SKScene {
         view2D = SKSpriteNode()
         viewIso = SKSpriteNode()
         
+        let myDungeon = Dungeon()
+        tiles = myDungeon.createDungeonUsingCellMethod()
+
         super.init(size: size)
-        self.anchorPoint = CGPoint(x:0.5, y:0.5)
+        self.anchorPoint = CGPoint(x:0, y:0.9)
+        
     }
     
     //As the view is loaded we position our 2 sub views so we can easily see and interact with either/or. The deviceScale constant adjusts the scale to fit dynamically to the screen size of whatever device you’re testing on.
@@ -143,15 +148,16 @@ class PlayScene: SKScene {
         
         let deviceScale = self.size.width/667
         
-        view2D.position = CGPoint(x:-self.size.width*0.45, y:self.size.height*0.17)
+        //JOSH: I commented this line out for testing:
+        //view2D.position = CGPoint(x:-self.size.width*0.45, y:self.size.height*0.17)
         view2D.xScale = deviceScale
         view2D.yScale = deviceScale
         addChild(view2D)
         
-        viewIso.position = CGPoint(x:self.size.width*0.12, y:self.size.height*0.12)
+        /*viewIso.position = CGPoint(x:self.size.width*0.12, y:self.size.height*0.12)
         viewIso.xScale = deviceScale
         viewIso.yScale = deviceScale
-        addChild(viewIso)
+        addChild(viewIso)*/
         
         placeAllTiles2D()
     }
@@ -194,60 +200,3 @@ class PlayScene: SKScene {
     }
     
 }
-
-
-
-
-
-
-
-
-
-
-//////
-/*OLD, works...
-override init(size: CGSize) {
-
-super.init(size: size)
-
-// Sets the background color to white, same as you did for the main scene.
-backgroundColor = SKColor.whiteColor()
-
-// Based on the won parameter, sets the message to either “You Won” or “You Lose”.
-let message = "Board goes here."
-let label = SKLabelNode(fontNamed: "Chalkduster")
-label.text = message
-label.fontSize = 40
-label.fontColor = SKColor.blackColor()
-label.position = CGPoint(x: size.width/2, y: size.height/2)
-addChild(label)
-
-
-}
-
-//If you override an initializer on a scene, you must implement the required init(coder:) initializer as well. However this initializer will never be called, so you just add a dummy implementation with a fatalError(_:) for now.
-required init(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-}
-
-override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-    /* Called when a touch begins */
-    
-    for touch in touches {
-        let location = touch.locationInNode(self)
-        
-        let sprite = SKSpriteNode(imageNamed:"Spaceship")
-        
-        sprite.xScale = 0.5
-        sprite.yScale = 0.5
-        sprite.position = location
-        
-        let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-        
-        sprite.runAction(SKAction.repeatActionForever(action))
-        
-        self.addChild(sprite)
-    }
-}
-*/
-

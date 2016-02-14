@@ -20,12 +20,12 @@ class Dungeon {
     let dungeonSizeHeight: Int
     let cellSizeHeight: Int
     let cellSizeWidth: Int
-    let floor:String = "."
-    let wall:String = "="
-    let vwall:String = "|"
-    let nothing:String = " "
+    let floor:Int = 0
+    let wall:Int = 1
+    let vwall:Int = 2
+    let nothing:Int = 2
 
-    var myDungeonDefaultRow = [String]()
+    var myDungeonDefaultRow = [Int]()
     
     struct dungeonRoomLocation {
         var x1: Int = 0
@@ -44,13 +44,13 @@ class Dungeon {
     init () {
 
         //Default sizes
-        self.dungeonSizeWidth = 180
-        self.dungeonSizeHeight = 50
-        self.cellSizeHeight = 15
-        self.cellSizeWidth = 15
+        self.dungeonSizeWidth = 25
+        self.dungeonSizeHeight = 15
+        self.cellSizeHeight = 5
+        self.cellSizeWidth = 5
         
         //create a default row for the dungeon, with "nothing" in each tile...
-        self.myDungeonDefaultRow = [String](count:dungeonSizeWidth, repeatedValue:nothing)
+        self.myDungeonDefaultRow = [Int](count:dungeonSizeWidth, repeatedValue:nothing)
 
         
     }
@@ -63,7 +63,7 @@ class Dungeon {
         self.cellSizeWidth = cellSizeWidth
         
         //create a default row for the dungeon, with "nothing" in each tile...
-        self.myDungeonDefaultRow = [String](count:dungeonSizeWidth, repeatedValue:nothing)
+        self.myDungeonDefaultRow = [Int](count:dungeonSizeWidth, repeatedValue:nothing)
 
     }
 
@@ -72,7 +72,7 @@ class Dungeon {
     //create random rooms with max cell size...
     //Algorithm: http://www.roguebasin.com/index.php?title=Grid_Based_Dungeon_Generator
     //============================================================//
-    func createDungeonUsingCellMethod() -> [[String]]{
+    func createDungeonUsingCellMethod() -> [[Int]]{
         
         ////
         //loop through by CELL ROWs and create random rooms stored within an array of room locations.
@@ -143,7 +143,7 @@ class Dungeon {
         ////
         
         //Temp dungeon to be returned
-        var generatedDungeon = [[String]](count: dungeonSizeHeight, repeatedValue:self.myDungeonDefaultRow)
+        var generatedDungeon = [[Int]](count: dungeonSizeHeight, repeatedValue:self.myDungeonDefaultRow)
         
         //Reset the loopers
         numberOfHeightCellsIterator = 0
@@ -182,7 +182,8 @@ class Dungeon {
                         generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = wall
                     }
                     else if (columnIterator == 0) || (columnIterator == roomWidth-1) {
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = vwall
+                        //This is for the vertical walls, if I want different icons
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = wall
                     }
                     else {
                         generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = floor
@@ -238,19 +239,5 @@ class Dungeon {
         
     }
 
+} //End Dungeon class
 
-//End Class
-}
-
-
-/*
-//Actually run the shit...
-
-//create a default dungeon of default rows of "nothing" in each tile...
-var myDungeon = [[String]](count: dungeonSizeHeight, repeatedValue:myDungeonDefaultRow)
-
-myDungeon = createRooms()
-
-print2dArray(myDungeon)
-
-*/
