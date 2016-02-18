@@ -70,7 +70,13 @@ extension CGPoint {
 }
 
 
-//In the code above we created a new enum Tile definition and gave it the option to either be assigned as a Ground tile or a Wall tile with respective description and image variables. Note that the image string is the name of the file that we’ll get from the sprite.atlas folder in our project navigator. You don’t need to include the .png file extension.
+//-------------------------------------------------------------------------------------------//
+//
+//Note, a lot of this tile code comes from the following tutorial
+//http://bigspritegames.com/isometric-tile-based-game-part-1/
+//
+//-------------------------------------------------------------------------------------------//
+
 enum Tile: Int {
     
     case Ground
@@ -140,13 +146,13 @@ class PlayScene: SKScene {
 
         super.init(size: size)
         self.anchorPoint = CGPoint(x:0, y:0.9)
-        
+
     }
     
     //As the view is loaded we position our 2 sub views so we can easily see and interact with either/or. The deviceScale constant adjusts the scale to fit dynamically to the screen size of whatever device you’re testing on.
     override func didMoveToView(view: SKView) {
         
-        let deviceScale = self.size.width/667
+        let deviceScale:CGFloat = 0.5 //self.size.width/667
         
         //JOSH: I commented this line out for testing:
         //view2D.position = CGPoint(x:-self.size.width*0.45, y:self.size.height*0.17)

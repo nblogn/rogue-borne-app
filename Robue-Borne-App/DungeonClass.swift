@@ -44,10 +44,10 @@ class Dungeon {
     init () {
 
         //Default sizes
-        self.dungeonSizeWidth = 25
-        self.dungeonSizeHeight = 15
-        self.cellSizeHeight = 5
-        self.cellSizeWidth = 5
+        self.dungeonSizeWidth = 50
+        self.dungeonSizeHeight = 30
+        self.cellSizeHeight = 8
+        self.cellSizeWidth = 8
         
         //create a default row for the dungeon, with "nothing" in each tile...
         self.myDungeonDefaultRow = [Int](count:dungeonSizeWidth, repeatedValue:nothing)
@@ -85,8 +85,8 @@ class Dungeon {
         var numberOfCells =  numberOfCellsHeight * numberOfCellsWidth
         
         //Create some max offsets
-        let maxOffsetX: UInt32 = (UInt32(cellSizeWidth) / 2) - 2
-        let maxOffsetY: UInt32 = (UInt32(cellSizeHeight) / 2) - 2
+        let maxOffsetX: UInt32 = (UInt32(cellSizeWidth) / 2) - 1
+        let maxOffsetY: UInt32 = (UInt32(cellSizeHeight) / 2) - 1
         
         //Init the dungeon cells
         var dungeonRooms = [dungeonRoomLocation]()
