@@ -145,7 +145,7 @@ class PlayScene: SKScene {
         tiles = myDungeon.createDungeonUsingCellMethod()
 
         super.init(size: size)
-        self.anchorPoint = CGPoint(x:0, y:0.9)
+        self.anchorPoint = CGPoint(x:0, y:1)
 
     }
     

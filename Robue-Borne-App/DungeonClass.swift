@@ -44,11 +44,11 @@ class Dungeon {
     init () {
 
         //Default sizes
-        self.dungeonSizeWidth = 50
-        self.dungeonSizeHeight = 30
-        self.cellSizeHeight = 8
-        self.cellSizeWidth = 8
-        
+        self.dungeonSizeWidth = 80
+        self.dungeonSizeHeight = 50
+        self.cellSizeWidth = 14
+        self.cellSizeHeight = 10
+            
         //create a default row for the dungeon, with "nothing" in each tile...
         self.myDungeonDefaultRow = [Int](count:dungeonSizeWidth, repeatedValue:nothing)
 
