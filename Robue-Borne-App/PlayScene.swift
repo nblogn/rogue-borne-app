@@ -154,7 +154,7 @@ class PlayScene: SKScene {
         
         let deviceScale:CGFloat = 0.5 //self.size.width/667
         
-        //JOSH: I commented this line out for testing:
+        //JOSH: I commented this out to play with the 2D view only...
         //view2D.position = CGPoint(x:-self.size.width*0.45, y:self.size.height*0.17)
         view2D.xScale = deviceScale
         view2D.yScale = deviceScale
