@@ -152,7 +152,7 @@ class PlayScene: SKScene {
     //As the view is loaded we position our 2 sub views so we can easily see and interact with either/or. The deviceScale constant adjusts the scale to fit dynamically to the screen size of whatever device you’re testing on.
     override func didMoveToView(view: SKView) {
         
-        let deviceScale:CGFloat = 0.5 //self.size.width/667
+        let deviceScale:CGFloat = 0.37 //self.size.width/667
         
         //JOSH: I commented this out to play with the 2D view only...
         //view2D.position = CGPoint(x:-self.size.width*0.45, y:self.size.height*0.17)
@@ -166,6 +166,9 @@ class PlayScene: SKScene {
         addChild(viewIso)*/
         
         placeAllTiles2D()
+        view2D.xScale = deviceScale
+        view2D.yScale = deviceScale
+
     }
     
     //This function creates and places a sprite in the view2D instance. It’s important to set the anchorPoint to 0,0 (bottom, left). We’ll use this method in the next step, to place our tiles.
