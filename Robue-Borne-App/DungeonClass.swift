@@ -97,11 +97,6 @@ class Dungeon {
     //create random rooms with max cell size...
     //Algorithm: http://www.roguebasin.com/index.php?title=Grid_Based_Dungeon_Generator
     //
-    //    !!!TODO!!!
-    //      This method is messed up and is not object oriented, it's just
-    //      *returning* a map, versus mutating the objects map. I'll
-    //      fix it someday, leaving it for now.
-    //
     //=====================================================================================================//
     func createDungeonUsingCellMethod() -> Void{
         
