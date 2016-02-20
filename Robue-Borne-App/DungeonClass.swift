@@ -25,20 +25,44 @@ class Dungeon {
     let vwall:Int = 2
     let nothing:Int = 2
 
-    var myDungeonDefaultRow = [Int]()
     
-    struct dungeonRoomLocation {
+    //Simple location struc...
+    struct DungeonRoomLocation {
         var x1: Int = 0
         var y1: Int = 0
         var x2: Int = 0
         var y2: Int = 0
     }
+    
+    //A DungeonRoom...
+    struct DungeonRoom {
+        var roomId: Int
+        var location: DungeonRoomLocation
+        var connectedRooms: [DungeonRoom]?
+    }
+
+
+    //The two key components of our dungeon...
+    var dungeonRooms: [DungeonRoom]
+    var dungeonMap = [[Int]]()
+    
+
+    //this can be removed eventually, just using it now for the original func createDungeonUsingCellMethod()
+    var myDungeonDefaultRow = [Int]()
+    
 
     
-    
-    //============================================================//
+    //=====================================================================================================//
     //set init values
-    //============================================================//
+    //
+    //   !!!TODO!!!
+    //      Eventually I need to add the method for creating the map
+    //      to the init config. Then I can just create the map when I
+    //      create an instance of the class. As of now, I have to call
+    //      the func explicitly to create the map. Not a big deal, but
+    //      not ideal from a design perspective. I think.
+    //
+    //=====================================================================================================//
 
     //Default init values...
     init () {
@@ -52,6 +76,9 @@ class Dungeon {
         //create a default row for the dungeon, with "nothing" in each tile...
         self.myDungeonDefaultRow = [Int](count:dungeonSizeWidth, repeatedValue:nothing)
 
+        self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
+        
+        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
         
     }
 
@@ -64,14 +91,24 @@ class Dungeon {
         
         //create a default row for the dungeon, with "nothing" in each tile...
         self.myDungeonDefaultRow = [Int](count:dungeonSizeWidth, repeatedValue:nothing)
+        
+        self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
+        
+        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
 
     }
 
     
-    //============================================================//
+    //=====================================================================================================//
     //create random rooms with max cell size...
     //Algorithm: http://www.roguebasin.com/index.php?title=Grid_Based_Dungeon_Generator
-    //============================================================//
+    //
+    //    !!!TODO!!!
+    //      This method is messed up and is not object oriented, it's just
+    //      *returning* a map, versus mutating the objects map. I'll
+    //      fix it someday, leaving it for now.
+    //
+    //=====================================================================================================//
     func createDungeonUsingCellMethod() -> [[Int]]{
         
         ////
@@ -89,8 +126,8 @@ class Dungeon {
         let maxOffsetY: UInt32 = (UInt32(cellSizeHeight) / 2) - 1
         
         //Init the dungeon cells
-        var dungeonRooms = [dungeonRoomLocation]()
-        var tempDungeonRoom = dungeonRoomLocation()
+        var dungeonCellRooms = [DungeonRoomLocation]()
+        var tempDungeonRoom = DungeonRoomLocation()
         
         //Other inits
         var numberOfHeightCellsIterator = 0
@@ -123,7 +160,7 @@ class Dungeon {
                     tempDungeonRoom.y1 = rowIterator + randY1_Offset
                     tempDungeonRoom.y2 = rowIterator + cellSizeHeight - randY2_Offset
                     
-                    dungeonRooms.append(tempDungeonRoom)
+                    dungeonCellRooms.append(tempDungeonRoom)
                     
                 }
                 
@@ -143,7 +180,7 @@ class Dungeon {
         ////
         
         //Temp dungeon to be returned
-        var generatedDungeon = [[Int]](count: dungeonSizeHeight, repeatedValue:self.myDungeonDefaultRow)
+        var generatedDungeon = [[Int]](count: dungeonSizeHeight, repeatedValue:myDungeonDefaultRow)
         
         //Reset the loopers
         numberOfHeightCellsIterator = 0
@@ -158,17 +195,17 @@ class Dungeon {
         var roomHeight = 0
         
         //debug:
-        numberOfCells = dungeonRooms.count
+        numberOfCells = dungeonCellRooms.count
         var numberOfCellsIterator = 0
         
         //Actually draw the rooms in the dungeons array
         while numberOfCellsIterator < numberOfCells{
             
             
-            roomX1 = dungeonRooms[numberOfCellsIterator].x1
-            roomY1 = dungeonRooms[numberOfCellsIterator].y1
-            roomX2 = dungeonRooms[numberOfCellsIterator].x2
-            roomY2 = dungeonRooms[numberOfCellsIterator].y2
+            roomX1 = dungeonCellRooms[numberOfCellsIterator].x1
+            roomY1 = dungeonCellRooms[numberOfCellsIterator].y1
+            roomX2 = dungeonCellRooms[numberOfCellsIterator].x2
+            roomY2 = dungeonCellRooms[numberOfCellsIterator].y2
             
             roomHeight = roomY2 - roomY1
             roomWidth = roomX2 - roomX1
@@ -211,8 +248,43 @@ class Dungeon {
     }
 
 
+    
+    //=====================================================================================================//
+    //create random rooms using a big bang approach...
+    //
+    //=====================================================================================================//
+    func createDungeonUsingBigBang() -> [[String]] {
+        
+        
+        
+        return [[".","."],[".","."]]
+
+    }
 
 
+    //============================================================//
+    //create random rooms with cellular automota...
+    //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
+    //============================================================//
+    func createDungeonUsingCellularAutomota() -> [[String]] {
+        
+        return [[".","."],[".","."]]
+        
+    }
+    
+    
+    
+    //============================================================//
+    //Func to connect an array of DungeonRoom struct
+    //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
+    //============================================================//
+
+    func connectDungeonRooms() -> Void {
+        //Func to connect a
+    }
+    
+    
+    
     //============================================================//
     // Print a 2D array
     //============================================================//
@@ -226,18 +298,8 @@ class Dungeon {
         }
         
     }
+    
 
-
-
-    //============================================================//
-    //create random rooms with cellular automota...
-    //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
-    //============================================================//
-    func createDungeonUsingCellularAutomota() -> [[String]] {
-        
-        return [[".","."],[".","."]]
-        
-    }
 
 } //End Dungeon class
 
