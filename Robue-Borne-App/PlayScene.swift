@@ -141,8 +141,10 @@ class PlayScene: SKScene {
         view2D = SKSpriteNode()
         viewIso = SKSpriteNode()
         
+        //TODO: Change the different map creation algorithms to happen on UI button press
         let myDungeon = Dungeon()
-        tiles = myDungeon.createDungeonUsingCellMethod()
+        myDungeon.createDungeonUsingCellMethod()
+        tiles = myDungeon.dungeonMap
 
         super.init(size: size)
         self.anchorPoint = CGPoint(x:0, y:1)
@@ -199,7 +201,7 @@ class PlayScene: SKScene {
                 let tile = Tile(rawValue: tileInt)!
                 
                 //We then stack each tileSprite in a grid, left to right, then top to bottom. Note: We need to invert the y value because in the SpriteKit coordinate system, y values increase as you move up the screen and decrease as you move down.
-                var point = CGPoint(x: (j*tileSize.width), y: -(i*tileSize.height))
+                let point = CGPoint(x: (j*tileSize.width), y: -(i*tileSize.height))
                 
                 placeTile2D(tile.image, withPosition:point)
             }

@@ -15,18 +15,21 @@ import Darwin
 class Dungeon {
     
 
-    //Constants and initializers
+    //Constants and initializers...
     let dungeonSizeWidth: Int
     let dungeonSizeHeight: Int
     let cellSizeHeight: Int
     let cellSizeWidth: Int
+    let numberOfRooms: Int
+    
+    //consider enum...
     let floor:Int = 0
     let wall:Int = 1
     let vwall:Int = 2
     let nothing:Int = 2
 
     
-    //Simple location struc...
+    //Simple location struct...
     struct DungeonRoomLocation {
         var x1: Int = 0
         var y1: Int = 0
@@ -41,16 +44,11 @@ class Dungeon {
         var connectedRooms: [DungeonRoom]?
     }
 
-
     //The two key components of our dungeon...
     var dungeonRooms: [DungeonRoom]
     var dungeonMap = [[Int]]()
     
-
-    //this can be removed eventually, just using it now for the original func createDungeonUsingCellMethod()
-    var myDungeonDefaultRow = [Int]()
     
-
     
     //=====================================================================================================//
     //set init values
@@ -72,10 +70,8 @@ class Dungeon {
         self.dungeonSizeHeight = 50
         self.cellSizeWidth = 14
         self.cellSizeHeight = 10
-            
-        //create a default row for the dungeon, with "nothing" in each tile...
-        self.myDungeonDefaultRow = [Int](count:dungeonSizeWidth, repeatedValue:nothing)
-
+        self.numberOfRooms = 10
+        
         self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
@@ -83,14 +79,12 @@ class Dungeon {
     }
 
     //Configurable init values...
-    init (dungeonSizeWidth: Int, dungeonSizeHeight: Int, cellSizeHeight: Int, cellSizeWidth: Int) {
+    init (dungeonSizeWidth: Int, dungeonSizeHeight: Int, cellSizeHeight: Int, cellSizeWidth: Int, numberOfRooms: Int) {
         self.dungeonSizeWidth = dungeonSizeWidth
         self.dungeonSizeHeight = dungeonSizeHeight
         self.cellSizeHeight = cellSizeHeight
         self.cellSizeWidth = cellSizeWidth
-        
-        //create a default row for the dungeon, with "nothing" in each tile...
-        self.myDungeonDefaultRow = [Int](count:dungeonSizeWidth, repeatedValue:nothing)
+        self.numberOfRooms = numberOfRooms
         
         self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
         
@@ -109,7 +103,7 @@ class Dungeon {
     //      fix it someday, leaving it for now.
     //
     //=====================================================================================================//
-    func createDungeonUsingCellMethod() -> [[Int]]{
+    func createDungeonUsingCellMethod() -> Void{
         
         ////
         //loop through by CELL ROWs and create random rooms stored within an array of room locations.
@@ -180,7 +174,7 @@ class Dungeon {
         ////
         
         //Temp dungeon to be returned
-        var generatedDungeon = [[Int]](count: dungeonSizeHeight, repeatedValue:myDungeonDefaultRow)
+        var generatedDungeon = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
         
         //Reset the loopers
         numberOfHeightCellsIterator = 0
@@ -241,9 +235,8 @@ class Dungeon {
             
         }
         
-        
         //Finally, return the full generated dungeon
-        return generatedDungeon
+        dungeonMap = generatedDungeon
         
     }
 
@@ -253,20 +246,48 @@ class Dungeon {
     //create random rooms using a big bang approach...
     //
     //=====================================================================================================//
-    func createDungeonUsingBigBang() -> [[String]] {
+    func generateDungeonRoomsUsingBigBang() {
+        
+        let numberOfRooms = 10
+        
+        var randomWidth: Int
+        var randomWidthOffset: Int
+        var randomHeight: Int
+        var randomHeightOffset: Int
         
         
-        
-        return [[".","."],[".","."]]
+        for roomIterator in 1...numberOfRooms {
+            
+            randomWidthOffset = Int(arc4random_uniform(UInt32(cellSizeWidth/2)))
+            randomWidth = Int(arc4random_uniform(UInt32(cellSizeWidth/2)))
+            
+            randomHeightOffset = Int(arc4random_uniform(UInt32(cellSizeHeight/2)))
+            randomHeight = Int(arc4random_uniform(UInt32(cellSizeHeight/2)))
+            
+            
+            
+            //TODO -> a check to determin (x,y) start
+            // feels like this should be recursive...
+            // call this again with x1,y1 as starting points until reach max width/height?
+            
+            //find random height (with max == cellSizeHeight), do the same for width, then place the bitch. 
+            //Int(arc4random_uniform(Uint(cellSizeHeight))
+            dungeonRooms[roomIterator].location.x1 = randomWidthOffset
+            dungeonRooms[roomIterator].location.x2 = randomWidthOffset + randomWidth
+            dungeonRooms[roomIterator].location.y1 = randomHeightOffset
+            dungeonRooms[roomIterator].location.y2 = randomHeightOffset + randomHeight
 
+        }
+        
+    
     }
 
 
-    //============================================================//
-    //create random rooms with cellular automota...
+    //=====================================================================================================//
+    //create a room using cellular automota... (note, this could be a one-room level)
     //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
-    //============================================================//
-    func createDungeonUsingCellularAutomota() -> [[String]] {
+    //=====================================================================================================//
+    func drawDungeonRoomUsingCellularAutomota() -> [[String]] {
         
         return [[".","."],[".","."]]
         
@@ -274,20 +295,31 @@ class Dungeon {
     
     
     
-    //============================================================//
+    //=====================================================================================================//
+    //Func to draw rooms
+    //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
+    //=====================================================================================================//
+
+    func drawDungeonRooms() -> Void {
+        
+    }
+    
+    //=====================================================================================================//
     //Func to connect an array of DungeonRoom struct
-    //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
-    //============================================================//
+    //
+    //=====================================================================================================//
 
     func connectDungeonRooms() -> Void {
-        //Func to connect a
+        //Func to connect rooms
+        //And draw connections?
     }
     
     
     
-    //============================================================//
+    //=====================================================================================================//
     // Print a 2D array
-    //============================================================//
+    // Mostly for debugging at this point. Or whatever.
+    //=====================================================================================================//
     func printDungeon(mazeToPrint: [[String]]){
         
         for var row = 0; row < mazeToPrint.count; row++ {
