@@ -334,6 +334,8 @@ class Dungeon {
                     
                     if howManyWallsAreAroundMe(column,y:row) > 5 {
                         dungeonMap[row][column] = 1
+                    } else if howManyWallsAreAroundMe(column,y:row) < 3 {
+                        dungeonMap[row][column] = 0
                     }
                     
                 }
