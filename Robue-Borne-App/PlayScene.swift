@@ -143,7 +143,10 @@ class PlayScene: SKScene {
         
         //TODO: Change the different map creation algorithms to happen on UI button press
         let myDungeon = Dungeon()
-        myDungeon.createDungeonUsingCellMethod()
+        
+        //myDungeon.createDungeonUsingCellMethod()
+        myDungeon.drawDungeonRoomUsingCellularAutomota()
+        
         tiles = myDungeon.dungeonMap
 
         super.init(size: size)

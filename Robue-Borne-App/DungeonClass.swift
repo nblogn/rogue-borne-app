@@ -94,6 +94,7 @@ class Dungeon {
 
     
     //=====================================================================================================//
+    //
     //create random rooms with max cell size...
     //Algorithm: http://www.roguebasin.com/index.php?title=Grid_Based_Dungeon_Generator
     //
@@ -310,9 +311,85 @@ class Dungeon {
     //create a room using cellular automota... (note, this could be a one-room level)
     //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
     //=====================================================================================================//
-    func drawDungeonRoomUsingCellularAutomota() -> [[String]] {
+    func drawDungeonRoomUsingCellularAutomota() -> Void {
         
-        return [[".","."],[".","."]]
+        var randWalls:Int
+        
+        for var row = 0; row < dungeonMap.count; row++ {
+            for var column = 0; column < dungeonMap[row].count; column++ {
+                
+                randWalls = Int(arc4random_uniform(UInt32(100)))
+                
+                if randWalls > 55 {
+                    dungeonMap[row][column] = 1
+                }
+            }
+        }
+        
+        for _ in 1...5 {
+            
+            for var row = 0; row < dungeonMap.count; row++ {
+                
+                for var column = 0; column < dungeonMap[row].count; column++ {
+                    
+                    if howManyWallsAreAroundMe(column,y:row) > 5 {
+                        dungeonMap[row][column] = 1
+                    }
+                    
+                }
+            }
+        }
+        
+    }
+    
+    
+
+    
+    //I'm sure there's probably a much more elegant way to do this. Hrm.
+    func howManyWallsAreAroundMe(x:Int, y:Int) -> Int {
+    
+        var walls = 0
+        
+        
+        if (x == 0) || (x > 78) || (y == 0) || (y > 48) {
+        
+        
+        } else {
+
+            if dungeonMap[y][x-1] == 1 {
+                walls++
+            }
+
+            if dungeonMap[y-1][x+1] == 1 {
+                walls++
+            }
+            
+            if dungeonMap[y-1][x-1] == 1 {
+                walls++
+            }
+        
+            if dungeonMap[y+1][x] == 1 {
+                walls++
+            }
+            
+            if dungeonMap[y+1][x+1] == 1 {
+                walls++
+            }
+            
+            if dungeonMap[y+1][x-1] == 1 {
+                walls++
+            }
+            
+            if dungeonMap[y][x+1] == 1 {
+                walls++
+            }
+            
+            if dungeonMap[y][x-1] == 1 {
+                walls++
+            }
+        }
+        
+        return walls
         
     }
     
