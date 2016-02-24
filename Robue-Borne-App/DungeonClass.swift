@@ -251,6 +251,12 @@ class Dungeon {
         var randomHeightOffset: Int
         
         
+        //used for finding minimum room placement point:
+        var minY: Int
+        var minX: Int
+        var priorRoomIterator: Int
+        
+        
         for roomIterator in 1...numberOfRooms {
             
             randomWidthOffset = Int(arc4random_uniform(UInt32(cellSizeWidth/2)))
@@ -260,17 +266,39 @@ class Dungeon {
             randomHeight = Int(arc4random_uniform(UInt32(cellSizeHeight/2)))
             
             
-            
             //TODO -> a check to determin (x,y) start
             // feels like this should be recursive...
             // call this again with x1,y1 as starting points until reach max width/height?
             
-            //find random height (with max == cellSizeHeight), do the same for width, then place the bitch. 
-            //Int(arc4random_uniform(Uint(cellSizeHeight))
-            dungeonRooms[roomIterator].location.x1 = randomWidthOffset
-            dungeonRooms[roomIterator].location.x2 = randomWidthOffset + randomWidth
-            dungeonRooms[roomIterator].location.y1 = randomHeightOffset
-            dungeonRooms[roomIterator].location.y2 = randomHeightOffset + randomHeight
+            if (roomIterator > 1) {
+                
+                minY = 0
+                minX = 0
+                priorRoomIterator = 0
+
+                /*
+                //for a given y-axis range (cellHeight) find the lowest x-axis column available.
+                for priorRoomIterator in 1...roomIterator {
+                    
+                    if
+                    minX = dungeonRooms[priorRoomIterator].location.x2
+                    minY = dungeonRooms[priorRoomIterator].location.y2
+                }
+                
+*/
+                
+                
+                
+            }
+            else {
+            
+                //find random height (with max == cellSizeHeight), do the same for width, then place the bitch.
+                //Int(arc4random_uniform(Uint(cellSizeHeight))
+                dungeonRooms[roomIterator].location.x1 = randomWidthOffset
+                dungeonRooms[roomIterator].location.x2 = randomWidthOffset + randomWidth
+                dungeonRooms[roomIterator].location.y1 = randomHeightOffset
+                dungeonRooms[roomIterator].location.y2 = randomHeightOffset + randomHeight
+            }
 
         }
         
