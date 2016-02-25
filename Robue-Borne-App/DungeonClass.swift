@@ -239,7 +239,7 @@ class Dungeon {
 
     
     //=====================================================================================================//
-    //create random rooms using a big bang approach...
+    //create random cells using a big bang approach...
     //
     //=====================================================================================================//
     func generateDungeonRoomsUsingBigBang() {
@@ -253,60 +253,66 @@ class Dungeon {
         
         
         //used for finding minimum room placement point:
-        var minY: Int
-        var minX: Int
-        var priorRoomIterator: Int
+        var minX = 0
+        var minY = 0
         
-        
+        //Create each room and place it...
         for roomIterator in 1...numberOfRooms {
             
+            //create random room size
             randomWidthOffset = Int(arc4random_uniform(UInt32(cellSizeWidth/2)))
             randomWidth = Int(arc4random_uniform(UInt32(cellSizeWidth/2)))
             
             randomHeightOffset = Int(arc4random_uniform(UInt32(cellSizeHeight/2)))
             randomHeight = Int(arc4random_uniform(UInt32(cellSizeHeight/2)))
-            
-            
-            //TODO -> a check to determin (x,y) start
-            // feels like this should be recursive...
-            // call this again with x1,y1 as starting points until reach max width/height?
-            
-            if (roomIterator > 1) {
-                
+
+            //Add the room before I add the room so it doesn't bork on me
+            dungeonRooms.append(DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil))
+
+            //to place the room, check every column for an available y-axis range (randomHeight+randomHeightOffset)
+            for columnIterator in 0 ... dungeonSizeWidth {
+
+                minX = columnIterator
                 minY = 0
-                minX = 0
-                priorRoomIterator = 0
-
-                /*
-                //for a given y-axis range (cellHeight) find the lowest x-axis column available.
-                for priorRoomIterator in 1...roomIterator {
+                
+                //iterate through every previous room and find the minY for this column
+                for priorRoomIterator in 0...roomIterator {
                     
-                    if
-                    minX = dungeonRooms[priorRoomIterator].location.x2
-                    minY = dungeonRooms[priorRoomIterator].location.y2
+                    //If not at edge of dungeon, then keep going...
+                    if ((dungeonRooms[priorRoomIterator].location.x2 + randomWidthOffset + randomWidth) < dungeonSizeWidth) && ((dungeonRooms[priorRoomIterator].location.y2 + randomHeightOffset + randomHeight) < dungeonSizeHeight) {
+                    
+                        //if the current minY is less than the acceptable minY, then set a new minY
+                        if minY < dungeonRooms[priorRoomIterator].location.y2 {
+                            minY = dungeonRooms[priorRoomIterator].location.y2 + 1
+                        }
+                        
+                    } else {
+                        
+                        minY = -1
+                        minX = -1
+                        
+                    }
+                    
+                    
                 }
-                
-*/
-                
-                
-                
+        
             }
-            else {
             
-                //find random height (with max == cellSizeHeight), do the same for width, then place the bitch.
-                //Int(arc4random_uniform(Uint(cellSizeHeight))
-                dungeonRooms[roomIterator].location.x1 = randomWidthOffset
-                dungeonRooms[roomIterator].location.x2 = randomWidthOffset + randomWidth
-                dungeonRooms[roomIterator].location.y1 = randomHeightOffset
-                dungeonRooms[roomIterator].location.y2 = randomHeightOffset + randomHeight
-            }
 
+            //Set the new room...
+            dungeonRooms[roomIterator].location.x1 = minX + randomWidthOffset
+            dungeonRooms[roomIterator].location.x2 = minX + randomWidthOffset + randomWidth
+            dungeonRooms[roomIterator].location.y1 = minY + randomHeightOffset
+            dungeonRooms[roomIterator].location.y2 = minY + randomHeightOffset + randomHeight
+
+            
         }
         
-    
     }
+    
 
-
+    
+    
     //=====================================================================================================//
     //create a room using cellular automota... (note, this could be a one-room level)
     //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
@@ -404,6 +410,8 @@ class Dungeon {
 
     func drawDungeonRooms() -> Void {
         
+        
+        
     }
     
     //=====================================================================================================//
@@ -413,7 +421,10 @@ class Dungeon {
 
     func connectDungeonRooms() -> Void {
         //Func to connect rooms
-        //And draw connections?
+        //And draw connections
+        
+        
+        
     }
     
     

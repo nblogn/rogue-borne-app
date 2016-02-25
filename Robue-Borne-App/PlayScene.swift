@@ -145,7 +145,7 @@ class PlayScene: SKScene {
         let myDungeon = Dungeon()
         
         //myDungeon.createDungeonUsingCellMethod()
-        myDungeon.drawDungeonRoomUsingCellularAutomota()
+        myDungeon.generateDungeonRoomsUsingBigBang()
         
         tiles = myDungeon.dungeonMap
 
