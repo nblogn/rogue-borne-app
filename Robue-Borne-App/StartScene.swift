@@ -8,37 +8,77 @@
 
 import SpriteKit
 
-class GameStartScene: SKScene {
-    
+class StartScene: SKScene {
     
     override func didMoveToView(view: SKView) {
-        /* Setup your scene here */
+        
+        self.backgroundColor = SKColor.whiteColor()
+        
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
         myLabel.text = "RogueBorne"
         myLabel.fontSize = 45
         myLabel.fontColor = SKColor.redColor()
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
+        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)+100)
         
         self.addChild(myLabel)
         
-        let myClickToPlayLabel = SKLabelNode(fontNamed: "Cochin")
-        myClickToPlayLabel.text = "Click to Play"
-        myClickToPlayLabel.fontSize = 20
-        myClickToPlayLabel.fontColor = SKColor.blackColor()
-        myClickToPlayLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-40)
+        let createCellMapButton = SKLabelNode(fontNamed: "Cochin")
+        createCellMapButton.text = "Create a Cell map"
+        createCellMapButton.name = "cellMapButton"
+        createCellMapButton.fontSize = 30
+        createCellMapButton.fontColor = SKColor.blackColor()
+        createCellMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-40)
         
-        self.addChild(myClickToPlayLabel)
+        self.addChild(createCellMapButton)
+        
+        
+        let createCellAutoMapButton = SKLabelNode(fontNamed: "Cochin")
+        createCellAutoMapButton.text = "Create a Cellular Automata Map"
+        createCellAutoMapButton.name = "cellAutoMapButton"
+        createCellAutoMapButton.fontSize = 30
+        createCellAutoMapButton.fontColor = SKColor.blackColor()
+        createCellAutoMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-80)
+
+        self.addChild(createCellAutoMapButton)
+        
+        
+        let createBigBangMapButton = SKLabelNode(fontNamed: "Cochin")
+        createBigBangMapButton.text = "Create a Big Bang map"
+        createBigBangMapButton.name = "bigBangMapButton"
+        createBigBangMapButton.fontSize = 30
+        createBigBangMapButton.fontColor = SKColor.blackColor()
+        createBigBangMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-120)
+        
+        self.addChild(createBigBangMapButton)
+    }
+    
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+
+        var touch = touches as! Set<UITouch>
+        var location = touch.first!.locationInNode(self)
+        var node = self.nodeAtPoint(location)
+        
+        // If touchToCreateCellMap button is touched, start transition to second scene
+        if (node.name == "cellMapButton") {
+            let playScene = PlayScene(size: self.size, dungeonType: "cellMap")
+            self.view?.presentScene(playScene, transition: reveal)
+        }
+        
+        if (node.name == "cellAutoMapButton") {
+            let playScene = PlayScene(size: self.size, dungeonType: "cellAutoMap")
+            self.view?.presentScene(playScene, transition: reveal)
+        }
+        
+        if (node.name == "bigBangMapButton") {
+            let playScene = PlayScene(size: self.size, dungeonType: "bigBangMap")
+            self.view?.presentScene(playScene, transition: reveal)
+        }
         
     }
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-       /* Called when a touch begins */
-        
-        let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-        let playScene = PlayScene(size: self.size)
-        self.view?.presentScene(playScene, transition: reveal)
-        
-    }
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */

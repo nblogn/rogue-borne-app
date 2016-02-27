@@ -28,7 +28,6 @@ func convertBoardCoordinatetoCGPoint () -> CGPoint {
 
 
 /*Note: You may be wondering what the fancy syntax is here. Note that the category on Sprite Kit is just a single 32-bit integer, and acts as a bitmask. This is a fancy way of saying each of the 32-bits in the integer represents a single category (and hence you can have 32 categories max). Here you’re setting the first bit to indicate a monster, the next bit over to represent a projectile, and so on.*/
-
 struct PhysicsCategory {
     static let None      : UInt32 = 0
     static let All       : UInt32 = UInt32.max
@@ -116,78 +115,85 @@ enum Tile: Int {
 //-------------------------------------------------------------------------------------------//
 class PlayScene: SKScene {
     
-    //If you override an initializer on a scene, you must implement the required init(coder:) initializer as well. However this initializer will never be called, so you just add a dummy implementation with a fatalError(_:) for now.
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
-    //Declaration of your constants. Their values will be assigned in the class initialisation. We’ll be setting up 2 views of the same scene. view2D will be a top down view so we can easily see mapping of coordinates in a simple 2D grid. viewIso will be the isometric view that we would use for our games final rendering.
+    //Global variables and constants...
     let view2D:SKSpriteNode
     let viewIso:SKSpriteNode
     
     
-    //Will set this to the dungeon output, eventually just need to make the class include this...
     var tiles: [[Int]]
+    var dungeonType: String = "cellMap"
     
     
-    //tileSize is what it seems, the constant width and height of each tile.
     //JOSH: Sounds simple, but what measurement is this? Pixels? Arbitrary unit?
     let tileSize = (width:32, height:32)
     
+    let myDungeon = Dungeon()
+
     
-    //Our class initialisation. Assigning SKSpriteNode instances to our view constants, the standard super.init code (required when subclassing SKScene) and then we centre our scenes anchorPoint (this is just a preference).
+    
+    //INITS
+    
+    //Default init in case of errors...
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //Override without anything else
     override init(size: CGSize) {
+        
+        viewIso = SKSpriteNode()
+        view2D = SKSpriteNode()
+        
+        //myDungeon.createDungeonUsingCellMethod() for default init
+        myDungeon.generateDungeonRoomsUsingBigBang()
+        tiles = myDungeon.dungeonMap
+
+        super.init(size: size)
+        
+    }
+
+    //Override with the dungeonType
+    init(size: CGSize, dungeonType: String) {
         
         view2D = SKSpriteNode()
         viewIso = SKSpriteNode()
         
-        //TODO: Change the different map creation algorithms to happen on UI button press
-        let myDungeon = Dungeon()
+        self.dungeonType = dungeonType
         
-        //myDungeon.createDungeonUsingCellMethod()
-        myDungeon.generateDungeonRoomsUsingBigBang()
+        
+        //Change the different map creation algorithms to happen on UI button press
+        switch dungeonType {
+        case "cellMap": myDungeon.createDungeonUsingCellMethod()
+        case "cellAutoMap": myDungeon.drawDungeonRoomUsingCellularAutomota()
+        case "bigBangMap": myDungeon.generateDungeonRoomsUsingBigBang()
+        default:myDungeon.createDungeonUsingCellMethod()
+        }
         
         tiles = myDungeon.dungeonMap
 
         super.init(size: size)
-        self.anchorPoint = CGPoint(x:0, y:1)
+        self.anchorPoint = CGPoint(x:0, y:0)
 
     }
     
-    //As the view is loaded we position our 2 sub views so we can easily see and interact with either/or. The deviceScale constant adjusts the scale to fit dynamically to the screen size of whatever device you’re testing on.
+
+    
     override func didMoveToView(view: SKView) {
         
-        let deviceScale:CGFloat = 0.37 //self.size.width/667
+        let deviceScale:CGFloat = 0.5 //self.size.width/667
         
-        //JOSH: I commented this out to play with the 2D view only...
+        
         //view2D.position = CGPoint(x:-self.size.width*0.45, y:self.size.height*0.17)
         view2D.xScale = deviceScale
         view2D.yScale = deviceScale
         addChild(view2D)
-        
-        /*viewIso.position = CGPoint(x:self.size.width*0.12, y:self.size.height*0.12)
-        viewIso.xScale = deviceScale
-        viewIso.yScale = deviceScale
-        addChild(viewIso)*/
+    
         
         placeAllTiles2D()
-        view2D.xScale = deviceScale
-        view2D.yScale = deviceScale
 
     }
     
-    //This function creates and places a sprite in the view2D instance. It’s important to set the anchorPoint to 0,0 (bottom, left). We’ll use this method in the next step, to place our tiles.
-    func placeTile2D(image:String, withPosition:CGPoint) {
-        
-        let tileSprite = SKSpriteNode(imageNamed: image)
-        
-        tileSprite.position = withPosition
-        
-        tileSprite.anchorPoint = CGPoint(x:0, y:0)
-        
-        view2D.addChild(tileSprite)
-        
-    }
     
 
     func placeAllTiles2D() {
@@ -203,14 +209,37 @@ class PlayScene: SKScene {
                 //Assign a new Tile enum, setting it’s type via the id value, e.g. because we used an enum for our Tile, 0 = Ground, 1 = Wall
                 let tile = Tile(rawValue: tileInt)!
                 
-                //We then stack each tileSprite in a grid, left to right, then top to bottom. Note: We need to invert the y value because in the SpriteKit coordinate system, y values increase as you move up the screen and decrease as you move down.
-                let point = CGPoint(x: (j*tileSize.width), y: -(i*tileSize.height))
+                //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system, y values increase as you move up the screen and decrease as you move down.
+                let point = CGPoint(x: (j*tileSize.width), y: (i*tileSize.height))
                 
                 placeTile2D(tile.image, withPosition:point)
             }
             
         }
         
+    }
+    
+
+    func placeTile2D(image:String, withPosition:CGPoint) {
+        
+        let tileSprite = SKSpriteNode(imageNamed: image)
+        
+        tileSprite.position = withPosition
+        
+        tileSprite.anchorPoint = CGPoint(x:0, y:0)
+        
+        view2D.addChild(tileSprite)
+        
+    }
+    
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        //Go back to the main menu
+        let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+        let startScene = StartScene(size: self.size)
+        self.view?.presentScene(startScene, transition: reveal)
+
     }
     
 }

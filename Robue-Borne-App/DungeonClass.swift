@@ -394,7 +394,6 @@ class Dungeon {
     //=====================================================================================================//
     //Func to draw rooms, if all dungeonRooms are populated
     //=====================================================================================================//
-
     func drawDungeonRooms() -> Void {
         
 
@@ -413,17 +412,27 @@ class Dungeon {
                 }
                 
             }
-            
-            
+
         }
+
+    }
+    
+    //=====================================================================================================//
+    //Set the dungeon back to basics
+    //
+    //TODO: THIS ISN'T WORKING
+    //
+    //=====================================================================================================//
+    func resetDungeonMap() -> Void {
         
+        self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
+        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
     }
     
     //=====================================================================================================//
     //Func to connect an array of DungeonRoom struct
     //
     //=====================================================================================================//
-
     func connectDungeonRooms() -> Void {
         //Func to connect rooms
         //And draw connections
