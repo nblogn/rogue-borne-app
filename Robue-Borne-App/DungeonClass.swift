@@ -238,7 +238,7 @@ class Dungeon {
 
 
     //Will replace the func above, separating the creation of rooms from the drawing of the map.
-    func createDungeonRoomsUsingCellMethod() {
+    func generateDungeonRoomsUsingCellMethod() {
     
     }
     
@@ -338,7 +338,7 @@ class Dungeon {
     //Note: this could be a one-room level, or a single room within a room of cells
     //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
     //=====================================================================================================//
-    func drawDungeonRoomUsingCellularAutomota() -> Void {
+    func generateDungeonRoomUsingCellularAutomota() -> Void {
         
         var randWalls:Int
         
