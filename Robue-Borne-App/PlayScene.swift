@@ -175,6 +175,8 @@ class PlayScene: SKScene {
     init(size: CGSize, dungeonType: String) {
         
         view2D = SKSpriteNode()
+        view2D.userInteractionEnabled = true
+        
         viewIso = SKSpriteNode()
         
         self.dungeonType = dungeonType
@@ -343,7 +345,7 @@ class PlayScene: SKScene {
             }
         }
         
-        //Reset selectedNode to be view2D for now...
+        //Reset selectedNode to be view2D for now, for testing purposes...
         selectedNode = view2D
         
     }
@@ -357,12 +359,6 @@ class PlayScene: SKScene {
 
     func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
         
-        /*let sequencePinch = SKAction.sequence([SKAction.scaleBy(0.1, duration: 0.5)])
-
-        if recognizer.state == .Changed {
-            view2D.runAction(sequencePinch)
-
-        }*/
         
         //THIS IS PINCHING THE ENTIRE VIEW, NOT THE VIEW2D NODE!!!
         recognizer.view!.transform = CGAffineTransformScale(recognizer.view!.transform, recognizer.scale, recognizer.scale)
