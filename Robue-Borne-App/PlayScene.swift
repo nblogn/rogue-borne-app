@@ -164,7 +164,6 @@ class PlayScene: SKScene {
         viewIso = SKSpriteNode()
         view2D = SKSpriteNode()
         
-        //myDungeon.createDungeonUsingCellMethod() for default init
         myDungeon.generateDungeonRoomsUsingBigBang()
         tiles = myDungeon.dungeonMap
 
@@ -200,10 +199,14 @@ class PlayScene: SKScene {
     //didMoveToView is the first event in the PlayScene after inits
     override func didMoveToView(view: SKView) {
         
-        let deviceScale:CGFloat = 0.5 //self.size.width/667
+        let deviceScale:CGFloat = 1 //self.size.width/667
         
-        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: Selector("handlePanFrom:"))
-        self.view!.addGestureRecognizer(gestureRecognizer)
+        let gesturePanRecognizer = UIPanGestureRecognizer(target: self, action: Selector("handlePanFrom:"))
+        self.view!.addGestureRecognizer(gesturePanRecognizer)
+        
+        let gesturePinchRecognizer = UIPinchGestureRecognizer(target: self, action: Selector("handlePinchFrom:"))
+        self.view!.addGestureRecognizer(gesturePinchRecognizer)
+            
         
         //view2D.position = CGPoint(x:-self.size.width*0.45, y:self.size.height*0.17)
         view2D.xScale = deviceScale
@@ -212,13 +215,26 @@ class PlayScene: SKScene {
         
         placeAllTiles2D()
         
+        
+        self.backgroundColor = SKColor.redColor()
+        
+        //Button to return to main menu
+        let mainMenuButton = SKLabelNode(fontNamed:"Cochin")
+        mainMenuButton.text = "Main Menu"
+        mainMenuButton.name = "mainMenuButton"
+        mainMenuButton.fontSize = 30
+        mainMenuButton.fontColor = SKColor.blueColor()
+        mainMenuButton.position = CGPoint(x:150, y:20)
+        mainMenuButton.zPosition = 100
+        addChild(mainMenuButton)
+        
     }
 
     
 
     //-------------------------------------------------------------------------------------------//
     //
-    //The next funcs are used for scrolling the whole PlayScene...
+    //The next funcs are used for panning the whole PlayScene...
     //
     //-------------------------------------------------------------------------------------------//
     
@@ -233,44 +249,42 @@ class PlayScene: SKScene {
         return retval
     }
     
+    
     func panForTranslation(translation: CGPoint) {
         
-        let position = selectedNode.position
+        let position = view2D.position
         
         //Eventually I can add an if here to move a specific sprite instead of the entire view2D node.
-        //if selectedNode.name! ==  {
+        //if selectedNode.name! == "" {}
         
         let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
         view2D.position = self.boundLayerPos(aNewPosition)
         
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        let touch = touches.first! as UITouch
-        let positionInScene = touch.locationInNode(view2D)
-        let previousPosition = touch.previousLocationInNode(view2D)
-        let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y -
-            previousPosition.y)
-        
-        panForTranslation(translation)
-    }
     
+    //Callback handler for gestureRecognizer
     func handlePanFrom(recognizer: UIPanGestureRecognizer) {
+        
         if recognizer.state == .Began {
             var touchLocation = recognizer.locationInView(recognizer.view)
             touchLocation = self.convertPointFromView(touchLocation)
             
-            self.selectNodeForTouch(touchLocation)
+            selectNodeForTouch(touchLocation)
+            
+            
         } else if recognizer.state == .Changed {
             var translation = recognizer.translationInView(recognizer.view!)
             translation = CGPoint(x: translation.x, y: -translation.y)
             
-            self.panForTranslation(translation)
+            panForTranslation(translation)
             
             recognizer.setTranslation(CGPointZero, inView: recognizer.view)
+            
+            
         } else if recognizer.state == .Ended {
             
-            //This "flings" the node on an "end"
+            //This "flings" the node on an "end" of a pan
             let scrollDuration = 0.2
             let velocity = recognizer.velocityInView(recognizer.view)
             let pos = selectedNode.position
@@ -291,13 +305,15 @@ class PlayScene: SKScene {
     func degToRad(degree: Double) -> CGFloat {
         return CGFloat(Double(degree) / 180.0 * M_PI)
     }
+
     
-    
-    
+    //Figure out which node was selected (eg, the character, or just the whole background, etc.)
     func selectNodeForTouch(touchLocation: CGPoint) {
         
+        // Use this to select a character SKSpriteNode
+
         let touchedNode = self.nodeAtPoint(touchLocation)
-        
+    
         if touchedNode is SKSpriteNode {
             
             if !selectedNode.isEqual(touchedNode) {
@@ -306,22 +322,53 @@ class PlayScene: SKScene {
                 
                 selectedNode = touchedNode as! SKSpriteNode
                 
-                /*
-                // Use this to select a character SKSpriteNode
-                if touchedNode.name! == kAnimalNodeName {
+                //Make the selected node shake around
                 let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
-                SKAction.rotateByAngle(0.0, duration: 0.1),
-                SKAction.rotateByAngle(degToRad(4.0), duration: 0.1)])
+                    SKAction.rotateByAngle(0.0, duration: 0.1),
+                    SKAction.rotateByAngle(degToRad(4.0), duration: 0.1)])
                 selectedNode.runAction(SKAction.repeatActionForever(sequence))
-                }
-                */
+                
+                //Make View move FOR TESTING
+                let sequence2 = SKAction.sequence([SKAction.scaleBy(0.5, duration: 1)])
+                view2D.runAction(SKAction.repeatActionForever(sequence2))
+
                 
             }
+        } else {
+            
+            if touchedNode.name == "mainMenuButton" {
+                let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+                let startScene = StartScene(size: self.size)
+                self.view?.presentScene(startScene, transition: reveal)
+            }
         }
+        
+        //Reset selectedNode to be view2D for now...
+        selectedNode = view2D
+        
     }
     
     
     
+    
+    //-------------------------------------------------------------------------------------------//
+    //Handle zooming the tiles
+    //-------------------------------------------------------------------------------------------//
+
+    func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
+        
+        /*let sequencePinch = SKAction.sequence([SKAction.scaleBy(0.1, duration: 0.5)])
+
+        if recognizer.state == .Changed {
+            view2D.runAction(sequencePinch)
+
+        }*/
+        
+        //THIS IS PINCHING THE ENTIRE VIEW, NOT THE VIEW2D NODE!!!
+        recognizer.view!.transform = CGAffineTransformScale(recognizer.view!.transform, recognizer.scale, recognizer.scale)
+        recognizer.scale = 1.0
+
+    }
     
     
     //-------------------------------------------------------------------------------------------//
@@ -374,10 +421,11 @@ class PlayScene: SKScene {
     //-------------------------------------------------------------------------------------------//
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
+        /*
         let reveal = SKTransition.flipHorizontalWithDuration(0.5)
         let startScene = StartScene(size: self.size)
         self.view?.presentScene(startScene, transition: reveal)
-        
+        */
     }
     
 }
