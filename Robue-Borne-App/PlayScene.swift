@@ -71,7 +71,7 @@ extension CGPoint {
 
 //-------------------------------------------------------------------------------------------//
 //
-//Note, a lot of this tile code comes from the following tutorial
+//Note, some of this tile code comes from the following tutorial
 //http://bigspritegames.com/isometric-tile-based-game-part-1/
 //
 //TODO: This should be in the Dungeon class. I think.
@@ -116,11 +116,11 @@ enum Tile: Int {
 
 
 
-//-------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
 //
 //The main PlayScene...
 //
-//-------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------------------------------------------//
 class PlayScene: SKScene {
     
     
@@ -191,7 +191,7 @@ class PlayScene: SKScene {
         }
         
         tiles = myDungeon.dungeonMap
-
+        
         super.init(size: size)
         self.anchorPoint = CGPoint(x:0, y:0)
 
@@ -201,24 +201,41 @@ class PlayScene: SKScene {
     //didMoveToView is the first event in the PlayScene after inits
     override func didMoveToView(view: SKView) {
         
-        let deviceScale:CGFloat = 1 //self.size.width/667
         
+        //Setup Gestures...
         let gesturePanRecognizer = UIPanGestureRecognizer(target: self, action: Selector("handlePanFrom:"))
         self.view!.addGestureRecognizer(gesturePanRecognizer)
         
         let gesturePinchRecognizer = UIPinchGestureRecognizer(target: self, action: Selector("handlePinchFrom:"))
         self.view!.addGestureRecognizer(gesturePinchRecognizer)
             
+        //let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: Selector("hangleTapFrom:"))
+        //self.view!.addGestureRecognizer(gestureTapRecognizer)
         
-        //view2D.position = CGPoint(x:-self.size.width*0.45, y:self.size.height*0.17)
-        view2D.xScale = deviceScale
-        view2D.yScale = deviceScale
+        
+        
+    
+        //Scale the view to ensure all tiles will fit within the view...
+        print(self.size)
+        
+        let yScale = Float(self.size.height) / (Float(myDungeon.dungeonSizeHeight) * Float(tileSize.height))
+        let xScale = Float(self.size.width) / (Float(myDungeon.dungeonSizeWidth) * Float(tileSize.width))
+        
+        print(xScale)
+        print(yScale)
+        
+        view2D.yScale = CGFloat(yScale)
+        view2D.xScale = CGFloat(xScale)
+
+    
+
         addChild(view2D)
         
         placeAllTiles2D()
         
         
         self.backgroundColor = SKColor.redColor()
+        
         
         //Button to return to main menu
         let mainMenuButton = SKLabelNode(fontNamed:"Cochin")
@@ -240,6 +257,45 @@ class PlayScene: SKScene {
     //
     //-------------------------------------------------------------------------------------------//
     
+    //Figure out which node was selected (eg, the character, or just the whole background, etc.)
+    
+    func selectNodeForTouch(touchLocation: CGPoint) {
+        
+        // Use this to select a specific SKSpriteNode
+        let touchedNode = self.nodeAtPoint(touchLocation)
+        
+        /*if touchedNode is SKSpriteNode {
+            
+            if !selectedNode.isEqual(touchedNode) {
+                selectedNode.removeAllActions()
+                selectedNode.runAction(SKAction.rotateToAngle(0.0, duration: 0.1))
+                
+                selectedNode = touchedNode as! SKSpriteNode
+                
+                //Make the selected node shake around
+                let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
+                    SKAction.rotateByAngle(0.0, duration: 0.1),
+                    SKAction.rotateByAngle(degToRad(4.0), duration: 0.1)])
+                selectedNode.runAction(SKAction.repeatActionForever(sequence))
+                
+            }
+        } else {*/
+            
+        if touchedNode.name == "mainMenuButton" {
+                let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+                let startScene = StartScene(size: self.size)
+                self.view?.presentScene(startScene, transition: reveal)
+            
+        } else {
+
+            //Reset selectedNode to be view2D for now, for testing purposes...
+            selectedNode = view2D
+            
+        }
+
+    }
+    
+    
     //used for making sure you don’t scroll the layer beyond the bounds of the background
     func boundLayerPos(aNewPosition: CGPoint) -> CGPoint {
         let winSize = self.size
@@ -254,14 +310,19 @@ class PlayScene: SKScene {
     
     func panForTranslation(translation: CGPoint) {
         
-        let position = view2D.position
+        let position = selectedNode.position
         
-        //Eventually I can add an if here to move a specific sprite instead of the entire view2D node.
-        //if selectedNode.name! == "" {}
+        /*if selectedNode.name! == _MY_HERO_NAME_ {
+            selectedNode.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        } else {*/
         
-        let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-        view2D.position = self.boundLayerPos(aNewPosition)
         
+        //let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        //view2D.position = self.boundLayerPos(aNewPosition)
+        
+        view2D.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        
+        //}
     }
     
     
@@ -303,67 +364,50 @@ class PlayScene: SKScene {
             selectedNode.runAction(moveTo)
         }
     }
+    
+    
 
     func degToRad(degree: Double) -> CGFloat {
         return CGFloat(Double(degree) / 180.0 * M_PI)
     }
 
-    
-    //Figure out which node was selected (eg, the character, or just the whole background, etc.)
-    func selectNodeForTouch(touchLocation: CGPoint) {
-        
-        // Use this to select a character SKSpriteNode
 
-        let touchedNode = self.nodeAtPoint(touchLocation)
-    
-        if touchedNode is SKSpriteNode {
-            
-            if !selectedNode.isEqual(touchedNode) {
-                selectedNode.removeAllActions()
-                selectedNode.runAction(SKAction.rotateToAngle(0.0, duration: 0.1))
-                
-                selectedNode = touchedNode as! SKSpriteNode
-                
-                //Make the selected node shake around
-                let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
-                    SKAction.rotateByAngle(0.0, duration: 0.1),
-                    SKAction.rotateByAngle(degToRad(4.0), duration: 0.1)])
-                selectedNode.runAction(SKAction.repeatActionForever(sequence))
-                
-                //Make View move FOR TESTING
-                let sequence2 = SKAction.sequence([SKAction.scaleBy(0.5, duration: 1)])
-                view2D.runAction(SKAction.repeatActionForever(sequence2))
-
-                
-            }
-        } else {
-            
-            if touchedNode.name == "mainMenuButton" {
-                let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-                let startScene = StartScene(size: self.size)
-                self.view?.presentScene(startScene, transition: reveal)
-            }
-        }
-        
-        //Reset selectedNode to be view2D for now, for testing purposes...
-        selectedNode = view2D
-        
-    }
-    
     
     
     
     //-------------------------------------------------------------------------------------------//
-    //Handle zooming the tiles
+    //Handle zooming the entire dungeon
     //-------------------------------------------------------------------------------------------//
-
     func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
         
-        
-        //THIS IS PINCHING THE ENTIRE VIEW, NOT THE VIEW2D NODE!!!
+        //Pinches/zooms the entire PlayScene, since the gestures are on scene's *SKView* (subclasses of UIView)
         recognizer.view!.transform = CGAffineTransformScale(recognizer.view!.transform, recognizer.scale, recognizer.scale)
         recognizer.scale = 1.0
 
+    }
+    
+    
+    //-------------------------------------------------------------------------------------------//
+    //Handle tapping
+    //-------------------------------------------------------------------------------------------//
+    func handleTapFrom (recognizer: UITapGestureRecognizer) {
+
+        /*BREAKING
+        var touchLocation = recognizer.locationInView(recognizer.view)
+        touchLocation = self.convertPointFromView(touchLocation)
+        
+        selectNodeForTouch(touchLocation)
+
+        let touchedNode = self.nodeAtPoint(touchLocation)
+
+        if touchedNode.name == "mainMenuButton" {
+            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+            let startScene = StartScene(size: self.size)
+            self.view?.presentScene(startScene, transition: reveal)
+        }
+
+        */
+        
     }
     
     
@@ -407,14 +451,20 @@ class PlayScene: SKScene {
     }
     
     
-    
-    
-    
+    //-------------------------------------------------------------------------------------------//
+    //Touches begin/end
+    //-------------------------------------------------------------------------------------------//
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
+        let touch : UITouch! = touches.first
+        let positionInScene = touch.locationInNode(self)
+        
+        selectNodeForTouch(positionInScene)
+    }
 
-    //-------------------------------------------------------------------------------------------//
-    //Called when a touch stops; so using this to go back to main menu (GameScene) on a press
+
+    //using this to go back to main menu (GameScene) on a press
     //TODO: Replace with a button or a gesture
-    //-------------------------------------------------------------------------------------------//
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         /*
