@@ -22,6 +22,7 @@ class StartScene: SKScene {
         
         self.addChild(myLabel)
         
+        
         let createCellMapButton = SKLabelNode(fontNamed: "Cochin")
         createCellMapButton.text = "Create a Cell map"
         createCellMapButton.name = "cellMapButton"
@@ -57,9 +58,9 @@ class StartScene: SKScene {
         
         let reveal = SKTransition.flipHorizontalWithDuration(0.5)
 
-        var touch = touches as! Set<UITouch>
-        var location = touch.first!.locationInNode(self)
-        var node = self.nodeAtPoint(location)
+        let touch = touches 
+        let location = touch.first!.locationInNode(self)
+        let node = self.nodeAtPoint(location)
         
         // If touchToCreateCellMap button is touched, start transition to second scene
         if (node.name == "cellMapButton") {

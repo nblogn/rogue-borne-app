@@ -18,13 +18,6 @@ import SpriteKit
 //
 //-------------------------------------------------------------------------------------------//
 
-//From me: I probably need some conversions of array coordinates to CGPoint coordinate...
-func convertBoardCoordinatetoCGPoint () -> CGPoint {
-
-    //bogus placeholder code
-    let cgpoint = CGPoint(x: 1,y: 2)
-    return cgpoint
-}
 
 
 /*Note: You may be wondering what the fancy syntax is here. Note that the category on Sprite Kit is just a single 32-bit integer, and acts as a bitmask. This is a fancy way of saying each of the 32-bits in the integer represents a single category (and hence you can have 32 categories max). Here you’re setting the first bit to indicate a monster, the next bit over to represent a projectile, and so on.*/
@@ -131,21 +124,22 @@ class PlayScene: SKScene {
 
     //Global variables and constants...
     let view2D:SKSpriteNode
-    let viewIso:SKSpriteNode
-    
-    
     var tiles: [[Int]]
     var dungeonType: String = "cellMap"
     
     
-    //JOSH: Sounds simple, but what measurement is this? Pixels? Arbitrary unit?
+    //JOSH: Pretty sure these are measured in pixels. I think.
     let tileSize = (width:32, height:32)
     
+    
+    //Init the dungeon, hero, monsters, and dPad control...
     let myDungeon = Dungeon()
+    let myHero: Hero
+    //let aMonster = DungeonMonster()
+    let myDPad: dPad
     
+    //To detect the touched node...
     var selectedNode = SKSpriteNode()
-    
-    
     
     
     
@@ -158,36 +152,24 @@ class PlayScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //Override without anything else
-    override init(size: CGSize) {
-        
-        viewIso = SKSpriteNode()
-        view2D = SKSpriteNode()
-        
-        myDungeon.generateDungeonRoomsUsingBigBang()
-        tiles = myDungeon.dungeonMap
 
-        super.init(size: size)
-        
-    }
-
-    //Override with the dungeonType
+    //Init with the dungeonType (note, not an override since I'm adding attributes)
     init(size: CGSize, dungeonType: String) {
         
-        view2D = SKSpriteNode()
-        view2D.userInteractionEnabled = true
-        
-        viewIso = SKSpriteNode()
+        self.view2D = SKSpriteNode()
+        self.view2D.userInteractionEnabled = true
         
         self.dungeonType = dungeonType
-        
+
+        self.myDPad = dPad()
+        self.myHero = Hero()
         
         //Change the different map creation algorithms to happen on UI button press
         switch dungeonType {
-        case "cellMap": myDungeon.createDungeonUsingCellMethod()
-        case "cellAutoMap": myDungeon.generateDungeonRoomUsingCellularAutomota()
-        case "bigBangMap": myDungeon.generateDungeonRoomsUsingBigBang()
-        default:myDungeon.createDungeonUsingCellMethod()
+            case "cellMap": myDungeon.createDungeonUsingCellMethod()
+            case "cellAutoMap": myDungeon.generateDungeonRoomUsingCellularAutomota()
+            case "bigBangMap": myDungeon.generateDungeonRoomsUsingBigBang()
+            default:myDungeon.createDungeonUsingCellMethod()
         }
         
         tiles = myDungeon.dungeonMap
@@ -227,14 +209,23 @@ class PlayScene: SKScene {
         view2D.yScale = CGFloat(yScale)
         view2D.xScale = CGFloat(xScale)
 
-    
-
         addChild(view2D)
         
         placeAllTiles2D()
+
         
+        //Set the hero
+        myHero.position = convertBoardCoordinatetoCGPoint(myHero.heroLocation.x, y: myHero.heroLocation.y)
+        view2D.addChild(myHero)
         
-        self.backgroundColor = SKColor.redColor()
+        //Configure and add the d-pad
+        myDPad.zPosition = 100
+        addChild(myDPad)
+    
+
+        
+        //Set the background...
+        self.backgroundColor = SKColor.grayColor()
         
         
         //Button to return to main menu
@@ -243,7 +234,7 @@ class PlayScene: SKScene {
         mainMenuButton.name = "mainMenuButton"
         mainMenuButton.fontSize = 30
         mainMenuButton.fontColor = SKColor.blueColor()
-        mainMenuButton.position = CGPoint(x:150, y:20)
+        mainMenuButton.position = CGPoint(x:100, y:720)
         mainMenuButton.zPosition = 100
         addChild(mainMenuButton)
         
@@ -264,6 +255,7 @@ class PlayScene: SKScene {
         // Use this to select a specific SKSpriteNode
         let touchedNode = self.nodeAtPoint(touchLocation)
         
+        //Use this to enact an animation on a specific selected node, such as the hero character
         /*if touchedNode is SKSpriteNode {
             
             if !selectedNode.isEqual(touchedNode) {
@@ -280,7 +272,8 @@ class PlayScene: SKScene {
                 
             }
         } else {*/
-            
+        
+        //Go back to the StartScene if Main Menu is pressed
         if touchedNode.name == "mainMenuButton" {
                 let reveal = SKTransition.flipHorizontalWithDuration(0.5)
                 let startScene = StartScene(size: self.size)
@@ -288,7 +281,6 @@ class PlayScene: SKScene {
             
         } else {
 
-            //Reset selectedNode to be view2D for now, for testing purposes...
             selectedNode = view2D
             
         }
@@ -302,7 +294,8 @@ class PlayScene: SKScene {
         var retval = aNewPosition
         retval.x = CGFloat(min(retval.x, 0))
         retval.x = CGFloat(max(retval.x, -(self.size.width) + winSize.width))
-        retval.y = self.position.y
+        retval.y = CGFloat(min(0, retval.y))
+        retval.y = CGFloat(max(-(self.size.height) + winSize.height, retval.y))
         
         return retval
     }
@@ -326,7 +319,7 @@ class PlayScene: SKScene {
     }
     
     
-    //Callback handler for gestureRecognizer
+    //Callback handler for Pan gestureRecognizer
     func handlePanFrom(recognizer: UIPanGestureRecognizer) {
         
         if recognizer.state == .Began {
@@ -370,8 +363,6 @@ class PlayScene: SKScene {
     func degToRad(degree: Double) -> CGFloat {
         return CGFloat(Double(degree) / 180.0 * M_PI)
     }
-
-
     
     
     
@@ -380,9 +371,14 @@ class PlayScene: SKScene {
     //-------------------------------------------------------------------------------------------//
     func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
         
-        //Pinches/zooms the entire PlayScene, since the gestures are on scene's *SKView* (subclasses of UIView)
-        recognizer.view!.transform = CGAffineTransformScale(recognizer.view!.transform, recognizer.scale, recognizer.scale)
-        recognizer.scale = 1.0
+        //The following pinches/zooms the entire view, since the gestures are on PlayScene's (SKScene, which is a node) *SKView* (subclasses of UIView)
+        //recognizer.view!.transform = CGAffineTransformScale(recognizer.view!.transform, recognizer.scale, recognizer.scale)
+        
+        //TODO: This isn't quite right (need to center and remember the scale or something, but good enough for now...
+        view2D.xScale = recognizer.scale
+        view2D.yScale = recognizer.scale
+        
+        //recognizer.scale = 1.0
 
     }
     
@@ -414,6 +410,22 @@ class PlayScene: SKScene {
     //-------------------------------------------------------------------------------------------//
     //Tile building...
     //-------------------------------------------------------------------------------------------//
+    
+    //Generic func to place a tile on the board.
+    //Given a board position convert to CGPoint
+    //From me: I probably need some conversions of array coordinates to CGPoint coordinate...
+    func convertBoardCoordinatetoCGPoint (x: Int, y: Int) -> CGPoint {
+        
+        let retX = (x * tileSize.width) - (tileSize.width/2)
+        let retY = (y * tileSize.height) - (tileSize.height/2)
+        
+        return CGPoint(x: retX, y: retY)
+        
+    }
+    
+
+    
+    //The following two funcs build the initial board layout
     func placeAllTiles2D() {
         
         //Loop through all tiles
@@ -437,7 +449,6 @@ class PlayScene: SKScene {
         
     }
     
-
     func placeTile2D(image:String, withPosition:CGPoint) {
         
         let tileSprite = SKSpriteNode(imageNamed: image)

@@ -12,6 +12,20 @@ import Foundation
 import Darwin
 
 
+
+//Ascii character set, I figure we should always support ascii. This should probably go in the dungeon though,
+//since inanimate "things" are part of the dungeon class.
+//TODO: Where should this live and how should it work?
+struct asciiDungeonObjectArt {
+    let floor:String = "."
+    let wall:String = "="
+    let vwall:String = "|"
+    let nothing:String = " "
+}
+
+
+
+
 class Dungeon {
     
 

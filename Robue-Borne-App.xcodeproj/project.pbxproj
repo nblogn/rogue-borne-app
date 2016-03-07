@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		038229E51C8CBC4700D84701 /* DPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038229E41C8CBC4700D84701 /* DPad.swift */; };
 		0394FFFA1C702FCB00654A19 /* RB_Grass_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF51C702FCB00654A19 /* RB_Grass_2x.png */; };
 		0394FFFB1C702FCB00654A19 /* RB_Wall_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF61C702FCB00654A19 /* RB_Wall_2x.png */; };
 		0394FFFC1C702FCB00654A19 /* RB_Dude_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF71C702FCB00654A19 /* RB_Dude_2x.png */; };
@@ -22,7 +23,7 @@
 		03C1DE8D1C6C3C8D00CDCF8F /* Robue_Borne_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE8C1C6C3C8D00CDCF8F /* Robue_Borne_AppTests.swift */; };
 		03C1DE981C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE971C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift */; };
 		03C1DEA61C6C420E00CDCF8F /* DungeonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA51C6C420E00CDCF8F /* DungeonClass.swift */; };
-		03C1DEA81C6C467500CDCF8F /* dungeonObjectClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA71C6C467500CDCF8F /* dungeonObjectClass.swift */; };
+		03C1DEA81C6C467500CDCF8F /* HeroClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA71C6C467500CDCF8F /* HeroClass.swift */; };
 		03EE7FDE1C6FA1DC00244144 /* PlayScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03EE7FDD1C6FA1DC00244144 /* PlayScene.swift */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +45,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		038229E41C8CBC4700D84701 /* DPad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPad.swift; sourceTree = "<group>"; };
 		0394FFF51C702FCB00654A19 /* RB_Grass_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Grass_2x.png; path = "Robue-Borne-App/RB_Grass_2x.png"; sourceTree = "<group>"; };
 		0394FFF61C702FCB00654A19 /* RB_Wall_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Wall_2x.png; path = "Robue-Borne-App/RB_Wall_2x.png"; sourceTree = "<group>"; };
 		0394FFF71C702FCB00654A19 /* RB_Dude_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Dude_2x.png; path = "Robue-Borne-App/RB_Dude_2x.png"; sourceTree = "<group>"; };
@@ -65,7 +67,7 @@
 		03C1DE971C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Robue_Borne_AppUITests.swift; sourceTree = "<group>"; };
 		03C1DE991C6C3C8D00CDCF8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03C1DEA51C6C420E00CDCF8F /* DungeonClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DungeonClass.swift; sourceTree = "<group>"; };
-		03C1DEA71C6C467500CDCF8F /* dungeonObjectClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dungeonObjectClass.swift; sourceTree = "<group>"; };
+		03C1DEA71C6C467500CDCF8F /* HeroClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroClass.swift; sourceTree = "<group>"; };
 		03EE7FDD1C6FA1DC00244144 /* PlayScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,16 +133,17 @@
 			isa = PBXGroup;
 			children = (
 				03C1DE731C6C3C8D00CDCF8F /* AppDelegate.swift */,
-				03C1DE751C6C3C8D00CDCF8F /* StartScene.sks */,
+				03C1DEA51C6C420E00CDCF8F /* DungeonClass.swift */,
+				03C1DEA71C6C467500CDCF8F /* HeroClass.swift */,
+				038229E41C8CBC4700D84701 /* DPad.swift */,
 				03EE7FDD1C6FA1DC00244144 /* PlayScene.swift */,
 				03C1DE771C6C3C8D00CDCF8F /* StartScene.swift */,
+				03C1DE751C6C3C8D00CDCF8F /* StartScene.sks */,
 				03C1DE791C6C3C8D00CDCF8F /* GameViewController.swift */,
 				03C1DE7B1C6C3C8D00CDCF8F /* Main.storyboard */,
 				03C1DE7E1C6C3C8D00CDCF8F /* Assets.xcassets */,
 				03C1DE801C6C3C8D00CDCF8F /* LaunchScreen.storyboard */,
 				03C1DE831C6C3C8D00CDCF8F /* Info.plist */,
-				03C1DEA51C6C420E00CDCF8F /* DungeonClass.swift */,
-				03C1DEA71C6C467500CDCF8F /* dungeonObjectClass.swift */,
 			);
 			path = "Robue-Borne-App";
 			sourceTree = "<group>";
@@ -300,8 +303,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				038229E51C8CBC4700D84701 /* DPad.swift in Sources */,
 				03C1DE781C6C3C8D00CDCF8F /* StartScene.swift in Sources */,
-				03C1DEA81C6C467500CDCF8F /* dungeonObjectClass.swift in Sources */,
+				03C1DEA81C6C467500CDCF8F /* HeroClass.swift in Sources */,
 				03C1DE7A1C6C3C8D00CDCF8F /* GameViewController.swift in Sources */,
 				03C1DE741C6C3C8D00CDCF8F /* AppDelegate.swift in Sources */,
 				03EE7FDE1C6FA1DC00244144 /* PlayScene.swift in Sources */,
