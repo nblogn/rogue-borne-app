@@ -64,9 +64,6 @@ extension CGPoint {
 
 //-------------------------------------------------------------------------------------------//
 //
-//Note, some of this tile code comes from the following tutorial
-//http://bigspritegames.com/isometric-tile-based-game-part-1/
-//
 //TODO: This should be in the Dungeon class. I think.
 //
 //-------------------------------------------------------------------------------------------//
@@ -139,7 +136,7 @@ class PlayScene: SKScene {
     let myDPad: dPad
     
     //To detect the touched node...
-    var selectedNode = SKSpriteNode()
+    var selectedNode = SKNode()
     
     
     
@@ -191,8 +188,8 @@ class PlayScene: SKScene {
         let gesturePinchRecognizer = UIPinchGestureRecognizer(target: self, action: Selector("handlePinchFrom:"))
         self.view!.addGestureRecognizer(gesturePinchRecognizer)
             
-        //let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: Selector("hangleTapFrom:"))
-        //self.view!.addGestureRecognizer(gestureTapRecognizer)
+        let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTapFrom:"))
+        self.view!.addGestureRecognizer(gestureTapRecognizer)
         
         
         
@@ -248,92 +245,22 @@ class PlayScene: SKScene {
     //
     //-------------------------------------------------------------------------------------------//
     
-    //Figure out which node was selected (eg, the character, or just the whole background, etc.)
-    
-    func selectNodeForTouch(touchLocation: CGPoint) {
-        
-        // Use this to select a specific SKSpriteNode
-        let touchedNode = self.nodeAtPoint(touchLocation)
-        
-        //Use this to enact an animation on a specific selected node, such as the hero character
-        /*if touchedNode is SKSpriteNode {
-            
-            if !selectedNode.isEqual(touchedNode) {
-                selectedNode.removeAllActions()
-                selectedNode.runAction(SKAction.rotateToAngle(0.0, duration: 0.1))
-                
-                selectedNode = touchedNode as! SKSpriteNode
-                
-                //Make the selected node shake around
-                let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
-                    SKAction.rotateByAngle(0.0, duration: 0.1),
-                    SKAction.rotateByAngle(degToRad(4.0), duration: 0.1)])
-                selectedNode.runAction(SKAction.repeatActionForever(sequence))
-                
-            }
-        } else {*/
-        
-        //Go back to the StartScene if Main Menu is pressed
-        if touchedNode.name == "mainMenuButton" {
-                let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-                let startScene = StartScene(size: self.size)
-                self.view?.presentScene(startScene, transition: reveal)
-            
-        } else {
-
-            selectedNode = view2D
-            
-        }
-
-    }
-    
-    
-    //used for making sure you don’t scroll the layer beyond the bounds of the background
-    func boundLayerPos(aNewPosition: CGPoint) -> CGPoint {
-        let winSize = self.size
-        var retval = aNewPosition
-        retval.x = CGFloat(min(retval.x, 0))
-        retval.x = CGFloat(max(retval.x, -(self.size.width) + winSize.width))
-        retval.y = CGFloat(min(0, retval.y))
-        retval.y = CGFloat(max(-(self.size.height) + winSize.height, retval.y))
-        
-        return retval
-    }
-    
-    
-    func panForTranslation(translation: CGPoint) {
-        
-        let position = selectedNode.position
-        
-        /*if selectedNode.name! == _MY_HERO_NAME_ {
-            selectedNode.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-        } else {*/
-        
-        
-        //let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-        //view2D.position = self.boundLayerPos(aNewPosition)
-        
-        view2D.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-        
-        //}
-    }
-    
-    
     //Callback handler for Pan gestureRecognizer
     func handlePanFrom(recognizer: UIPanGestureRecognizer) {
+        
+        selectedNode = view2D
         
         if recognizer.state == .Began {
             var touchLocation = recognizer.locationInView(recognizer.view)
             touchLocation = self.convertPointFromView(touchLocation)
-            
-            selectNodeForTouch(touchLocation)
             
             
         } else if recognizer.state == .Changed {
             var translation = recognizer.translationInView(recognizer.view!)
             translation = CGPoint(x: translation.x, y: -translation.y)
             
-            panForTranslation(translation)
+            let position = selectedNode.position
+            view2D.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
             
             recognizer.setTranslation(CGPointZero, inView: recognizer.view)
             
@@ -359,7 +286,20 @@ class PlayScene: SKScene {
     }
     
     
+    //used for making sure you don’t scroll the layer beyond the bounds of the background
+    func boundLayerPos(aNewPosition: CGPoint) -> CGPoint {
+        let winSize = self.size
+        var retval = aNewPosition
+        retval.x = CGFloat(min(retval.x, 0))
+        retval.x = CGFloat(max(retval.x, -(self.size.width) + winSize.width))
+        retval.y = CGFloat(min(0, retval.y))
+        retval.y = CGFloat(max(-(self.size.height) + winSize.height, retval.y))
+        
+        return retval
+    }
+    
 
+    //Used to wiggle the hero as he walks
     func degToRad(degree: Double) -> CGFloat {
         return CGFloat(Double(degree) / 180.0 * M_PI)
     }
@@ -388,23 +328,66 @@ class PlayScene: SKScene {
     //-------------------------------------------------------------------------------------------//
     func handleTapFrom (recognizer: UITapGestureRecognizer) {
 
-        /*BREAKING
+        //Find which node was touched...
         var touchLocation = recognizer.locationInView(recognizer.view)
         touchLocation = self.convertPointFromView(touchLocation)
-        
-        selectNodeForTouch(touchLocation)
-
         let touchedNode = self.nodeAtPoint(touchLocation)
 
-        if touchedNode.name == "mainMenuButton" {
-            let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-            let startScene = StartScene(size: self.size)
-            self.view?.presentScene(startScene, transition: reveal)
-        }
+        
+        //D-Pad code goes here...
+        switch touchedNode.name! {
+            case "RB_Cntrl_Up":
+                moveHero(0, y:1)
+                //moveMonsters
 
-        */
+            case "RB_Cntrl_Down":
+                moveHero(0, y:-1)
+                //moveMonsters
+            
+            case "RB_Cntrl_Right":
+                moveHero(1, y: 0)
+                //moveMonsters
+            
+            case "RB_Cntrl_Left":
+                moveHero(-1, y: 0)
+                //moveMonsters
+            
+            case "RB_Cntrl_Middle": break
+                //rest and move monsters
+            
+            case "mainMenuButton":
+                //Go back to the StartScene if Main Menu is pressed
+                let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+                let startScene = StartScene(size: self.size)
+                self.view?.presentScene(startScene, transition: reveal)
+            
+            default:
+                //Go back to the StartScene if Main Menu is pressed
+                let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+                let startScene = StartScene(size: self.size)
+                self.view?.presentScene(startScene, transition: reveal)
+
+            
+        }
+    }
+
+    
+    func moveHero(x:Int, y:Int) {
+        
+        myHero.heroLocation.x = myHero.heroLocation.x + x
+        myHero.heroLocation.y = myHero.heroLocation.y + y
+
+        let xyPointDiff = convertBoardCoordinatetoCGPoint(x+1, y:y+1)
+        
+        let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
+            SKAction.rotateByAngle(0.0, duration: 0.1),
+            SKAction.rotateByAngle(degToRad(4.0), duration: 0.1),
+            SKAction.moveBy(CGVector(dx: xyPointDiff.x, dy: xyPointDiff.y), duration: 0.2)])
+        
+        myHero.runAction(sequence)
         
     }
+    
     
     
     //-------------------------------------------------------------------------------------------//
@@ -422,8 +405,6 @@ class PlayScene: SKScene {
         return CGPoint(x: retX, y: retY)
         
     }
-    
-
     
     //The following two funcs build the initial board layout
     func placeAllTiles2D() {
@@ -463,22 +444,18 @@ class PlayScene: SKScene {
     
     
     //-------------------------------------------------------------------------------------------//
-    //Touches begin/end
+    //Touches begin/end -- replaced with touch handlers
     //-------------------------------------------------------------------------------------------//
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         let touch : UITouch! = touches.first
         let positionInScene = touch.locationInNode(self)
         
-        selectNodeForTouch(positionInScene)
     }
 
-
-    //using this to go back to main menu (GameScene) on a press
-    //TODO: Replace with a button or a gesture
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        /*
+        /*I replaced the following with the pan handler (lol)
         let reveal = SKTransition.flipHorizontalWithDuration(0.5)
         let startScene = StartScene(size: self.size)
         self.view?.presentScene(startScene, transition: reveal)
