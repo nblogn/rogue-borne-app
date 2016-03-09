@@ -212,7 +212,7 @@ class PlayScene: SKScene {
 
         
         //Set the hero
-        myHero.position = convertBoardCoordinatetoCGPoint(myHero.heroLocation.x, y: myHero.heroLocation.y)
+        myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
         view2D.addChild(myHero)
         
         //Configure and add the d-pad
@@ -311,20 +311,52 @@ class PlayScene: SKScene {
     //-------------------------------------------------------------------------------------------//
     func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
         
-        //The following pinches/zooms the entire view, since the gestures are on PlayScene's (SKScene, which is a node) *SKView* (subclasses of UIView)
+        //The following pinches/zooms the entire view, since the gestures are on PlayScene's (SKScene, which is a node) *SKView* (subclasses of UIView):
         //recognizer.view!.transform = CGAffineTransformScale(recognizer.view!.transform, recognizer.scale, recognizer.scale)
         
-        //TODO: This isn't quite right (need to center and remember the scale or something, but good enough for now...
-        view2D.xScale = recognizer.scale
-        view2D.yScale = recognizer.scale
         
-        //recognizer.scale = 1.0
+        //This was helpful (I cribbed this code).
+        //http://stackoverflow.com/questions/21900614/sknode-scale-from-the-touched-point/21947549#21947549
+        
+        
+        //Find out which node was touched
+        var touchedAnchorPoint = recognizer.locationInView(recognizer.view)
+        touchedAnchorPoint = self.convertPointFromView(touchedAnchorPoint)
+        
+        
+        if (recognizer.state == .Began) {
+            
+            // No code needed for zooming...
+            
+        } else if (recognizer.state == .Changed) {
+
+            let anchorPointInMyNode = view2D.convertPoint(anchorPoint, fromNode: self)
+            
+            view2D.xScale = (view2D.xScale * recognizer.scale)
+            view2D.yScale = (view2D.yScale * recognizer.scale)
+            
+            
+            let mySkNodeAnchorPointInScene = self.convertPoint(anchorPointInMyNode, fromNode: view2D)
+            
+            let translationOfAnchorInScene = CGPointMake(anchorPoint.x - mySkNodeAnchorPointInScene.x, anchorPoint.y - mySkNodeAnchorPointInScene.y)
+            
+            view2D.position = CGPointMake(view2D.position.x + translationOfAnchorInScene.x, view2D.position.y + translationOfAnchorInScene.y)
+            
+            recognizer.scale = 1.0
+            
+        } else if (recognizer.state == .Ended) {
+            
+            // No code needed here for zooming...
+            
+        }
+
+        
 
     }
     
     
     //-------------------------------------------------------------------------------------------//
-    //Handle tapping
+    //Handle tapping, including d-pad and hero movement
     //-------------------------------------------------------------------------------------------//
     func handleTapFrom (recognizer: UITapGestureRecognizer) {
 
@@ -335,56 +367,59 @@ class PlayScene: SKScene {
 
         
         //D-Pad code goes here...
-        switch touchedNode.name! {
-            case "RB_Cntrl_Up":
-                moveHero(0, y:1)
-                //moveMonsters
+        if ((touchedNode.name) != nil){
+            
+            switch touchedNode.name! {
+                case "RB_Cntrl_Up":
+                    moveHero(0, y:1)
+                    //moveMonsters
 
-            case "RB_Cntrl_Down":
-                moveHero(0, y:-1)
-                //moveMonsters
-            
-            case "RB_Cntrl_Right":
-                moveHero(1, y: 0)
-                //moveMonsters
-            
-            case "RB_Cntrl_Left":
-                moveHero(-1, y: 0)
-                //moveMonsters
-            
-            case "RB_Cntrl_Middle": break
-                //rest and move monsters
-            
-            case "mainMenuButton":
-                //Go back to the StartScene if Main Menu is pressed
-                let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-                let startScene = StartScene(size: self.size)
-                self.view?.presentScene(startScene, transition: reveal)
-            
-            default:
-                //Go back to the StartScene if Main Menu is pressed
-                let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-                let startScene = StartScene(size: self.size)
-                self.view?.presentScene(startScene, transition: reveal)
+                case "RB_Cntrl_Down":
+                    moveHero(0, y:-1)
+                    //moveMonsters
+                
+                case "RB_Cntrl_Right":
+                    moveHero(1, y: 0)
+                    //moveMonsters
+                
+                case "RB_Cntrl_Left":
+                    moveHero(-1, y: 0)
+                    //moveMonsters
+                
+                case "RB_Cntrl_Middle": break
+                    //rest and move monsters
+                
+                case "mainMenuButton":
+                    //Go back to the StartScene if Main Menu is pressed
+                    let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+                    let startScene = StartScene(size: self.size)
+                    self.view?.presentScene(startScene, transition: reveal)
+                
+                default:
+                    //Go back to the StartScene if Main Menu is pressed
+                    let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+                    let startScene = StartScene(size: self.size)
+                    self.view?.presentScene(startScene, transition: reveal)
 
-            
+                
+            }
         }
     }
 
     
     func moveHero(x:Int, y:Int) {
         
-        myHero.heroLocation.x = myHero.heroLocation.x + x
-        myHero.heroLocation.y = myHero.heroLocation.y + y
+        myHero.location.x = myHero.location.x + x
+        myHero.location.y = myHero.location.y + y
 
-        let xyPointDiff = convertBoardCoordinatetoCGPoint(x+1, y:y+1)
+        let xyPointDiff = convertBoardCoordinatetoCGPoint(myHero.location.x, y:myHero.location.y)
         
-        let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
-            SKAction.rotateByAngle(0.0, duration: 0.1),
-            SKAction.rotateByAngle(degToRad(4.0), duration: 0.1),
-            SKAction.moveBy(CGVector(dx: xyPointDiff.x, dy: xyPointDiff.y), duration: 0.2)])
+        //let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
+        //    SKAction.rotateByAngle(0.0, duration: 0.1),
+        //    SKAction.rotateByAngle(degToRad(4.0), duration: 0.1),
+        //    SKAction.moveTo(xyPointDiff, duration: 0.2)])
         
-        myHero.runAction(sequence)
+        myHero.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
         
     }
     
@@ -448,18 +483,12 @@ class PlayScene: SKScene {
     //-------------------------------------------------------------------------------------------//
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        let touch : UITouch! = touches.first
-        let positionInScene = touch.locationInNode(self)
         
     }
 
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
-        /*I replaced the following with the pan handler (lol)
-        let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-        let startScene = StartScene(size: self.size)
-        self.view?.presentScene(startScene, transition: reveal)
-        */
+
     }
     
 }

@@ -25,7 +25,7 @@ class Hero: SKSpriteNode {
     }
     
     
-    var heroLocation: dungeonLocation
+    var location: dungeonLocation
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -33,7 +33,7 @@ class Hero: SKSpriteNode {
     
     init() {
 
-        self.heroLocation = dungeonLocation.init(x: 10, y: 10)
+        self.location = dungeonLocation.init(x: 10, y: 10)
 
         let texture = SKTexture(imageNamed: "RB_Hero")
         super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
@@ -45,7 +45,7 @@ class Hero: SKSpriteNode {
     
     func getCurrentLocation() -> dungeonLocation {
         
-        return heroLocation
+        return location
     
     }
 }
