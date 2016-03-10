@@ -315,7 +315,7 @@ class PlayScene: SKScene {
         //recognizer.view!.transform = CGAffineTransformScale(recognizer.view!.transform, recognizer.scale, recognizer.scale)
         
         
-        //This was helpful (I cribbed this code).
+        //I cribbed the code below and I'm too fucking burnt out to freaking understand it right now...
         //http://stackoverflow.com/questions/21900614/sknode-scale-from-the-touched-point/21947549#21947549
         
         
