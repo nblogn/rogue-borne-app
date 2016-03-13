@@ -307,7 +307,9 @@ class PlayScene: SKScene {
     
     
     //-------------------------------------------------------------------------------------------//
+    //
     //Handle zooming the entire dungeon
+    //
     //-------------------------------------------------------------------------------------------//
     func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
         
@@ -356,7 +358,9 @@ class PlayScene: SKScene {
     
     
     //-------------------------------------------------------------------------------------------//
+    //
     //Handle tapping, including d-pad and hero movement
+    //
     //-------------------------------------------------------------------------------------------//
     func handleTapFrom (recognizer: UITapGestureRecognizer) {
 

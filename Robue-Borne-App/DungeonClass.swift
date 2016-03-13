@@ -44,6 +44,8 @@ class Dungeon {
 
     
     //Simple location struct...
+    //Seems like this should be a globally accessible struct...?
+    //TODO: I THINK THIS IS A GREAT PLACE TO MAKE A PROTOCOL!
     struct DungeonRoomLocation {
         var x1: Int = 0
         var y1: Int = 0
@@ -58,9 +60,27 @@ class Dungeon {
         var connectedRooms: [DungeonRoom]?
     }
 
-    //The two key components of our dungeon...
-    var dungeonRooms: [DungeonRoom]
+    //The key components of our dungeon...
     var dungeonMap = [[Int]]()
+    var dungeonRooms: [DungeonRoom]
+    var heros: [Hero]
+    var monsters: [Monster]
+    var items: [Item]
+    
+    /*
+    I think these should be in the Dungeon class, since they're in the dungeon.
+    I'm thinking something needs to keep track of where all the objects are.
+    Example of why this would be helpful...
+    
+    func getObjectsInLineOfSight (myLocation: dungeonLocation) -> [objects] {
+    
+    }
+
+    That said, I'm not totally sure about this.
+    */
+    
+    
+    
     
     
     
@@ -84,11 +104,16 @@ class Dungeon {
         self.dungeonSizeHeight = 70
         self.cellSizeWidth = 30
         self.cellSizeHeight = 20
-        self.numberOfRooms = 12
+        self.numberOfRooms = 20
         
         self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
+        
+        self.heros = [Hero()]
+        self.monsters = [Monster()]
+        self.items = [Item()]
+        
         
     }
 
@@ -104,6 +129,9 @@ class Dungeon {
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
 
+        self.heros = [Hero()]
+        self.monsters = [Monster()]
+        self.items = [Item()]
     }
 
     
@@ -268,52 +296,95 @@ class Dungeon {
         var randomHeight: Int
         var randomHeightOffset: Int
         
+        var createdRooms = 0
+
         
         //used for finding minimum room placement point:
-        var minX = 0
-        var minY = 0
+        var minX: Int
+        var minY: Int
       
-        
-        //create random room size for the *first* room
-        randomWidthOffset = Int(arc4random_uniform(UInt32(cellSizeWidth/3))) + 1
-        randomWidth = Int(arc4random_uniform(UInt32(cellSizeWidth/3))) + 1
-        
-        randomHeightOffset = Int(arc4random_uniform(UInt32(cellSizeHeight/3))) + 1
-        randomHeight = Int(arc4random_uniform(UInt32(cellSizeHeight/3))) + 1
-
+        var canWeBuildHere: Bool = false
         
         //Create each room and place it...
-        for roomIterator in 1...numberOfRooms {
+        for _ in 1...self.numberOfRooms {
+        
+            minX = 0
+            minY = 0
             
-            dungeonRooms.append(DungeonRoom.init(roomId: roomIterator, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil))
+            //create random room size for the room
+            randomWidthOffset = Int(arc4random_uniform(UInt32(cellSizeWidth/3)))
+            randomWidth = max((cellSizeWidth/5), (Int(arc4random_uniform(UInt32(cellSizeWidth)))))
             
-            //create the new room...
-            dungeonRooms[roomIterator].location.x1 = minX + randomWidthOffset
-            dungeonRooms[roomIterator].location.x2 = minX + randomWidthOffset + randomWidth
-            dungeonRooms[roomIterator].location.y1 = minY + randomHeightOffset
-            dungeonRooms[roomIterator].location.y2 = minY + randomHeightOffset + randomHeight
+            randomHeightOffset = Int(arc4random_uniform(UInt32(cellSizeHeight/3)))
+            randomHeight = max((cellSizeHeight/5), Int(arc4random_uniform(UInt32(cellSizeHeight))))
             
             
-            //create random room size for the *next* room
-            randomWidthOffset = Int(arc4random_uniform(UInt32(cellSizeWidth/3))) + 1
-            randomWidth = Int(arc4random_uniform(UInt32(cellSizeWidth/3))) + 1
+            //Loop through each (x,y) point to see where we can build...
+            var columnCheck = 0
+            var rowCheck = 0
+            canWeBuildHere = false
             
-            randomHeightOffset = Int(arc4random_uniform(UInt32(cellSizeHeight/3))) + 1
-            randomHeight = Int(arc4random_uniform(UInt32(cellSizeHeight/3))) + 1
+            while (columnCheck < dungeonSizeWidth) && (canWeBuildHere == false) {
+                while (rowCheck < dungeonSizeHeight) && (canWeBuildHere == false) {
+                    
+                    if doRoomsCollide(columnCheck, y1: rowCheck, x2: (columnCheck + randomWidthOffset + randomWidth), y2: (rowCheck + randomHeight + randomHeightOffset)) {
+                        
+                        canWeBuildHere = false
+                        
+                    } else {
+                    
+                        minX = columnCheck
+                        minY = rowCheck
+                        canWeBuildHere = true
+                        
+                    }
+                    
+                    rowCheck++
+                    
+                }
+                
+                columnCheck++
+                
+            }
+            
+            
+            if canWeBuildHere == true {
+                
+                //create the new room...
+                dungeonRooms.append(DungeonRoom.init(roomId: createdRooms, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil))
+                
+                dungeonRooms[createdRooms].location.x1 = minX
+                dungeonRooms[createdRooms].location.x2 = minX + randomWidthOffset + randomWidth
+                dungeonRooms[createdRooms].location.y1 = minY
+                dungeonRooms[createdRooms].location.y2 = minY + randomHeightOffset + randomHeight
+                
+                createdRooms++
 
+            }
 
-            //Set the starting point for the next room as either below the first room, or next to the previous room on the x-axis
-            if (dungeonRooms[roomIterator].location.y2 + randomHeight + randomHeightOffset) < dungeonSizeHeight {
-                minY = dungeonRooms[roomIterator].location.y2 + 1
-            } else {
-                minX = dungeonRooms[roomIterator].location.x2 + 1
-                //we're back at the top, so reset minY
-                minY = 0
+        }
+        
+        drawDungeonRooms()
+        
+    }
+    
+    func doRoomsCollide(x1: Int, y1: Int, x2: Int, y2: Int) -> Bool {
+        
+        var wellDoThey: Bool = false
+        
+        for var roomIterator in 0...dungeonRooms.count - 1 {
+
+            //MUST CHECK FOR MAX HEIGHT AND MAX WIDTH!!!
+            
+            if (((x1 >= dungeonRooms[roomIterator].location.x1) && (x1 <= dungeonRooms[roomIterator].location.x2)) && ((y1 >= dungeonRooms[roomIterator].location.y1) && (y1 <= dungeonRooms[roomIterator].location.y2))) || (((x2 >= dungeonRooms[roomIterator].location.x1) && (x2 <= dungeonRooms[roomIterator].location.x2)) && ((y2 >= dungeonRooms[roomIterator].location.y1) && (y2 <= dungeonRooms[roomIterator].location.y2))) {
+                
+                wellDoThey = true
+                
             }
             
         }
         
-        drawDungeonRooms()
+        return wellDoThey
         
     }
     
@@ -326,16 +397,20 @@ class Dungeon {
         
         
         //Iterate through each room...
-        for roomIterator in 0...numberOfRooms {
+        for drawRoomIterator in 0...(dungeonRooms.count - 1) {
             
             var row = 0
             var column = 0
             
-            for row = dungeonRooms[roomIterator].location.y1; row < dungeonRooms[roomIterator].location.y2; row++ {
+            for row = dungeonRooms[drawRoomIterator].location.y1; ((row <= dungeonRooms[drawRoomIterator].location.y2) && (row < dungeonSizeHeight)); row++ {
                 
-                for column = dungeonRooms[roomIterator].location.x1; column < dungeonRooms[roomIterator].location.x2; column++ {
+                for column = dungeonRooms[drawRoomIterator].location.x1; ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)); column++ {
                     
-                    dungeonMap[row][column] = 1
+                    if ((row == dungeonRooms[drawRoomIterator].location.y1) || (row == dungeonRooms[drawRoomIterator].location.y2) || (column == dungeonRooms[drawRoomIterator].location.x1) || (column == dungeonRooms[drawRoomIterator].location.x2)) {
+                        dungeonMap[row][column] = wall
+                    } else {
+                        dungeonMap[row][column] = floor
+                    }
                     
                 }
                 
@@ -367,16 +442,16 @@ class Dungeon {
             }
         }
         
+        
         for _ in 1...5 {
             
-            for var row = 0; row < dungeonMap.count; row++ {
-                
-                for var column = 0; column < dungeonMap[row].count; column++ {
+            for var row2 = 0; row2 < dungeonMap.count; row2++ {
+                for var column2 = 0; column2 < dungeonMap[row2].count; column2++ {
                     
-                    if howManyWallsAreAroundMe(column,y:row) > 5 {
-                        dungeonMap[row][column] = 1
-                    } else if howManyWallsAreAroundMe(column,y:row) < 3 {
-                        dungeonMap[row][column] = 0
+                    if howManyWallsAreAroundMe(column2,y:row2) > 5 {
+                        dungeonMap[row2][column2] = 1
+                    } else if howManyWallsAreAroundMe(column2,y:row2) < 3 {
+                        dungeonMap[row2][column2] = 0
                     }
                     
                 }
@@ -394,8 +469,9 @@ class Dungeon {
         var walls = 0
         
         
-        if (x == 0) || (x > 78) || (y == 0) || (y > 48) {
+        if (x == 0) || (x > dungeonSizeWidth-2) || (y == 0) || (y > dungeonSizeHeight-2) {
         
+            //do nothing
         
         } else {
 
@@ -441,14 +517,15 @@ class Dungeon {
     //=====================================================================================================//
     //Set the dungeon back to basics
     //
-    //TODO: THIS ISN'T WORKING
-    //
     //=====================================================================================================//
     func resetDungeonMap() -> Void {
         
         self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
     }
+    
+    
+    
     
     //=====================================================================================================//
     //Func to connect an array of DungeonRoom struct
