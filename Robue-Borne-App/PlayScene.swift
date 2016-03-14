@@ -165,7 +165,7 @@ class PlayScene: SKScene {
         switch dungeonType {
             case "cellMap": myDungeon.createDungeonUsingCellMethod()
             case "cellAutoMap": myDungeon.generateDungeonRoomUsingCellularAutomota()
-            case "bigBangMap": myDungeon.generateDungeonRoomsUsingBigBang()
+            case "bigBangMap": myDungeon.generateDungeonRoomsUsingFitLeftToRight()
             default:myDungeon.createDungeonUsingCellMethod()
         }
         

@@ -44,7 +44,7 @@ class StartScene: SKScene {
         
         
         let createBigBangMapButton = SKLabelNode(fontNamed: "Cochin")
-        createBigBangMapButton.text = "Create a Big Bang map"
+        createBigBangMapButton.text = "Create a best fit, Left To Right map"
         createBigBangMapButton.name = "bigBangMapButton"
         createBigBangMapButton.fontSize = 30
         createBigBangMapButton.fontColor = SKColor.blackColor()

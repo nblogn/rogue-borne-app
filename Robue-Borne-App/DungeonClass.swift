@@ -286,10 +286,11 @@ class Dungeon {
     
     
     //=====================================================================================================//
-    //create random cells using a big bang approach...
+    //
+    //create random cells using a best fit approach, lower-left (0,0) to upper-right (max width, max height)
     //
     //=====================================================================================================//
-    func generateDungeonRoomsUsingBigBang() {
+    func generateDungeonRoomsUsingFitLeftToRight() {
         
         var randomWidth: Int
         var randomWidthOffset: Int
@@ -306,7 +307,7 @@ class Dungeon {
         var canWeBuildHere: Bool = false
         
         //Create each room and place it...
-        for _ in 1...self.numberOfRooms {
+        while createdRooms < self.numberOfRooms {
         
             minX = 0
             minY = 0
@@ -343,6 +344,7 @@ class Dungeon {
                     
                 }
                 
+                rowCheck = 0
                 columnCheck++
                 
             }
@@ -368,15 +370,21 @@ class Dungeon {
         
     }
     
+    
+    
+    //=====================================================================================================//
+    //Func to check if rooms, if all dungeonRooms are populated
+    //=====================================================================================================//
+
     func doRoomsCollide(x1: Int, y1: Int, x2: Int, y2: Int) -> Bool {
         
         var wellDoThey: Bool = false
         
         for var roomIterator in 0...dungeonRooms.count - 1 {
-
-            //MUST CHECK FOR MAX HEIGHT AND MAX WIDTH!!!
             
-            if (((x1 >= dungeonRooms[roomIterator].location.x1) && (x1 <= dungeonRooms[roomIterator].location.x2)) && ((y1 >= dungeonRooms[roomIterator].location.y1) && (y1 <= dungeonRooms[roomIterator].location.y2))) || (((x2 >= dungeonRooms[roomIterator].location.x1) && (x2 <= dungeonRooms[roomIterator].location.x2)) && ((y2 >= dungeonRooms[roomIterator].location.y1) && (y2 <= dungeonRooms[roomIterator].location.y2))) {
+            //This  tests if the lower left, or upper right, or lower right, or upper left corners overlap with the given room in the iterator.
+            //If any overlap, the rooms have collided.
+            if (((x1 >= dungeonRooms[roomIterator].location.x1) && (x1 <= dungeonRooms[roomIterator].location.x2)) && ((y1 >= dungeonRooms[roomIterator].location.y1) && (y1 <= dungeonRooms[roomIterator].location.y2))) || (((x2 >= dungeonRooms[roomIterator].location.x1) && (x2 <= dungeonRooms[roomIterator].location.x2)) && ((y2 >= dungeonRooms[roomIterator].location.y1) && (y2 <= dungeonRooms[roomIterator].location.y2))) || (((x2 >= dungeonRooms[roomIterator].location.x1) && (x2 <= dungeonRooms[roomIterator].location.x2)) && ((y1 >= dungeonRooms[roomIterator].location.y1) && (y1 <= dungeonRooms[roomIterator].location.y2))) || (((x1 >= dungeonRooms[roomIterator].location.x1) && (x1 <= dungeonRooms[roomIterator].location.x2)) && ((y2 >= dungeonRooms[roomIterator].location.y1) && (y2 <= dungeonRooms[roomIterator].location.y2))){
                 
                 wellDoThey = true
                 
