@@ -81,7 +81,9 @@ class Dungeon {
     
     
     
-    
+    func getTileByLocation (X: Int, Y: Int) -> Int {
+        return self.dungeonMap[X][Y]
+    }
     
     
     //=====================================================================================================//
