@@ -79,8 +79,6 @@ class Dungeon {
     That said, I'm not totally sure about this.
     */
     
-    //TESTING SHIT FOR SHIT'S SAKE
-    
     
     func getTileByLocation (X: Int, Y: Int) -> Int {
         return self.dungeonMap[X][Y]
