@@ -354,7 +354,9 @@ class Dungeon {
             if canWeBuildHere == true {
                 
                 //create the new room...
-                dungeonRooms.append(DungeonRoom.init(roomId: createdRooms, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil))
+                if createdRooms > 0 {
+                    dungeonRooms.append(DungeonRoom.init(roomId: createdRooms, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil))
+                }
                 
                 dungeonRooms[createdRooms].location.x1 = minX
                 dungeonRooms[createdRooms].location.x2 = minX + randomWidthOffset + randomWidth
@@ -383,16 +385,21 @@ class Dungeon {
         
         for var roomIterator in 0...dungeonRooms.count - 1 {
             
-            //This  tests if the lower left, or upper right, or lower right, or upper left corners overlap with the given room in the iterator.
-            //If any overlap, the rooms have collided.
-            if (((x1 >= dungeonRooms[roomIterator].location.x1) && (x1 <= dungeonRooms[roomIterator].location.x2)) && ((y1 >= dungeonRooms[roomIterator].location.y1) && (y1 <= dungeonRooms[roomIterator].location.y2))) || (((x2 >= dungeonRooms[roomIterator].location.x1) && (x2 <= dungeonRooms[roomIterator].location.x2)) && ((y2 >= dungeonRooms[roomIterator].location.y1) && (y2 <= dungeonRooms[roomIterator].location.y2))) || (((x2 >= dungeonRooms[roomIterator].location.x1) && (x2 <= dungeonRooms[roomIterator].location.x2)) && ((y1 >= dungeonRooms[roomIterator].location.y1) && (y1 <= dungeonRooms[roomIterator].location.y2))) || (((x1 >= dungeonRooms[roomIterator].location.x1) && (x1 <= dungeonRooms[roomIterator].location.x2)) && ((y2 >= dungeonRooms[roomIterator].location.y1) && (y2 <= dungeonRooms[roomIterator].location.y2))){
+            //Note; first I tried to check all the things that would test if they overlapped. This was fucking tough.
+            //Then I googled and discovered it's much easier to test if they DON'T overlap. This was much easier.
+            
+            if ((x1 > dungeonRooms[roomIterator].location.x2) || (x2 < dungeonRooms[roomIterator].location.x1) || (y1 > dungeonRooms[roomIterator].location.y2) || (y2 < dungeonRooms[roomIterator].location.y1)) && (!wellDoThey) {
+
+                wellDoThey = false
+                
+            } else {
                 
                 wellDoThey = true
-                
-            }
-            
-        }
         
+            }
+        
+        }
+
         return wellDoThey
         
     }
