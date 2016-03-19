@@ -103,8 +103,8 @@ class Dungeon {
         //Default sizes
         self.dungeonSizeWidth = 100
         self.dungeonSizeHeight = 70
-        self.cellSizeWidth = 30
-        self.cellSizeHeight = 20
+        self.cellSizeWidth = 50
+        self.cellSizeHeight = 40
         self.numberOfRooms = 20
         
         self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
@@ -282,7 +282,10 @@ class Dungeon {
 
     //Will replace the func above, separating the creation of rooms from the drawing of the map.
     func generateDungeonRoomsUsingCellMethod() {
-    
+        
+        
+        
+        
     }
     
     
@@ -295,10 +298,13 @@ class Dungeon {
         
         var randomWidth: Int
         var randomWidthOffset: Int
+        var randomWidthOffset2: Int
         var randomHeight: Int
         var randomHeightOffset: Int
+        var randomHeightOffset2: Int
         
         var createdRooms = 0
+        var roomDoesNotFit = 0
 
         
         //used for finding minimum room placement point:
@@ -308,17 +314,19 @@ class Dungeon {
         var canWeBuildHere: Bool = false
         
         //Create each room and place it...
-        while createdRooms < self.numberOfRooms {
+        while roomDoesNotFit < 10 {
         
             minX = 0
             minY = 0
             
             //create random room size for the room
-            randomWidthOffset = Int(arc4random_uniform(UInt32(cellSizeWidth/3)))
-            randomWidth = max((cellSizeWidth/5), (Int(arc4random_uniform(UInt32(cellSizeWidth)))))
+            randomWidthOffset = Int(arc4random_uniform(UInt32(cellSizeWidth/10)))
+            randomWidthOffset2 = Int(arc4random_uniform(UInt32(cellSizeWidth/10)))
+            randomWidth = max((cellSizeWidth/4), (Int(arc4random_uniform(UInt32(cellSizeWidth)))))
             
-            randomHeightOffset = Int(arc4random_uniform(UInt32(cellSizeHeight/3)))
-            randomHeight = max((cellSizeHeight/5), Int(arc4random_uniform(UInt32(cellSizeHeight))))
+            randomHeightOffset = Int(arc4random_uniform(UInt32(cellSizeHeight/10)))
+            randomHeightOffset2 = Int(arc4random_uniform(UInt32(cellSizeHeight/10)))
+            randomHeight = max((cellSizeHeight/4), Int(arc4random_uniform(UInt32(cellSizeHeight))))
             
             
             //Loop through each (x,y) point to see where we can build...
@@ -329,12 +337,19 @@ class Dungeon {
             while (columnCheck < dungeonSizeWidth) && (canWeBuildHere == false) {
                 while (rowCheck < dungeonSizeHeight) && (canWeBuildHere == false) {
                     
-                    if doRoomsCollide(columnCheck, y1: rowCheck, x2: (columnCheck + randomWidthOffset + randomWidth), y2: (rowCheck + randomHeight + randomHeightOffset)) {
+                    if doRoomsCollide(x1: columnCheck, y1: rowCheck, x2: (columnCheck + randomWidthOffset + randomWidth + randomWidthOffset2), y2: (rowCheck + randomHeight + randomHeightOffset + randomWidthOffset2)) {
                         
+                        //If the room overlaps another room, we can't build it.
+                        canWeBuildHere = false
+                        
+                    } else if ((columnCheck + randomWidthOffset + randomWidth) > dungeonSizeWidth) || ((rowCheck + randomHeight + randomHeightOffset) > dungeonSizeHeight) {
+                        
+                        //If the room falls outside the border of the dungeon, we can't build it.
                         canWeBuildHere = false
                         
                     } else {
-                    
+                        
+                        //Yes We CAN build here!
                         minX = columnCheck
                         minY = rowCheck
                         canWeBuildHere = true
@@ -350,7 +365,6 @@ class Dungeon {
                 
             }
             
-            
             if canWeBuildHere == true {
                 
                 //create the new room...
@@ -358,12 +372,16 @@ class Dungeon {
                     dungeonRooms.append(DungeonRoom.init(roomId: createdRooms, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil))
                 }
                 
-                dungeonRooms[createdRooms].location.x1 = minX
-                dungeonRooms[createdRooms].location.x2 = minX + randomWidthOffset + randomWidth
-                dungeonRooms[createdRooms].location.y1 = minY
-                dungeonRooms[createdRooms].location.y2 = minY + randomHeightOffset + randomHeight
+                dungeonRooms[createdRooms].location.x1 = minX + randomWidthOffset
+                dungeonRooms[createdRooms].location.x2 = minX + randomWidth - randomWidthOffset2
+                dungeonRooms[createdRooms].location.y1 = minY + randomHeightOffset
+                dungeonRooms[createdRooms].location.y2 = minY + randomHeight - randomHeightOffset2
                 
                 createdRooms++
+
+            } else {
+                
+                roomDoesNotFit++
 
             }
 
@@ -379,7 +397,7 @@ class Dungeon {
     //Func to check if rooms, if all dungeonRooms are populated
     //=====================================================================================================//
 
-    func doRoomsCollide(x1: Int, y1: Int, x2: Int, y2: Int) -> Bool {
+    func doRoomsCollide(x1 x1: Int, y1: Int, x2: Int, y2: Int) -> Bool {
         
         var wellDoThey: Bool = false
         
