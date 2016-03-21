@@ -578,23 +578,27 @@ class Dungeon {
     private func connectDungeonRooms() -> Void {
         
         var closestRoom: Int?
-        
+        var xDigger: Int
+        var yDigger: Int
+        var x: Int
+        var y: Int
+        var destinationX: Int
+        var destinationY: Int
+
         for var roomIterator in 1...dungeonRooms.count-1 {
 
-            closestRoom = findClosestRoomToRoomId(1)
+            closestRoom = findClosestRoomToRoomId(roomIterator)
         
             if (closestRoom != nil) {
                 //Find the starting point, in this case the middle of the room
-                var x = Int((dungeonRooms[roomIterator].location.x1 + dungeonRooms[roomIterator].location.x2)/2)
-                var y = Int((dungeonRooms[roomIterator].location.y1 + dungeonRooms[roomIterator].location.y2)/2)
+                x = Int((dungeonRooms[roomIterator].location.x1 + dungeonRooms[roomIterator].location.x2)/2)
+                y = Int((dungeonRooms[roomIterator].location.y1 + dungeonRooms[roomIterator].location.y2)/2)
                 
-                var destinationX = Int((dungeonRooms[closestRoom!].location.x1 + dungeonRooms[closestRoom!].location.x2)/2)
-                var destinationY = Int((dungeonRooms[closestRoom!].location.y1 + dungeonRooms[closestRoom!].location.y2)/2)
+                destinationX = Int((dungeonRooms[closestRoom!].location.x1 + dungeonRooms[closestRoom!].location.x2)/2)
+                destinationY = Int((dungeonRooms[closestRoom!].location.y1 + dungeonRooms[closestRoom!].location.y2)/2)
 
-                var xDigger: Int = x
-                var yDigger: Int = y
-                
-                
+                xDigger = x
+                yDigger = y
                 
                 while (xDigger != destinationX) || (yDigger != destinationY) {
                     
