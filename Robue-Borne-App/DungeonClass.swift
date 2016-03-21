@@ -605,7 +605,7 @@ class Dungeon {
                     switch dungeonMap[yDigger][xDigger] {
                         case Tile.Wall:
                             do {
-                                dungeonMap[yDigger][destinationX] = Tile.Door
+                                dungeonMap[yDigger][xDigger] = Tile.Door
                             }
                         case Tile.Ground:
                             do {
@@ -613,7 +613,7 @@ class Dungeon {
                             }
                         case Tile.Nothing:
                             do {
-                                dungeonMap[yDigger][destinationX] = Tile.CorridorHorizontal
+                                dungeonMap[yDigger][xDigger] = Tile.CorridorHorizontal
                             }
                         default: break
                     }
