@@ -36,11 +36,6 @@ class Dungeon {
     let cellSizeWidth: Int
     let numberOfRooms: Int
     
-    //consider enum...
-    let floor:Int = 0
-    let wall:Int = 1
-    let vwall:Int = 2
-    let nothing:Int = 2
 
     
     //Simple location struct...
@@ -61,7 +56,7 @@ class Dungeon {
     }
 
     //The key components of our dungeon...
-    var dungeonMap = [[Int]]()
+    var dungeonMap = [[Tile]]()
     var dungeonRooms: [DungeonRoom]
     var heros: [Hero]
     var monsters: [Monster]
@@ -80,7 +75,7 @@ class Dungeon {
     */
     
     
-    func getTileByLocation (X: Int, Y: Int) -> Int {
+    func getTileByLocation (X: Int, Y: Int) -> Tile {
         return self.dungeonMap[X][Y]
     }
     
@@ -107,7 +102,7 @@ class Dungeon {
         self.cellSizeHeight = 40
         self.numberOfRooms = 20
         
-        self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
+        self.dungeonMap = [[Tile]](count: dungeonSizeHeight, repeatedValue:[Tile](count:dungeonSizeWidth, repeatedValue:Tile.Nothing))
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
         
@@ -126,7 +121,7 @@ class Dungeon {
         self.cellSizeWidth = cellSizeWidth
         self.numberOfRooms = numberOfRooms
         
-        self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
+        self.dungeonMap = [[Tile]](count: dungeonSizeHeight, repeatedValue:[Tile](count:dungeonSizeWidth, repeatedValue:Tile.Nothing))
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
 
@@ -213,7 +208,7 @@ class Dungeon {
         ////
         
         //Temp dungeon to be returned
-        var generatedDungeon = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
+        var generatedDungeon = [[Tile]](count: dungeonSizeHeight, repeatedValue:[Tile](count:dungeonSizeWidth, repeatedValue:Tile.Nothing))
         
         //Reset the loopers
         numberOfHeightCellsIterator = 0
@@ -249,14 +244,14 @@ class Dungeon {
                     
                     //if top or bottom of room, fill with all walls, else, floor
                     if (rowIterator == 0) || (rowIterator == roomHeight-1) {
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = wall
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = Tile.Wall
                     }
                     else if (columnIterator == 0) || (columnIterator == roomWidth-1) {
                         //This is for the vertical walls, if I want different icons
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = wall
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = Tile.Wall
                     }
                     else {
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = floor
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = Tile.Ground
                     }
                     columnIterator++
                     
@@ -289,12 +284,58 @@ class Dungeon {
     }
     
     
+    
+    
+    //=====================================================================================================//
+    //create a room using cellular automota...
+    //Note: this could be a one-room level, or a single room within a room of cells
+    //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
+    //=====================================================================================================//
+    func generateDungeonRoomUsingCellularAutomota() -> Void {
+        
+        var randWalls:Int
+        
+        for var row = 0; row < dungeonMap.count; row++ {
+            for var column = 0; column < dungeonMap[row].count; column++ {
+                
+                randWalls = Int(arc4random_uniform(UInt32(100)))
+                
+                if randWalls > 55 {
+                    dungeonMap[row][column] = Tile.Wall
+                }
+            }
+        }
+        
+        
+        for _ in 1...5 {
+            
+            for var row2 = 0; row2 < dungeonMap.count; row2++ {
+                for var column2 = 0; column2 < dungeonMap[row2].count; column2++ {
+                    
+                    if howManyWallsAreAroundMe(x:column2,y:row2) > 5 {
+                        dungeonMap[row2][column2] = Tile.Wall
+                    } else if howManyWallsAreAroundMe(x:column2,y:row2) < 3 {
+                        dungeonMap[row2][column2] = Tile.Ground
+                    }
+                    
+                }
+            }
+        }
+        
+    }
+
+    
     //=====================================================================================================//
     //
     //create random cells using a best fit approach, lower-left (0,0) to upper-right (max width, max height)
     //
+    //Configuable defaults:
+    //  density == smaller value leads to more spaing between rooms
+    //  roomSize == larger value leads to smaller rooms
+    //
     //=====================================================================================================//
-    func generateDungeonRoomsUsingFitLeftToRight() {
+    func generateDungeonRoomsUsingFitLeftToRight(roomSize: Int = 3, density: Int = 3) {
+        
         
         var randomWidth: Int
         var randomWidthOffset: Int
@@ -305,7 +346,10 @@ class Dungeon {
         
         var createdRooms = 0
         var roomDoesNotFit = 0
-
+        
+        //Configurable via default roomSize (bigger == smaller)
+        let maxRoomWidth = Int(dungeonSizeWidth / roomSize)
+        let maxRoomHeight = Int(dungeonSizeHeight / roomSize)
         
         //used for finding minimum room placement point:
         var minX: Int
@@ -314,19 +358,22 @@ class Dungeon {
         var canWeBuildHere: Bool = false
         
         //Create each room and place it...
-        while roomDoesNotFit < 10 {
+        //Do this until I've tried to fit 10 maps that won't fit.
+        while roomDoesNotFit < 2 {
         
             minX = 0
             minY = 0
             
             //create random room size for the room
-            randomWidthOffset = Int(arc4random_uniform(UInt32(cellSizeWidth/10)))
-            randomWidthOffset2 = Int(arc4random_uniform(UInt32(cellSizeWidth/10)))
-            randomWidth = max((cellSizeWidth/4), (Int(arc4random_uniform(UInt32(cellSizeWidth)))))
+            randomWidthOffset = 3 //Int(arc4random_uniform(UInt32(maxRoomWidth/density)))
+            randomWidthOffset2 = 3 //Int(arc4random_uniform(UInt32(maxRoomWidth/density)))
+            randomWidth = max(10, Int(arc4random_uniform(UInt32(maxRoomWidth))))
+                //max((maxRoomWidth/4), (Int(arc4random_uniform(UInt32(maxRoomWidth)))))
             
-            randomHeightOffset = Int(arc4random_uniform(UInt32(cellSizeHeight/10)))
-            randomHeightOffset2 = Int(arc4random_uniform(UInt32(cellSizeHeight/10)))
-            randomHeight = max((cellSizeHeight/4), Int(arc4random_uniform(UInt32(cellSizeHeight))))
+            randomHeightOffset = 2 //Int(arc4random_uniform(UInt32(maxRoomHeight/density)))
+            randomHeightOffset2 = 2 //Int(arc4random_uniform(UInt32(maxRoomHeight/density)))
+            randomHeight = max(6, Int(arc4random_uniform(UInt32(maxRoomHeight))))
+                //max((maxRoomHeight), Int(arc4random_uniform(UInt32(maxRoomHeight))))
             
             
             //Loop through each (x,y) point to see where we can build...
@@ -388,16 +435,16 @@ class Dungeon {
         }
         
         drawDungeonRooms()
+        connectDungeonRooms()
         
     }
     
     
     
     //=====================================================================================================//
-    //Func to check if rooms, if all dungeonRooms are populated
+    //Func to check if dungeonRooms collide
     //=====================================================================================================//
-
-    func doRoomsCollide(x1 x1: Int, y1: Int, x2: Int, y2: Int) -> Bool {
+    private func doRoomsCollide(x1 x1: Int, y1: Int, x2: Int, y2: Int) -> Bool {
         
         var wellDoThey: Bool = false
         
@@ -425,9 +472,9 @@ class Dungeon {
     
     
     //=====================================================================================================//
-    //Func to draw rooms, if all dungeonRooms are populated
+    //Func to define the rooms within the dungeon, if all dungeonRooms are populated
     //=====================================================================================================//
-    func drawDungeonRooms() -> Void {
+    private func drawDungeonRooms() -> Void {
         
         
         //Iterate through each room...
@@ -441,9 +488,9 @@ class Dungeon {
                 for column = dungeonRooms[drawRoomIterator].location.x1; ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)); column++ {
                     
                     if ((row == dungeonRooms[drawRoomIterator].location.y1) || (row == dungeonRooms[drawRoomIterator].location.y2) || (column == dungeonRooms[drawRoomIterator].location.x1) || (column == dungeonRooms[drawRoomIterator].location.x2)) {
-                        dungeonMap[row][column] = wall
+                        dungeonMap[row][column] = Tile.Wall
                     } else {
-                        dungeonMap[row][column] = floor
+                        dungeonMap[row][column] = Tile.Ground
                     }
                     
                 }
@@ -455,50 +502,13 @@ class Dungeon {
     }
 
     
-    
-    //=====================================================================================================//
-    //create a room using cellular automota... 
-    //Note: this could be a one-room level, or a single room within a room of cells
-    //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
-    //=====================================================================================================//
-    func generateDungeonRoomUsingCellularAutomota() -> Void {
-        
-        var randWalls:Int
-        
-        for var row = 0; row < dungeonMap.count; row++ {
-            for var column = 0; column < dungeonMap[row].count; column++ {
-                
-                randWalls = Int(arc4random_uniform(UInt32(100)))
-                
-                if randWalls > 55 {
-                    dungeonMap[row][column] = 1
-                }
-            }
-        }
-        
-        
-        for _ in 1...5 {
-            
-            for var row2 = 0; row2 < dungeonMap.count; row2++ {
-                for var column2 = 0; column2 < dungeonMap[row2].count; column2++ {
-                    
-                    if howManyWallsAreAroundMe(column2,y:row2) > 5 {
-                        dungeonMap[row2][column2] = 1
-                    } else if howManyWallsAreAroundMe(column2,y:row2) < 3 {
-                        dungeonMap[row2][column2] = 0
-                    }
-                    
-                }
-            }
-        }
-        
-    }
-    
-    
 
-    
+    //=====================================================================================================//
+    //
     //I'm sure there's probably a much more elegant way to do this. Hrm.
-    func howManyWallsAreAroundMe(x:Int, y:Int) -> Int {
+    //
+    //=====================================================================================================//
+    private func howManyWallsAreAroundMe(x x:Int, y:Int) -> Int {
     
         var walls = 0
         
@@ -509,35 +519,35 @@ class Dungeon {
         
         } else {
 
-            if dungeonMap[y][x-1] == 1 {
+            if dungeonMap[y][x-1] == Tile.Wall {
                 walls++
             }
 
-            if dungeonMap[y-1][x+1] == 1 {
+            if dungeonMap[y-1][x+1] == Tile.Wall {
                 walls++
             }
             
-            if dungeonMap[y-1][x-1] == 1 {
+            if dungeonMap[y-1][x-1] == Tile.Wall {
                 walls++
             }
         
-            if dungeonMap[y+1][x] == 1 {
+            if dungeonMap[y+1][x] == Tile.Wall {
                 walls++
             }
             
-            if dungeonMap[y+1][x+1] == 1 {
+            if dungeonMap[y+1][x+1] == Tile.Wall {
                 walls++
             }
             
-            if dungeonMap[y+1][x-1] == 1 {
+            if dungeonMap[y+1][x-1] == Tile.Wall {
                 walls++
             }
             
-            if dungeonMap[y][x+1] == 1 {
+            if dungeonMap[y][x+1] == Tile.Wall {
                 walls++
             }
             
-            if dungeonMap[y][x-1] == 1 {
+            if dungeonMap[y][x-1] == Tile.Wall {
                 walls++
             }
         }
@@ -552,9 +562,9 @@ class Dungeon {
     //Set the dungeon back to basics
     //
     //=====================================================================================================//
-    func resetDungeonMap() -> Void {
+    private func resetDungeonMap() -> Void {
         
-        self.dungeonMap = [[Int]](count: dungeonSizeHeight, repeatedValue:[Int](count:dungeonSizeWidth, repeatedValue:nothing))
+        self.dungeonMap = [[Tile]](count: dungeonSizeHeight, repeatedValue:[Tile](count:dungeonSizeWidth, repeatedValue:Tile.Nothing))
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
     }
     
@@ -562,24 +572,119 @@ class Dungeon {
     
     
     //=====================================================================================================//
-    //Func to connect an array of DungeonRoom struct
-    //
+    //Functions to connect an array of DungeonRoom struct
+    //Given an array of rooms, this will draw corridors between them, and add them as connections
     //=====================================================================================================//
-    func connectDungeonRooms() -> Void {
-        //Func to connect rooms
-        //And draw connections
+    private func connectDungeonRooms() -> Void {
         
+        var closestRoom: Int?
         
+        for var roomIterator in 1...dungeonRooms.count-1 {
+
+            closestRoom = findClosestRoomToRoomId(1)
         
+            if (closestRoom != nil) {
+                //Find the starting point, in this case the middle of the room
+                var x = Int((dungeonRooms[roomIterator].location.x1 + dungeonRooms[roomIterator].location.x2)/2)
+                var y = Int((dungeonRooms[roomIterator].location.y1 + dungeonRooms[roomIterator].location.y2)/2)
+                
+                var destinationX = Int((dungeonRooms[closestRoom!].location.x1 + dungeonRooms[closestRoom!].location.x2)/2)
+                var destinationY = Int((dungeonRooms[closestRoom!].location.y1 + dungeonRooms[closestRoom!].location.y2)/2)
+
+                var xDigger: Int = x
+                var yDigger: Int = y
+                
+                
+                
+                while (xDigger != destinationX) || (yDigger != destinationY) {
+                    
+                    switch dungeonMap[yDigger][xDigger] {
+                        case Tile.Wall:
+                            do {
+                                dungeonMap[yDigger][destinationX] = Tile.Door
+                            }
+                        case Tile.Ground:
+                            do {
+                                //nothing, move along
+                            }
+                        case Tile.Nothing:
+                            do {
+                                dungeonMap[yDigger][destinationX] = Tile.CorridorHorizontal
+                            }
+                        default: break
+                    }
+
+                    if xDigger > destinationX {
+                        xDigger--
+                    } else  if xDigger < destinationX {
+                        xDigger++
+                    }
+                    
+                    if yDigger > destinationY {
+                        yDigger--
+                    } else if yDigger < destinationY {
+                        yDigger++
+                    }
+                    
+                }
+            }
+        }
     }
     
+    
+    private func findClosestRoomToRoomId(room:Int) -> Int {
+        
+        var roomMidpointX = Int((dungeonRooms[room].location.x1 + dungeonRooms[room].location.x2)/2)
+        var roomMidpointY = Int((dungeonRooms[room].location.y1 + dungeonRooms[room].location.y2)/2)
+
+        var targetRoomMidpointX: Int
+        var targetRoomMidpointY: Int
+        var minDistance: Float?
+        var compDistance: Float?
+        var aSquared: Float
+        var bSquared: Float
+        
+        var closestRoom: Int?
+        
+        for roomIterator in 0...dungeonRooms.count-1 {
+            
+            if roomIterator != room {
+                
+                targetRoomMidpointX = Int((dungeonRooms[roomIterator].location.x1 + dungeonRooms[roomIterator].location.x2)/2)
+                targetRoomMidpointY = Int((dungeonRooms[roomIterator].location.y1 + dungeonRooms[roomIterator].location.y2)/2)
+                
+                aSquared = Float((roomMidpointX - targetRoomMidpointX)*(roomMidpointX - targetRoomMidpointX))
+                bSquared = Float((roomMidpointY - targetRoomMidpointY)*(roomMidpointY - targetRoomMidpointY))
+                    
+                compDistance = sqrt(aSquared + bSquared)
+                
+                if minDistance == nil {
+                    
+                    minDistance = compDistance
+                    closestRoom = roomIterator
+                    
+                } else if compDistance < minDistance {
+                    
+                    minDistance = compDistance!
+                    closestRoom = roomIterator
+                    
+                }
+                
+                
+                
+            }
+        }
+        
+        return closestRoom!
+
+    }
     
     
     //=====================================================================================================//
     // Print a 2D array
     // Mostly for debugging at this point. Or whatever.
     //=====================================================================================================//
-    func printDungeon(mazeToPrint: [[String]]){
+    private func printDungeon(mazeToPrint: [[String]]){
         
         for var row = 0; row < mazeToPrint.count; row++ {
             for var column = 0; column < mazeToPrint[row].count; column++ {

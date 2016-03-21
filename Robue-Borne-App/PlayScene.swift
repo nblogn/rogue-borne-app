@@ -10,100 +10,6 @@ import Foundation
 import SpriteKit
 
 
-//-------------------------------------------------------------------------------------------//
-//
-//HANDY FUNCs I'm Probably going to need go here...
-//Grabbed these from the SK tutorial here
-//http://www.raywenderlich.com/119815/sprite-kit-swift-2-tutorial-for-beginners
-//
-//-------------------------------------------------------------------------------------------//
-
-
-
-/*Note: You may be wondering what the fancy syntax is here. Note that the category on Sprite Kit is just a single 32-bit integer, and acts as a bitmask. This is a fancy way of saying each of the 32-bits in the integer represents a single category (and hence you can have 32 categories max). Here you’re setting the first bit to indicate a monster, the next bit over to represent a projectile, and so on.*/
-struct PhysicsCategory {
-    static let None      : UInt32 = 0
-    static let All       : UInt32 = UInt32.max
-    static let Monster   : UInt32 = 0b1
-    static let Projectile: UInt32 = 0b10
-}
-
-
-func + (left: CGPoint, right: CGPoint) -> CGPoint {
-    return CGPoint(x: left.x + right.x, y: left.y + right.y)
-}
-
-func - (left: CGPoint, right: CGPoint) -> CGPoint {
-    return CGPoint(x: left.x - right.x, y: left.y - right.y)
-}
-
-func * (point: CGPoint, scalar: CGFloat) -> CGPoint {
-    return CGPoint(x: point.x * scalar, y: point.y * scalar)
-}
-
-func / (point: CGPoint, scalar: CGFloat) -> CGPoint {
-    return CGPoint(x: point.x / scalar, y: point.y / scalar)
-}
-
-#if !(arch(x86_64) || arch(arm64))
-    func sqrt(a: CGFloat) -> CGFloat {
-        return CGFloat(sqrtf(Float(a)))
-    }
-#endif
-
-extension CGPoint {
-    func length() -> CGFloat {
-        return sqrt(x*x + y*y)
-    }
-    
-    func normalized() -> CGPoint {
-        return self / length()
-    }
-}
-
-
-//-------------------------------------------------------------------------------------------//
-//
-//TODO: This should be in the Dungeon class. I think.
-//
-//-------------------------------------------------------------------------------------------//
-
-enum Tile: Int {
-    
-    case Ground
-    case Wall
-    case Nothing
-    case Grass
-    
-    var description:String {
-        switch self {
-        case Ground:
-            return "Ground"
-        case Wall:
-            return "Wall"
-        case Nothing:
-            return "Nothing"
-        case Grass:
-            return "RB_Grass_2x"
-
-        }
-    }
-    
-    var image:String {
-        switch self {
-        case Ground:
-            return "RB_Floor_Green_2x"
-        case Wall:
-            return "RB_Wall_2x"
-        case Nothing:
-            return "RB_Floor_Grey_2x"
-        case Grass:
-            return "RB_Grass_2x"
-            
-        }
-    } 
-}
-
 
 
 //-----------------------------------------------------------------------------------------------//
@@ -121,7 +27,7 @@ class PlayScene: SKScene {
 
     //Global variables and constants...
     let view2D:SKSpriteNode
-    var tiles: [[Int]]
+    var tiles: [[Tile]]
     var dungeonType: String = "cellMap"
     
     
@@ -454,15 +360,18 @@ class PlayScene: SKScene {
             let row = tiles[i];
             
             for j in 0..<row.count {
-                let tileInt = row[j]
+                
+                //let tileInt = row[j]
                 
                 //Assign a new Tile enum, setting it’s type via the id value, e.g. because we used an enum for our Tile, 0 = Ground, 1 = Wall
-                let tile = Tile(rawValue: tileInt)!
+                //let aTile = Tile(rawValue: tileInt)!
+                
+                let aTile = row[j]
                 
                 //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system, y values increase as you move up the screen and decrease as you move down.
                 let point = CGPoint(x: (j*tileSize.width), y: (i*tileSize.height))
                 
-                placeTile2D(tile.image, withPosition:point)
+                placeTile2D(aTile.image, withPosition:point)
             }
             
         }

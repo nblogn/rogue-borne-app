@@ -61,7 +61,7 @@ class Monster: SKSpriteNode {
             case 0:
                 // Try north
                 if self.getCurrentLocation().x > 0 {
-                    if aDungeon.dungeonMap[self.getCurrentLocation().x-1][self.getCurrentLocation().y] == 0 {
+                    if aDungeon.dungeonMap[self.getCurrentLocation().x-1][self.getCurrentLocation().y] == Tile.Nothing {
                         self.setCurrentLocation(self.getCurrentLocation().x-1, Y: self.getCurrentLocation().y)
                         hasMoved = true
                     }
@@ -69,7 +69,7 @@ class Monster: SKSpriteNode {
             case 1:
                 // Try south
                 if self.getCurrentLocation().x < aDungeon.cellSizeHeight {
-                    if aDungeon.dungeonMap[self.getCurrentLocation().x+1][self.getCurrentLocation().y] == 0 {
+                    if aDungeon.dungeonMap[self.getCurrentLocation().x+1][self.getCurrentLocation().y] == Tile.Nothing {
                         self.setCurrentLocation(self.getCurrentLocation().x+1, Y: self.getCurrentLocation().y)
                         hasMoved = true
                     }
@@ -78,7 +78,7 @@ class Monster: SKSpriteNode {
             case 2:
                 // Try east
                 if self.getCurrentLocation().y > 0 {
-                    if aDungeon.dungeonMap[self.getCurrentLocation().x][self.getCurrentLocation().y-1] == 0 {
+                    if aDungeon.dungeonMap[self.getCurrentLocation().x][self.getCurrentLocation().y-1] == Tile.Nothing {
                         self.setCurrentLocation(self.getCurrentLocation().x, Y: self.getCurrentLocation().y-1)
                         hasMoved = true
                     }
@@ -87,7 +87,7 @@ class Monster: SKSpriteNode {
             case 3:
                 // Try west
                 if self.getCurrentLocation().y < aDungeon.cellSizeWidth {
-                    if aDungeon.dungeonMap[self.getCurrentLocation().x][self.getCurrentLocation().y+1] == 0 {
+                    if aDungeon.dungeonMap[self.getCurrentLocation().x][self.getCurrentLocation().y+1] == Tile.Nothing {
                         self.setCurrentLocation(self.getCurrentLocation().x, Y: self.getCurrentLocation().y+1)
                         hasMoved = true
                     }
