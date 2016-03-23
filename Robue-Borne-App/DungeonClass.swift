@@ -277,17 +277,15 @@ class Dungeon {
 
     //Will replace the func above, separating the creation of rooms from the drawing of the map.
     func generateDungeonRoomsUsingCellMethod() {
-        
-        
-        
-        
+
+
     }
     
     
     
     
     //=====================================================================================================//
-    //create a room using cellular automota...
+    //create a room using cellular autamota...
     //Note: this could be a one-room level, or a single room within a room of cells
     //Algorithm: http://www.roguebasin.com/index.php?title=Cellular_Automata_Method_for_Generating_Random_Cave-Like_Levels
     //=====================================================================================================//
@@ -585,21 +583,43 @@ class Dungeon {
         var destinationX: Int
         var destinationY: Int
 
-        for var roomIterator in 1...dungeonRooms.count-1 {
+        var roomIterator: Int = 0
+        var connectedRooms: Int = 0
+        
+        //for var roomIterator in 1...dungeonRooms.count-1 {
 
+        while (connectedRooms <= dungeonRooms.count) {
+            
             closestRoom = findClosestRoomToRoomId(roomIterator)
+            if closestRoom == nil {
+                break
+            }
         
             if (closestRoom != nil) {
                 //Find the starting point, in this case the middle of the room
                 x = Int((dungeonRooms[roomIterator].location.x1 + dungeonRooms[roomIterator].location.x2)/2)
                 y = Int((dungeonRooms[roomIterator].location.y1 + dungeonRooms[roomIterator].location.y2)/2)
                 
+                //Find the destination point, the middle of the target room
                 destinationX = Int((dungeonRooms[closestRoom!].location.x1 + dungeonRooms[closestRoom!].location.x2)/2)
                 destinationY = Int((dungeonRooms[closestRoom!].location.y1 + dungeonRooms[closestRoom!].location.y2)/2)
 
+                //link the rooms
+                if dungeonRooms[roomIterator].connectedRooms == nil {
+                    dungeonRooms[roomIterator].connectedRooms = []
+                }
+                dungeonRooms[roomIterator].connectedRooms?.append(dungeonRooms[closestRoom!])
+
+                if dungeonRooms[closestRoom!].connectedRooms == nil {
+                    dungeonRooms[closestRoom!].connectedRooms = []
+                }
+                dungeonRooms[closestRoom!].connectedRooms?.append(dungeonRooms[roomIterator])
+                connectedRooms++
+                
+                
+                //Dig the connection between the rooms
                 xDigger = x
                 yDigger = y
-                
                 while (xDigger != destinationX) || (yDigger != destinationY) {
                     
                     switch dungeonMap[yDigger][xDigger] {
@@ -631,12 +651,36 @@ class Dungeon {
                     }
                     
                 }
+                
+                if closestRoom! >= dungeonRooms.count-1 {
+                    roomIterator = 0
+                } else {
+                    roomIterator = closestRoom!
+                }
+                
+                print(roomIterator)
+                
+                
+            } else {
+                
+                if (roomIterator >= dungeonRooms.count-1) {
+                    
+                    roomIterator = 0
+                    
+                } else {
+                    
+                    roomIterator++
+                    
+                }
+                
             }
+            
         }
+        
     }
     
-    
-    private func findClosestRoomToRoomId(room:Int) -> Int {
+    //Finds closest room to given roomId, can filter by how many connections that room has...
+    private func findClosestRoomToRoomId(room:Int, targetRoomConnections:Int = 0) -> Int? {
         
         var roomMidpointX = Int((dungeonRooms[room].location.x1 + dungeonRooms[room].location.x2)/2)
         var roomMidpointY = Int((dungeonRooms[room].location.y1 + dungeonRooms[room].location.y2)/2)
@@ -652,7 +696,7 @@ class Dungeon {
         
         for roomIterator in 0...dungeonRooms.count-1 {
             
-            if roomIterator != room {
+            if (roomIterator != room) && (dungeonRooms[roomIterator].connectedRooms == nil) {
                 
                 targetRoomMidpointX = Int((dungeonRooms[roomIterator].location.x1 + dungeonRooms[roomIterator].location.x2)/2)
                 targetRoomMidpointY = Int((dungeonRooms[roomIterator].location.y1 + dungeonRooms[roomIterator].location.y2)/2)
@@ -674,12 +718,10 @@ class Dungeon {
                     
                 }
                 
-                
-                
             }
         }
         
-        return closestRoom!
+        return closestRoom
 
     }
     
