@@ -12,20 +12,6 @@ import Foundation
 import Darwin
 
 
-
-//Ascii character set, I figure we should always support ascii. This should probably go in the dungeon though,
-//since inanimate "things" are part of the dungeon class.
-//TODO: Where should this live and how should it work?
-struct asciiDungeonObjectArt {
-    let floor:String = "."
-    let wall:String = "="
-    let vwall:String = "|"
-    let nothing:String = " "
-}
-
-
-
-
 class Dungeon {
     
 
@@ -36,7 +22,6 @@ class Dungeon {
     let cellSizeWidth: Int
     let numberOfRooms: Int
     
-
     
     //Simple location struct...
     //Seems like this should be a globally accessible struct...?
@@ -446,7 +431,7 @@ class Dungeon {
         
         var wellDoThey: Bool = false
         
-        for var roomIterator in 0...dungeonRooms.count - 1 {
+        for roomIterator in 0...dungeonRooms.count - 1 {
             
             //Note; first I tried to check all the things that would test if they overlapped. This was fucking tough.
             //Then I googled and discovered it's much easier to test if they DON'T overlap. This was much easier.
@@ -586,8 +571,6 @@ class Dungeon {
         var roomIterator: Int = 0
         var connectedRooms: Int = 0
         
-        //for var roomIterator in 1...dungeonRooms.count-1 {
-
         while (connectedRooms <= dungeonRooms.count) {
             
             closestRoom = findClosestRoomToRoomId(roomIterator)
@@ -622,6 +605,7 @@ class Dungeon {
                 yDigger = y
                 while (xDigger != destinationX) || (yDigger != destinationY) {
                     
+                    //Change the current tile...
                     switch dungeonMap[yDigger][xDigger] {
                         case Tile.Wall:
                             do {
@@ -638,16 +622,24 @@ class Dungeon {
                         default: break
                     }
 
-                    if xDigger > destinationX {
-                        xDigger--
-                    } else  if xDigger < destinationX {
-                        xDigger++
-                    }
                     
-                    if yDigger > destinationY {
-                        yDigger--
-                    } else if yDigger < destinationY {
-                        yDigger++
+                    //Decide how to move onto the next tile as we traverse to our destination
+                    let randNum = Int(arc4random_uniform(10))
+                    
+                    if (randNum < 6)
+                    {
+                        if xDigger > destinationX {
+                            xDigger--
+                        } else  if xDigger < destinationX {
+                            xDigger++
+                        }
+                        
+                    } else {
+                        if yDigger > destinationY {
+                            yDigger--
+                        } else if yDigger < destinationY {
+                            yDigger++
+                        }
                     }
                     
                 }
@@ -682,8 +674,8 @@ class Dungeon {
     //Finds closest room to given roomId, can filter by how many connections that room has...
     private func findClosestRoomToRoomId(room:Int, targetRoomConnections:Int = 0) -> Int? {
         
-        var roomMidpointX = Int((dungeonRooms[room].location.x1 + dungeonRooms[room].location.x2)/2)
-        var roomMidpointY = Int((dungeonRooms[room].location.y1 + dungeonRooms[room].location.y2)/2)
+        let roomMidpointX = Int((dungeonRooms[room].location.x1 + dungeonRooms[room].location.x2)/2)
+        let roomMidpointY = Int((dungeonRooms[room].location.y1 + dungeonRooms[room].location.y2)/2)
 
         var targetRoomMidpointX: Int
         var targetRoomMidpointY: Int

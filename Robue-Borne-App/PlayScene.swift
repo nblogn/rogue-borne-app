@@ -118,6 +118,8 @@ class PlayScene: SKScene {
 
         
         //Set the hero
+        myHero.location.x = myDungeon.dungeonRooms[0].location.x1+1
+        myHero.location.y = myDungeon.dungeonRooms[0].location.y1+1
         myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
         view2D.addChild(myHero)
         
@@ -319,17 +321,23 @@ class PlayScene: SKScene {
     
     func moveHero(x:Int, y:Int) {
         
-        myHero.location.x = myHero.location.x + x
-        myHero.location.y = myHero.location.y + y
+        switch myDungeon.dungeonMap[myHero.location.y + y][myHero.location.x + x] {
+            
+        case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+            myHero.location.x = myHero.location.x + x
+            myHero.location.y = myHero.location.y + y
 
-        let xyPointDiff = convertBoardCoordinatetoCGPoint(myHero.location.x, y:myHero.location.y)
-        
-        //let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
-        //    SKAction.rotateByAngle(0.0, duration: 0.1),
-        //    SKAction.rotateByAngle(degToRad(4.0), duration: 0.1),
-        //    SKAction.moveTo(xyPointDiff, duration: 0.2)])
-        
-        myHero.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
+            let xyPointDiff = convertBoardCoordinatetoCGPoint(myHero.location.x, y:myHero.location.y)
+            
+            //let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
+            //    SKAction.rotateByAngle(0.0, duration: 0.1),
+            //    SKAction.rotateByAngle(degToRad(4.0), duration: 0.1),
+            //    SKAction.moveTo(xyPointDiff, duration: 0.2)])
+            
+            myHero.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
+            
+        default: break
+        }
         
     }
     
@@ -344,8 +352,8 @@ class PlayScene: SKScene {
     //From me: I probably need some conversions of array coordinates to CGPoint coordinate...
     func convertBoardCoordinatetoCGPoint (x: Int, y: Int) -> CGPoint {
         
-        let retX = (x * tileSize.width) - (tileSize.width/2)
-        let retY = (y * tileSize.height) - (tileSize.height/2)
+        let retX = ((x+1) * tileSize.width) - (tileSize.width/2)
+        let retY = ((y+1) * tileSize.height) - (tileSize.height/2)
         
         return CGPoint(x: retX, y: retY)
         
