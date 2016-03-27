@@ -126,14 +126,22 @@ class PlayScene: SKScene {
         myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
         view2D.addChild(myHero)
         
+        //Set the monster
+        aMonster.location.x = myDungeon.dungeonRooms[0].location.x1+1
+        aMonster.location.y = myDungeon.dungeonRooms[0].location.y1+2
+        aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
         
+        //Trying to fix the crash, maybe this?
+        aMonster.lightingBitMask = 1
+        
+        view2D.addChild(aMonster)
+
         //Set the hero's light:
-        light.position = CGPointMake(0,0)
+        light.position = CGPointMake(0.5,0.5)
         light.falloff = 1
         
-        //Kind of prefer it with this off:
+        //Kind of prefer it with this off, but leaving it on to see monsters:
         //light.ambientColor = UIColor.darkGrayColor()
-
         light.lightColor = UIColor.redColor()
         myHero.addChild(light)
         
@@ -364,6 +372,7 @@ class PlayScene: SKScene {
         // Repeat until a successful move has occurred or
         // the number of tries reaches 5. Dude could be trapped
         // like a Piner in a closet and we don't want to hang
+        // JOSH: LOL!
         
         var hasMoved: Bool=false
         var numTries: Int=0
@@ -486,7 +495,6 @@ class PlayScene: SKScene {
                 
                 if (aTile == Tile.Wall) || (aTile == Tile.Nothing) {
                     tileSprite.shadowCastBitMask = 1
-                    //tileSprite.anchorPoint =
                 }
                 
                 view2D.addChild(tileSprite)
