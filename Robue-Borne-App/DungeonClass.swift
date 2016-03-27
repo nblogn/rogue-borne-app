@@ -491,10 +491,9 @@ class Dungeon {
     //I'm sure there's probably a much more elegant way to do this. Hrm.
     //
     //=====================================================================================================//
-    private func howManyWallsAreAroundMe(x x:Int, y:Int) -> Int {
+    private func howManyWallsAreAroundMe(x x:Int, y:Int, tileType: Tile = Tile.Wall) -> Int {
     
         var walls = 0
-        
         
         if (x == 0) || (x > dungeonSizeWidth-2) || (y == 0) || (y > dungeonSizeHeight-2) {
         
@@ -502,35 +501,35 @@ class Dungeon {
         
         } else {
 
-            if dungeonMap[y][x-1] == Tile.Wall {
+            if dungeonMap[y][x-1] == tileType {
                 walls++
             }
 
-            if dungeonMap[y-1][x+1] == Tile.Wall {
+            if dungeonMap[y-1][x+1] == tileType {
                 walls++
             }
             
-            if dungeonMap[y-1][x-1] == Tile.Wall {
+            if dungeonMap[y-1][x-1] == tileType {
                 walls++
             }
         
-            if dungeonMap[y+1][x] == Tile.Wall {
+            if dungeonMap[y+1][x] == tileType {
                 walls++
             }
             
-            if dungeonMap[y+1][x+1] == Tile.Wall {
+            if dungeonMap[y+1][x+1] == tileType {
                 walls++
             }
             
-            if dungeonMap[y+1][x-1] == Tile.Wall {
+            if dungeonMap[y+1][x-1] == tileType {
                 walls++
             }
             
-            if dungeonMap[y][x+1] == Tile.Wall {
+            if dungeonMap[y][x+1] == tileType {
                 walls++
             }
             
-            if dungeonMap[y][x-1] == Tile.Wall {
+            if dungeonMap[y][x-1] == tileType {
                 walls++
             }
         }
@@ -602,14 +601,35 @@ class Dungeon {
                 
                 //Dig the connection between the rooms
                 xDigger = x
-                yDigger = y
+                yDigger = y                
                 while (xDigger != destinationX) || (yDigger != destinationY) {
                     
                     //Change the current tile...
                     switch dungeonMap[yDigger][xDigger] {
                         case Tile.Wall:
                             do {
-                                dungeonMap[yDigger][xDigger] = Tile.Door
+                                
+                                if (howManyWallsAreAroundMe(x: xDigger, y: yDigger, tileType: Tile.Door)) == 0 {
+                                
+                                    
+                                    //TODO: Add checks for multiple doors in a row
+                                    if dungeonMap[yDigger-1][xDigger] == Tile.Door {
+                                        
+                                    } else if dungeonMap[yDigger-1][xDigger] == Tile.Door {
+                                        
+                                    } else if dungeonMap[yDigger-1][xDigger] == Tile.Door {
+                                        
+                                    } else if dungeonMap[yDigger-1][xDigger] == Tile.Door {
+                                        
+                                    } else {
+                                        
+                                        dungeonMap[yDigger][xDigger] = Tile.Door
+                                        
+                                    }
+
+                                }
+                                
+                                
                             }
                         case Tile.Ground:
                             do {
@@ -621,7 +641,7 @@ class Dungeon {
                             }
                         default: break
                     }
-
+                    
                     
                     //Decide how to move onto the next tile as we traverse to our destination
                     let randNum = Int(arc4random_uniform(10))

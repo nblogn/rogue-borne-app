@@ -27,7 +27,6 @@ class PlayScene: SKScene {
 
     //Global variables and constants...
     let view2D:SKSpriteNode
-    var tiles: [[Tile]]
     var dungeonType: String = "cellMap"
     
     
@@ -40,6 +39,10 @@ class PlayScene: SKScene {
     let myHero: Hero
     //let aMonster = DungeonMonster()
     let myDPad: dPad
+    
+    //Add a light source for the hero...
+    var ambientColor:UIColor?
+    var light = SKLightNode();
     
     //To detect the touched node...
     var selectedNode = SKNode()
@@ -75,8 +78,6 @@ class PlayScene: SKScene {
             default:myDungeon.createDungeonUsingCellMethod()
         }
         
-        tiles = myDungeon.dungeonMap
-        
         super.init(size: size)
         self.anchorPoint = CGPoint(x:0, y:0)
 
@@ -111,11 +112,12 @@ class PlayScene: SKScene {
         
         view2D.yScale = CGFloat(yScale)
         view2D.xScale = CGFloat(xScale)
+        view2D.lightingBitMask = 1
 
         addChild(view2D)
         
-        placeAllTiles2D()
-
+        //placeAllTiles2D()
+        placeAllDungeonTiles()
         
         //Set the hero
         myHero.location.x = myDungeon.dungeonRooms[0].location.x1+1
@@ -123,12 +125,23 @@ class PlayScene: SKScene {
         myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
         view2D.addChild(myHero)
         
+        
+        //Set the hero's light:
+        light.position = CGPointMake(0,0)
+        light.falloff = 1
+        
+        //Kind of prefer it with this off:
+        //light.ambientColor = UIColor.darkGrayColor()
+
+        light.lightColor = UIColor.redColor()
+        myHero.addChild(light)
+        
+        
         //Configure and add the d-pad
         myDPad.zPosition = 100
         addChild(myDPad)
     
 
-        
         //Set the background...
         self.backgroundColor = SKColor.grayColor()
         
@@ -359,44 +372,44 @@ class PlayScene: SKScene {
         
     }
     
-    //The following two funcs build the initial board layout
-    func placeAllTiles2D() {
-        
+    
+    
+    //TODO: USE THIS TO REPLACE THER ONE BELOW, and the "tiles" object, it's not needed.
+    //Also, use this to setup shadowedBitMask on walls, etc.
+    func placeAllDungeonTiles(){
+    
         //Loop through all tiles
-        for i in 0..<tiles.count {
+        for row in 0..<myDungeon.dungeonMap.count {
             
-            let row = tiles[i];
-            
-            for j in 0..<row.count {
+            for column in 0..<myDungeon.dungeonMap[row].count {
                 
-                //let tileInt = row[j]
+                let aTile = myDungeon.dungeonMap[row][column]
                 
-                //Assign a new Tile enum, setting it’s type via the id value, e.g. because we used an enum for our Tile, 0 = Ground, 1 = Wall
-                //let aTile = Tile(rawValue: tileInt)!
+                //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system, 
+                //y values increase as you move up the screen and decrease as you move down.
+                let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
                 
-                let aTile = row[j]
+                let tileSprite = SKSpriteNode(imageNamed: aTile.image)
                 
-                //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system, y values increase as you move up the screen and decrease as you move down.
-                let point = CGPoint(x: (j*tileSize.width), y: (i*tileSize.height))
+                tileSprite.position = point
                 
-                placeTile2D(aTile.image, withPosition:point)
+                tileSprite.anchorPoint = CGPoint(x:0, y:0)
+                
+                tileSprite.lightingBitMask = 1
+                
+                
+                if (aTile == Tile.Wall) || (aTile == Tile.Nothing) {
+                    tileSprite.shadowCastBitMask = 1
+                    //tileSprite.anchorPoint =
+                }
+                
+                view2D.addChild(tileSprite)
             }
             
         }
-        
+    
     }
     
-    func placeTile2D(image:String, withPosition:CGPoint) {
-        
-        let tileSprite = SKSpriteNode(imageNamed: image)
-        
-        tileSprite.position = withPosition
-        
-        tileSprite.anchorPoint = CGPoint(x:0, y:0)
-        
-        view2D.addChild(tileSprite)
-        
-    }
     
     
     //-------------------------------------------------------------------------------------------//
