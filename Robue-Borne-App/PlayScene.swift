@@ -38,7 +38,7 @@ class PlayScene: SKScene {
     //Init the dungeon, hero, monsters, and dPad control...
     let myDungeon = Dungeon()
     let myHero: Hero
-    //let aMonster = DungeonMonster()
+    let aMonster: Monster
     let myDPad: dPad
     
     //To detect the touched node...
@@ -66,6 +66,7 @@ class PlayScene: SKScene {
 
         self.myDPad = dPad()
         self.myHero = Hero()
+        self.aMonster = Monster()
         
         //Change the different map creation algorithms to happen on UI button press
         switch dungeonType {
@@ -122,6 +123,12 @@ class PlayScene: SKScene {
         myHero.location.y = myDungeon.dungeonRooms[0].location.y1+1
         myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
         view2D.addChild(myHero)
+        
+        //Set the monster
+        aMonster.location.x = myDungeon.dungeonRooms[0].location.x1+1
+        aMonster.location.y = myDungeon.dungeonRooms[0].location.y1+2
+        aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
+        view2D.addChild(aMonster)
         
         //Configure and add the d-pad
         myDPad.zPosition = 100
@@ -284,19 +291,21 @@ class PlayScene: SKScene {
             switch touchedNode.name! {
                 case "RB_Cntrl_Up":
                     moveHero(0, y:1)
-                    //moveMonsters
+                    moveMonster()
 
                 case "RB_Cntrl_Down":
                     moveHero(0, y:-1)
-                    //moveMonsters
+                    moveMonster()
                 
                 case "RB_Cntrl_Right":
                     moveHero(1, y: 0)
-                    //moveMonsters
+                    moveMonster()
+                
                 
                 case "RB_Cntrl_Left":
                     moveHero(-1, y: 0)
-                    //moveMonsters
+                    moveMonster()
+                
                 
                 case "RB_Cntrl_Middle": break
                     //rest and move monsters
@@ -342,6 +351,89 @@ class PlayScene: SKScene {
     }
     
     
+    func moveMonster() -> Void {
+        // Let's just move randomly for now.
+        // Pick a cardinal direction and check for collision
+        // Repeat until a successful move has occurred or
+        // the number of tries reaches 5. Dude could be trapped
+        // like a Piner in a closet and we don't want to hang
+        
+        var hasMoved: Bool=false
+        var numTries: Int=0
+        var direction: Int
+        
+        
+        while ( hasMoved == false ) && ( numTries < 5) {
+            
+            direction = Int(arc4random_uniform(4))
+            
+            
+            switch direction {
+            case 0:
+                // Try north
+                //if aMonster.getCurrentLocation().y > 0 {
+                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y-1][aMonster.getCurrentLocation().x]  {
+                        
+                    case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+                        aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y-1)
+                        hasMoved = true
+                    default:
+                        break
+                    }
+                //}
+            case 1:
+                // Try south
+                //if aMonster.getCurrentLocation().y < myDungeon.cellSizeHeight {
+                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y+1][aMonster.getCurrentLocation().x] {
+                        
+                    case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+                        aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y+1)
+                        hasMoved = true
+                    default:
+                        break
+                    }
+                //}
+                
+            case 2:
+                // Try east
+                //if aMonster.getCurrentLocation().x > 0 {
+                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x-1] {
+                        
+                    case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+                        aMonster.setCurrentLocation(aMonster.getCurrentLocation().x-1, Y: aMonster.getCurrentLocation().y)
+                        hasMoved = true
+                    default:
+                        break
+                    }
+                //}
+                
+            case 3:
+                // Try west
+                //if aMonster.getCurrentLocation().x < myDungeon.cellSizeWidth {
+                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x+1] {
+                        
+                    case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+                        aMonster.setCurrentLocation(aMonster.getCurrentLocation().x+1, Y: aMonster.getCurrentLocation().y)
+                        hasMoved = true
+                    default:
+                        break
+                    }
+                //}
+                
+            default:
+                
+                print("Fell through monster move switch")
+            }
+            
+            numTries += 1
+        }
+        
+        let xyPointDiff = convertBoardCoordinatetoCGPoint(aMonster.location.x, y:aMonster.location.y)
+        
+        aMonster.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
+        
+    }
+
     
     //-------------------------------------------------------------------------------------------//
     //Tile building...
