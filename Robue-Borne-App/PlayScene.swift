@@ -371,7 +371,7 @@ class PlayScene: SKScene {
             switch direction {
             case 0:
                 // Try north
-                //if aMonster.getCurrentLocation().y > 0 {
+            
                     switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y-1][aMonster.getCurrentLocation().x]  {
                         
                     case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
@@ -380,10 +380,10 @@ class PlayScene: SKScene {
                     default:
                         break
                     }
-                //}
+                
             case 1:
                 // Try south
-                //if aMonster.getCurrentLocation().y < myDungeon.cellSizeHeight {
+              
                     switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y+1][aMonster.getCurrentLocation().x] {
                         
                     case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
@@ -392,11 +392,11 @@ class PlayScene: SKScene {
                     default:
                         break
                     }
-                //}
+                
                 
             case 2:
                 // Try east
-                //if aMonster.getCurrentLocation().x > 0 {
+               
                     switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x-1] {
                         
                     case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
@@ -405,11 +405,11 @@ class PlayScene: SKScene {
                     default:
                         break
                     }
-                //}
+               
                 
             case 3:
                 // Try west
-                //if aMonster.getCurrentLocation().x < myDungeon.cellSizeWidth {
+                
                     switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x+1] {
                         
                     case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
@@ -418,7 +418,7 @@ class PlayScene: SKScene {
                     default:
                         break
                     }
-                //}
+               
                 
             default:
                 
