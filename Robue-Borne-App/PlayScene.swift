@@ -27,9 +27,6 @@ class PlayScene: SKScene {
 
     //Global variables and constants...
     let view2D:SKSpriteNode
-    var tiles: [[Tile]]
-    var dungeonType: String = "cellMap"
-    
     
     //JOSH: Pretty sure these are measured in pixels. I think.
     let tileSize = (width:32, height:32)
@@ -40,6 +37,10 @@ class PlayScene: SKScene {
     let myHero: Hero
     let aMonster: Monster
     let myDPad: dPad
+    
+    //Add a light source for the hero...
+    var ambientColor:UIColor?
+    var light = SKLightNode();
     
     //To detect the touched node...
     var selectedNode = SKNode()
@@ -62,8 +63,6 @@ class PlayScene: SKScene {
         self.view2D = SKSpriteNode()
         self.view2D.userInteractionEnabled = true
         
-        self.dungeonType = dungeonType
-
         self.myDPad = dPad()
         self.myHero = Hero()
         self.aMonster = Monster()
@@ -76,8 +75,6 @@ class PlayScene: SKScene {
             default:myDungeon.createDungeonUsingCellMethod()
         }
         
-        tiles = myDungeon.dungeonMap
-        
         super.init(size: size)
         self.anchorPoint = CGPoint(x:0, y:0)
 
@@ -86,7 +83,6 @@ class PlayScene: SKScene {
     
     //didMoveToView is the first event in the PlayScene after inits
     override func didMoveToView(view: SKView) {
-        
         
         //Setup Gestures...
         let gesturePanRecognizer = UIPanGestureRecognizer(target: self, action: Selector("handlePanFrom:"))
@@ -97,9 +93,6 @@ class PlayScene: SKScene {
             
         let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTapFrom:"))
         self.view!.addGestureRecognizer(gestureTapRecognizer)
-        
-        
-        
     
         //Scale the view to ensure all tiles will fit within the view...
         print(self.size)
@@ -112,11 +105,12 @@ class PlayScene: SKScene {
         
         view2D.yScale = CGFloat(yScale)
         view2D.xScale = CGFloat(xScale)
+        view2D.lightingBitMask = 1
 
         addChild(view2D)
         
-        placeAllTiles2D()
-
+        //placeAllTiles2D()
+        placeAllDungeonTiles()
         
         //Set the hero
         myHero.location.x = myDungeon.dungeonRooms[0].location.x1+1
@@ -125,17 +119,31 @@ class PlayScene: SKScene {
         view2D.addChild(myHero)
         
         //Set the monster
-        aMonster.location.x = myDungeon.dungeonRooms[0].location.x1+1
-        aMonster.location.y = myDungeon.dungeonRooms[0].location.y1+2
+        aMonster.location.x = myDungeon.dungeonRooms[1].location.x1+1
+        aMonster.location.y = myDungeon.dungeonRooms[1].location.y1+2
         aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
+        
+        //Added a shadow to the monster
+        aMonster.shadowCastBitMask = 1
+        
         view2D.addChild(aMonster)
+
+        //Set the hero's light:
+        light.position = CGPointMake(0.0,0.0)
+        
+        //Kind of prefer it with this off, but leaving it on to see monsters:
+        light.ambientColor = UIColor.brownColor()
+        light.falloff = 1
+        light.lightColor = UIColor.redColor()
+        light.enabled = true
+        myHero.addChild(light)
+        
         
         //Configure and add the d-pad
         myDPad.zPosition = 100
         addChild(myDPad)
     
 
-        
         //Set the background...
         self.backgroundColor = SKColor.grayColor()
         
@@ -357,6 +365,7 @@ class PlayScene: SKScene {
         // Repeat until a successful move has occurred or
         // the number of tries reaches 5. Dude could be trapped
         // like a Piner in a closet and we don't want to hang
+        // JOSH: LOL!
         
         var hasMoved: Bool=false
         var numTries: Int=0
@@ -451,45 +460,58 @@ class PlayScene: SKScene {
         
     }
     
-    //The following two funcs build the initial board layout
-    func placeAllTiles2D() {
-        
+    
+    
+    //TODO: USE THIS TO REPLACE THER ONE BELOW, and the "tiles" object, it's not needed.
+    //Also, use this to setup shadowedBitMask on walls, etc.
+    func placeAllDungeonTiles(){
+    
         //Loop through all tiles
-        for i in 0..<tiles.count {
+        for row in 0..<myDungeon.dungeonMap.count {
             
-            let row = tiles[i];
-            
-            for j in 0..<row.count {
+            for column in 0..<myDungeon.dungeonMap[row].count {
                 
-                //let tileInt = row[j]
+                let aTile = myDungeon.dungeonMap[row][column]
                 
-                //Assign a new Tile enum, setting it’s type via the id value, e.g. because we used an enum for our Tile, 0 = Ground, 1 = Wall
-                //let aTile = Tile(rawValue: tileInt)!
+                //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system, 
+                //y values increase as you move up the screen and decrease as you move down.
+                let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
                 
-                let aTile = row[j]
+                let tileSprite = SKSpriteNode(imageNamed: aTile.image)
                 
-                //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system, y values increase as you move up the screen and decrease as you move down.
-                let point = CGPoint(x: (j*tileSize.width), y: (i*tileSize.height))
+                tileSprite.position = point
                 
-                placeTile2D(aTile.image, withPosition:point)
+                tileSprite.anchorPoint = CGPoint(x:0, y:0)
+                
+                //Only setup lighing for a section with 10 tiles for perf reasons for now.
+                if (abs(row - myHero.location.y) < 10) && (abs(column - myHero.location.x) < 10) {
+                    tileSprite.lightingBitMask = 1
+                    
+                    
+                    if (aTile == Tile.Wall) || (aTile == Tile.Nothing) {
+                        tileSprite.shadowCastBitMask = 1
+                    }
+                    
+                }
+                
+                view2D.addChild(tileSprite)
             }
             
         }
+    
+    }
+    
+    
+    //Thinking about a method to update lighting on a move, so instead of lighting the entire board, 
+    //I can only light a certain distance around the player (using the bitmask).
+    func updateLighting(){
         
     }
     
-    func placeTile2D(image:String, withPosition:CGPoint) {
-        
-        let tileSprite = SKSpriteNode(imageNamed: image)
-        
-        tileSprite.position = withPosition
-        
-        tileSprite.anchorPoint = CGPoint(x:0, y:0)
-        
-        view2D.addChild(tileSprite)
+    //The above function would require a way to find the tile *node* at a given *dungeon* location
+    func getTileAtDungeonPosition(x x:Int, y: Int){
         
     }
-    
     
     //-------------------------------------------------------------------------------------------//
     //Touches begin/end -- replaced with touch handlers
