@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SpriteKit
 
 //-------------------------------------------------------------------------------------------//
 //
@@ -80,23 +81,31 @@ enum Tile: Int {
 
 
 
+class TileClass: SKSpriteNode {
 
-
-/*
-class TileClass {
-
-    var type: Tile
+    var tileType: Tile
     var passable: Bool
     
+    //Default init in case of errors...
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     init () {
-        self.type = Tile.Nothing
+        
+        self.tileType = Tile.Nothing
+        self.passable = false
+        
+        let texture = SKTexture(imageNamed: self.tileType.image)
+        super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
+        
     }
     
     init (tileToCreate:Tile) {
         
-        self.type = tileToCreate
+        self.tileType = tileToCreate
         
-        switch self.type {
+        switch self.tileType {
             case Tile.Ground:
                 self.passable = true
             case Tile.Wall:
@@ -112,7 +121,10 @@ class TileClass {
             case Tile.Door:
                 self.passable = true
             }
-        
+
+        let texture = SKTexture(imageNamed: self.tileType.image)
+        super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
+
     }
-}*/
+}
 

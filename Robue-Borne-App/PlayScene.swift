@@ -338,7 +338,7 @@ class PlayScene: SKScene {
     
     func moveHero(x:Int, y:Int) {
         
-        switch myDungeon.dungeonMap[myHero.location.y + y][myHero.location.x + x] {
+        switch myDungeon.dungeonMap[myHero.location.y + y][myHero.location.x + x].tileType {
             
         case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
             myHero.location.x = myHero.location.x + x
@@ -381,7 +381,7 @@ class PlayScene: SKScene {
             case 0:
                 // Try north
             
-                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y-1][aMonster.getCurrentLocation().x]  {
+                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y-1][aMonster.getCurrentLocation().x].tileType  {
                         
                     case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
                         aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y-1)
@@ -393,7 +393,7 @@ class PlayScene: SKScene {
             case 1:
                 // Try south
               
-                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y+1][aMonster.getCurrentLocation().x] {
+                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y+1][aMonster.getCurrentLocation().x].tileType {
                         
                     case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
                         aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y+1)
@@ -406,7 +406,7 @@ class PlayScene: SKScene {
             case 2:
                 // Try east
                
-                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x-1] {
+                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x-1].tileType {
                         
                     case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
                         aMonster.setCurrentLocation(aMonster.getCurrentLocation().x-1, Y: aMonster.getCurrentLocation().y)
@@ -419,7 +419,7 @@ class PlayScene: SKScene {
             case 3:
                 // Try west
                 
-                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x+1] {
+                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x+1].tileType {
                         
                     case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
                         aMonster.setCurrentLocation(aMonster.getCurrentLocation().x+1, Y: aMonster.getCurrentLocation().y)
@@ -471,30 +471,28 @@ class PlayScene: SKScene {
             
             for column in 0..<myDungeon.dungeonMap[row].count {
                 
-                let aTile = myDungeon.dungeonMap[row][column]
-                
                 //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system, 
                 //y values increase as you move up the screen and decrease as you move down.
                 let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
                 
-                let tileSprite = SKSpriteNode(imageNamed: aTile.image)
+                myDungeon.dungeonMap[row][column].position = point
                 
-                tileSprite.position = point
-                
-                tileSprite.anchorPoint = CGPoint(x:0, y:0)
+                myDungeon.dungeonMap[row][column].anchorPoint = CGPoint(x:0, y:0)
                 
                 //Only setup lighing for a section with 10 tiles for perf reasons for now.
-                if (abs(row - myHero.location.y) < 10) && (abs(column - myHero.location.x) < 10) {
-                    tileSprite.lightingBitMask = 1
+                /*if (abs(row - myHero.location.y) < 10) && (abs(column - myHero.location.x) < 10) {
+                    myDungeon.dungeonMap[row][column].lightingBitMask = 1
                     
                     
-                    if (aTile == Tile.Wall) || (aTile == Tile.Nothing) {
-                        tileSprite.shadowCastBitMask = 1
+                    if (myDungeon.dungeonMap[row][column].tileType == Tile.Wall) || (myDungeon.dungeonMap[row][column].tileType == Tile.Nothing) {
+                        myDungeon.dungeonMap[row][column].shadowCastBitMask = 1
                     }
                     
-                }
+                }*/
                 
-                view2D.addChild(tileSprite)
+                myDungeon.dungeonMap[row][column].removeFromParent()
+                
+                view2D.addChild(myDungeon.dungeonMap[row][column])
             }
             
         }
@@ -505,7 +503,33 @@ class PlayScene: SKScene {
     //Thinking about a method to update lighting on a move, so instead of lighting the entire board, 
     //I can only light a certain distance around the player (using the bitmask).
     func updateLighting(){
-        
+        //Loop through all tiles
+        for row in 0..<myDungeon.dungeonMap.count {
+            
+            for column in 0..<myDungeon.dungeonMap[row].count {
+                
+                //let aTile = myDungeon.dungeonMap[row][column]
+                
+                //Find the node at the given given row/column and test it'd distance
+                //let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
+                //let tileSprite = ?? HOW DO I DO THIS ??
+                
+                /*
+                //Only setup lighing for a section with 10 tiles for perf reasons for now.
+                if (abs(row - myHero.location.y) < 10) && (abs(column - myHero.location.x) < 10) {
+                    tileSprite.lightingBitMask = 1
+                    
+                    
+                    if (aTile == Tile.Wall) || (aTile == Tile.Nothing) {
+                        tileSprite.shadowCastBitMask = 1
+                    }
+                    
+                }
+                */
+            }
+            
+        }
+
     }
     
     //The above function would require a way to find the tile *node* at a given *dungeon* location

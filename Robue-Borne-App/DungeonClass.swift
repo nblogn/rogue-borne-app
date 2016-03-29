@@ -41,7 +41,7 @@ class Dungeon {
     }
 
     //The key components of our dungeon...
-    var dungeonMap = [[Tile]]()
+    var dungeonMap = [[TileClass]]()
     var dungeonRooms: [DungeonRoom]
     var heros: [Hero]
     var monsters: [Monster]
@@ -60,7 +60,7 @@ class Dungeon {
     */
     
     
-    func getTileByLocation (X: Int, Y: Int) -> Tile {
+    func getTileByLocation (X: Int, Y: Int) -> TileClass {
         return self.dungeonMap[X][Y]
     }
     
@@ -87,7 +87,7 @@ class Dungeon {
         self.cellSizeHeight = 40
         self.numberOfRooms = 20
         
-        self.dungeonMap = [[Tile]](count: dungeonSizeHeight, repeatedValue:[Tile](count:dungeonSizeWidth, repeatedValue:Tile.Nothing))
+        self.dungeonMap = [[TileClass]](count: dungeonSizeHeight, repeatedValue:[TileClass](count:dungeonSizeWidth, repeatedValue: TileClass(tileToCreate: Tile.Nothing)))
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
         
@@ -106,7 +106,8 @@ class Dungeon {
         self.cellSizeWidth = cellSizeWidth
         self.numberOfRooms = numberOfRooms
         
-        self.dungeonMap = [[Tile]](count: dungeonSizeHeight, repeatedValue:[Tile](count:dungeonSizeWidth, repeatedValue:Tile.Nothing))
+        let blankTile = TileClass(tileToCreate: Tile.Nothing)
+        self.dungeonMap = [[TileClass]](count: dungeonSizeHeight, repeatedValue:[TileClass](count:dungeonSizeWidth, repeatedValue: blankTile))
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
 
@@ -193,7 +194,7 @@ class Dungeon {
         ////
         
         //Temp dungeon to be returned
-        var generatedDungeon = [[Tile]](count: dungeonSizeHeight, repeatedValue:[Tile](count:dungeonSizeWidth, repeatedValue:Tile.Nothing))
+        var generatedDungeon = [[TileClass]](count: dungeonSizeHeight, repeatedValue:[TileClass](count:dungeonSizeWidth, repeatedValue: TileClass(tileToCreate: Tile.Nothing)))
         
         //Reset the loopers
         numberOfHeightCellsIterator = 0
@@ -229,14 +230,14 @@ class Dungeon {
                     
                     //if top or bottom of room, fill with all walls, else, floor
                     if (rowIterator == 0) || (rowIterator == roomHeight-1) {
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = Tile.Wall
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.Wall)
                     }
                     else if (columnIterator == 0) || (columnIterator == roomWidth-1) {
                         //This is for the vertical walls, if I want different icons
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = Tile.Wall
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.Wall)
                     }
                     else {
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = Tile.Ground
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.Ground)
                     }
                     columnIterator++
                     
@@ -284,7 +285,7 @@ class Dungeon {
                 randWalls = Int(arc4random_uniform(UInt32(100)))
                 
                 if randWalls > 55 {
-                    dungeonMap[row][column] = Tile.Wall
+                    dungeonMap[row][column] = TileClass(tileToCreate: Tile.Wall)
                 }
             }
         }
@@ -296,9 +297,9 @@ class Dungeon {
                 for var column2 = 0; column2 < dungeonMap[row2].count; column2++ {
                     
                     if howManyWallsAreAroundMe(x:column2,y:row2) > 5 {
-                        dungeonMap[row2][column2] = Tile.Wall
+                        dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.Wall)
                     } else if howManyWallsAreAroundMe(x:column2,y:row2) < 3 {
-                        dungeonMap[row2][column2] = Tile.Ground
+                        dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.Ground)
                     }
                     
                 }
@@ -470,10 +471,11 @@ class Dungeon {
                 
                 for column = dungeonRooms[drawRoomIterator].location.x1; ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)); column++ {
                     
+                    //Check to see if we are drawing walls or floor...
                     if ((row == dungeonRooms[drawRoomIterator].location.y1) || (row == dungeonRooms[drawRoomIterator].location.y2) || (column == dungeonRooms[drawRoomIterator].location.x1) || (column == dungeonRooms[drawRoomIterator].location.x2)) {
-                        dungeonMap[row][column] = Tile.Wall
+                        dungeonMap[row][column] = TileClass(tileToCreate: Tile.Wall)
                     } else {
-                        dungeonMap[row][column] = Tile.Ground
+                        dungeonMap[row][column] = TileClass(tileToCreate: Tile.Ground)
                     }
                     
                 }
@@ -501,35 +503,35 @@ class Dungeon {
         
         } else {
 
-            if dungeonMap[y][x-1] == tileType {
+            if dungeonMap[y][x-1].tileType == tileType {
                 walls++
             }
 
-            if dungeonMap[y-1][x+1] == tileType {
+            if dungeonMap[y-1][x+1].tileType == tileType {
                 walls++
             }
             
-            if dungeonMap[y-1][x-1] == tileType {
+            if dungeonMap[y-1][x-1].tileType == tileType {
                 walls++
             }
         
-            if dungeonMap[y+1][x] == tileType {
+            if dungeonMap[y+1][x].tileType == tileType {
                 walls++
             }
             
-            if dungeonMap[y+1][x+1] == tileType {
+            if dungeonMap[y+1][x+1].tileType == tileType {
                 walls++
             }
             
-            if dungeonMap[y+1][x-1] == tileType {
+            if dungeonMap[y+1][x-1].tileType == tileType {
                 walls++
             }
             
-            if dungeonMap[y][x+1] == tileType {
+            if dungeonMap[y][x+1].tileType == tileType {
                 walls++
             }
             
-            if dungeonMap[y][x-1] == tileType {
+            if dungeonMap[y][x-1].tileType == tileType {
                 walls++
             }
         }
@@ -546,7 +548,7 @@ class Dungeon {
     //=====================================================================================================//
     private func resetDungeonMap() -> Void {
         
-        self.dungeonMap = [[Tile]](count: dungeonSizeHeight, repeatedValue:[Tile](count:dungeonSizeWidth, repeatedValue:Tile.Nothing))
+        self.dungeonMap = [[TileClass]](count: dungeonSizeHeight, repeatedValue:[TileClass](count:dungeonSizeWidth, repeatedValue: TileClass(tileToCreate: Tile.Nothing)))
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
     }
     
@@ -605,7 +607,7 @@ class Dungeon {
                 while (xDigger != destinationX) || (yDigger != destinationY) {
                     
                     //Change the current tile...
-                    switch dungeonMap[yDigger][xDigger] {
+                    switch dungeonMap[yDigger][xDigger].tileType {
                         case Tile.Wall:
                             do {
                                 
@@ -613,17 +615,17 @@ class Dungeon {
                                 
                                     
                                     //TODO: Add checks for multiple doors in a row
-                                    if dungeonMap[yDigger-1][xDigger] == Tile.Door {
+                                    if dungeonMap[yDigger-1][xDigger].tileType == Tile.Door {
                                         
-                                    } else if dungeonMap[yDigger-1][xDigger] == Tile.Door {
+                                    } else if dungeonMap[yDigger-1][xDigger].tileType == Tile.Door {
                                         
-                                    } else if dungeonMap[yDigger-1][xDigger] == Tile.Door {
+                                    } else if dungeonMap[yDigger-1][xDigger].tileType == Tile.Door {
                                         
-                                    } else if dungeonMap[yDigger-1][xDigger] == Tile.Door {
+                                    } else if dungeonMap[yDigger-1][xDigger].tileType == Tile.Door {
                                         
                                     } else {
                                         
-                                        dungeonMap[yDigger][xDigger] = Tile.Door
+                                        dungeonMap[yDigger][xDigger] = TileClass (tileToCreate: Tile.Door)
                                         
                                     }
 
@@ -637,7 +639,7 @@ class Dungeon {
                             }
                         case Tile.Nothing:
                             do {
-                                dungeonMap[yDigger][xDigger] = Tile.CorridorHorizontal
+                                dungeonMap[yDigger][xDigger] = TileClass (tileToCreate: Tile.CorridorHorizontal)
                             }
                         default: break
                     }
