@@ -28,7 +28,7 @@ class PlayScene: SKScene {
     //Global variables and constants...
     let view2D:SKSpriteNode
     
-    //JOSH: Pretty sure these are measured in pixels. I think.
+    //JOSH: Pretty sure these are measured in pixels.
     let tileSize = (width:32, height:32)
     
     
@@ -40,7 +40,8 @@ class PlayScene: SKScene {
     
     //Add a light source for the hero...
     var ambientColor:UIColor?
-    var light = SKLightNode();
+    var heroTorch = SKLightNode();
+    var dungeonLight = SKLightNode();
     
     //To detect the touched node...
     var selectedNode = SKNode()
@@ -129,14 +130,22 @@ class PlayScene: SKScene {
         view2D.addChild(aMonster)
 
         //Set the hero's light:
-        light.position = CGPointMake(0.0,0.0)
-        
+        heroTorch.position = CGPointMake(0,0)
         //Kind of prefer it with this off, but leaving it on to see monsters:
-        light.ambientColor = UIColor.brownColor()
-        light.falloff = 1
-        light.lightColor = UIColor.redColor()
-        light.enabled = true
-        myHero.addChild(light)
+        heroTorch.ambientColor = UIColor.brownColor()
+        heroTorch.falloff = 0.01
+        heroTorch.lightColor = UIColor.redColor()
+        heroTorch.enabled = true
+        myHero.addChild(heroTorch)
+        
+        //Set the dungeon's light to the upper right
+        dungeonLight.position = CGPointMake(CGFloat(myDungeon.dungeonSizeHeight), CGFloat(myDungeon.dungeonSizeWidth))
+        dungeonLight.ambientColor = UIColor.greenColor()
+        dungeonLight.falloff = 1
+        dungeonLight.lightColor = UIColor.redColor()
+        heroTorch.enabled = true
+        view2D.addChild(dungeonLight)
+
         
         
         //Configure and add the d-pad
@@ -462,8 +471,7 @@ class PlayScene: SKScene {
     
     
     
-    //TODO: USE THIS TO REPLACE THER ONE BELOW, and the "tiles" object, it's not needed.
-    //Also, use this to setup shadowedBitMask on walls, etc.
+    //Draws the dungone using the array of dungeon tiles within the myDungeon object
     func placeAllDungeonTiles(){
     
         //Loop through all tiles
@@ -480,7 +488,7 @@ class PlayScene: SKScene {
                 myDungeon.dungeonMap[row][column].anchorPoint = CGPoint(x:0, y:0)
                 
                 //Only setup lighing for a section with 10 tiles for perf reasons for now.
-                /*if (abs(row - myHero.location.y) < 10) && (abs(column - myHero.location.x) < 10) {
+                if (abs(row - myHero.location.y) < 10) && (abs(column - myHero.location.x) < 10) {
                     myDungeon.dungeonMap[row][column].lightingBitMask = 1
                     
                     
@@ -488,8 +496,11 @@ class PlayScene: SKScene {
                         myDungeon.dungeonMap[row][column].shadowCastBitMask = 1
                     }
                     
-                }*/
+                }
                 
+                //Had to add this to stop the addChild below from crashing. I'm not sure why. 
+                //Interestingly, after I added this, it seems to be removing all of the "floors".
+                //There's def. something weird with floors; maybe pass be reference issue??
                 myDungeon.dungeonMap[row][column].removeFromParent()
                 
                 view2D.addChild(myDungeon.dungeonMap[row][column])

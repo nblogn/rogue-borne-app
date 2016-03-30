@@ -47,6 +47,7 @@ class Dungeon {
     var monsters: [Monster]
     var items: [Item]
     
+    
     /*
     I think these should be in the Dungeon class, since they're in the dungeon.
     I'm thinking something needs to keep track of where all the objects are.
@@ -87,14 +88,15 @@ class Dungeon {
         self.cellSizeHeight = 40
         self.numberOfRooms = 20
         
-        self.dungeonMap = [[TileClass]](count: dungeonSizeHeight, repeatedValue:[TileClass](count:dungeonSizeWidth, repeatedValue: TileClass(tileToCreate: Tile.Nothing)))
-        
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
         
         self.heros = [Hero()]
         self.monsters = [Monster()]
         self.items = [Item()]
         
+        createBlankDungeonMap()
+        
+
         
     }
 
@@ -106,14 +108,14 @@ class Dungeon {
         self.cellSizeWidth = cellSizeWidth
         self.numberOfRooms = numberOfRooms
         
-        let blankTile = TileClass(tileToCreate: Tile.Nothing)
-        self.dungeonMap = [[TileClass]](count: dungeonSizeHeight, repeatedValue:[TileClass](count:dungeonSizeWidth, repeatedValue: blankTile))
-        
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
 
         self.heros = [Hero()]
         self.monsters = [Monster()]
         self.items = [Item()]
+        
+        createBlankDungeonMap()
+
     }
 
     
@@ -279,6 +281,10 @@ class Dungeon {
         
         var randWalls:Int
         
+        //Let's make a room, for now it's taking up the whole dungeon
+        //TODO: Make extensible so this can be a single room within a larger dungeon
+        dungeonRooms.append(DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: dungeonSizeWidth, y2: dungeonSizeHeight), connectedRooms: nil))
+        
         for var row = 0; row < dungeonMap.count; row++ {
             for var column = 0; column < dungeonMap[row].count; column++ {
                 
@@ -319,7 +325,6 @@ class Dungeon {
     //
     //=====================================================================================================//
     func generateDungeonRoomsUsingFitLeftToRight(roomSize: Int = 3, density: Int = 3) {
-        
         
         var randomWidth: Int
         var randomWidthOffset: Int
@@ -543,19 +548,6 @@ class Dungeon {
     
     
     //=====================================================================================================//
-    //Set the dungeon back to basics
-    //
-    //=====================================================================================================//
-    private func resetDungeonMap() -> Void {
-        
-        self.dungeonMap = [[TileClass]](count: dungeonSizeHeight, repeatedValue:[TileClass](count:dungeonSizeWidth, repeatedValue: TileClass(tileToCreate: Tile.Nothing)))
-        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
-    }
-    
-    
-    
-    
-    //=====================================================================================================//
     //Functions to connect an array of DungeonRoom struct
     //Given an array of rooms, this will draw corridors between them, and add them as connections
     //=====================================================================================================//
@@ -571,6 +563,8 @@ class Dungeon {
 
         var roomIterator: Int = 0
         var connectedRooms: Int = 0
+        var doorCreatedInVerticalWall: Bool = false
+        var doorCreatedInHorizontalWall: Bool = false
         
         while (connectedRooms <= dungeonRooms.count) {
             
@@ -611,26 +605,18 @@ class Dungeon {
                         case Tile.Wall:
                             do {
                                 
-                                if (howManyWallsAreAroundMe(x: xDigger, y: yDigger, tileType: Tile.Door)) == 0 {
-                                
-                                    
-                                    //TODO: Add checks for multiple doors in a row
-                                    if dungeonMap[yDigger-1][xDigger].tileType == Tile.Door {
-                                        
-                                    } else if dungeonMap[yDigger-1][xDigger].tileType == Tile.Door {
-                                        
-                                    } else if dungeonMap[yDigger-1][xDigger].tileType == Tile.Door {
-                                        
-                                    } else if dungeonMap[yDigger-1][xDigger].tileType == Tile.Door {
-                                        
-                                    } else {
-                                        
-                                        dungeonMap[yDigger][xDigger] = TileClass (tileToCreate: Tile.Door)
-                                        
-                                    }
+                                dungeonMap[yDigger][xDigger] = TileClass (tileToCreate: Tile.Door)
 
+                                //TODO: Add checks for multiple doors in a row
+                                if (dungeonMap[yDigger-1][xDigger].tileType == Tile.Wall) || (dungeonMap[yDigger+1][xDigger].tileType == Tile.Wall) {
+                                    
+                                    doorCreatedInVerticalWall = true
+                                    
+                                } else if (dungeonMap[yDigger][xDigger+1].tileType == Tile.Door) || (dungeonMap[yDigger][xDigger-1].tileType == Tile.Door) {
+                                    
+                                    doorCreatedInHorizontalWall = true
+                                    
                                 }
-                                
                                 
                             }
                         case Tile.Ground:
@@ -648,22 +634,43 @@ class Dungeon {
                     //Decide how to move onto the next tile as we traverse to our destination
                     let randNum = Int(arc4random_uniform(10))
                     
-                    if (randNum < 6)
-                    {
-                        if xDigger > destinationX {
-                            xDigger--
-                        } else  if xDigger < destinationX {
+                    //If we just created a wall, ensure we move out of the wall (so we don't build several doors beside each other:
+                    if doorCreatedInHorizontalWall {
+                        
+                        if (yDigger < destinationY){
+                            yDigger++
+                            doorCreatedInHorizontalWall = false
+                        } else {
+                            yDigger--
+                            doorCreatedInHorizontalWall = false
+                        }
+                    } else if doorCreatedInVerticalWall {
+                        if (xDigger < destinationX){
                             xDigger++
+                            doorCreatedInVerticalWall = false
+                        } else {
+                            xDigger--
+                            doorCreatedInVerticalWall = false
                         }
                         
-                    } else {
-                        if yDigger > destinationY {
-                            yDigger--
-                        } else if yDigger < destinationY {
-                            yDigger++
+                    } else { //no door was created, so we can move randomly in the right general direction
+
+                        if (randNum < 6)
+                        {
+                            if xDigger > destinationX {
+                                xDigger--
+                            } else  if xDigger < destinationX {
+                                xDigger++
+                            }
+                            
+                        } else {
+                            if yDigger > destinationY {
+                                yDigger--
+                            } else if yDigger < destinationY {
+                                yDigger++
+                            }
                         }
                     }
-                    
                 }
                 
                 if closestRoom! >= dungeonRooms.count-1 {
@@ -738,6 +745,34 @@ class Dungeon {
         return closestRoom
 
     }
+    
+    
+    
+    
+    //=====================================================================================================//
+    //Set the dungeon back to basics
+    //
+    //=====================================================================================================//
+    private func createBlankDungeonMap() -> Void {
+        
+        for var row = 0; row < dungeonSizeHeight; row++ {
+            for var column = 0; column < dungeonSizeWidth; column++ {
+                
+                if (column == 0){
+                    
+                    dungeonMap.append([TileClass(tileToCreate: Tile.Nothing)])
+                    
+                } else {
+                
+                    dungeonMap[row].append(TileClass(tileToCreate: Tile.Nothing))
+                
+                }
+            }
+        }
+    }
+    
+    
+    
     
     
     //=====================================================================================================//
