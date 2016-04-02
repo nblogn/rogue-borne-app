@@ -29,6 +29,8 @@ struct asciiDungeonObjectArt {
 */
 
 
+let tileSize = (width:32, height:32)
+
 
 enum Tile: Int {
     
@@ -77,6 +79,7 @@ enum Tile: Int {
             return "Door"
         }
     }
+    
 }
 
 

@@ -10,9 +10,10 @@
 
 import Foundation
 import Darwin
+import SpriteKit
 
 
-class Dungeon {
+class Dungeon: SKNode {
     
 
     //Constants and initializers...
@@ -77,9 +78,12 @@ class Dungeon {
     //      not ideal from a design perspective. I think.
     //
     //=====================================================================================================//
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     //Default init values...
-    init () {
+    override init () {
 
         //Default sizes
         self.dungeonSizeWidth = 100
@@ -93,6 +97,8 @@ class Dungeon {
         self.heros = [Hero()]
         self.monsters = [Monster()]
         self.items = [Item()]
+        
+        super.init()
         
         createBlankDungeonMap()
         
@@ -113,6 +119,8 @@ class Dungeon {
         self.heros = [Hero()]
         self.monsters = [Monster()]
         self.items = [Item()]
+        
+        super.init()
         
         createBlankDungeonMap()
 
@@ -260,6 +268,8 @@ class Dungeon {
         //Finally, return the full generated dungeon
         dungeonMap = generatedDungeon
         
+        drawDungeonSpriteNodes()
+        
     }
 
 
@@ -311,6 +321,8 @@ class Dungeon {
                 }
             }
         }
+        
+        drawDungeonSpriteNodes()
         
     }
 
@@ -425,6 +437,7 @@ class Dungeon {
         
         drawDungeonRooms()
         connectDungeonRooms()
+        drawDungeonSpriteNodes()
         
     }
     
@@ -748,6 +761,50 @@ class Dungeon {
     
     
     
+    //=====================================================================================================//
+    //Set the dungeon back to basics
+    //
+    //=====================================================================================================//
+
+    //Draws the dungone using the array of dungeon tiles within the myDungeon object
+    func drawDungeonSpriteNodes(){
+        
+        //Loop through all tiles
+        for row in 0..<dungeonMap.count {
+            
+            for column in 0..<dungeonMap[row].count {
+                
+                //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system,
+                //y values increase as you move up the screen and decrease as you move down.
+                let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
+                
+                dungeonMap[row][column].position = point
+                
+                dungeonMap[row][column].anchorPoint = CGPoint(x:0, y:0)
+                
+                //Only setup lighing for a section with 10 tiles for perf reasons for now.
+                //if (abs(row - myHero.location.y) < 10) && (abs(column - myHero.location.x) < 10) {
+                
+                //myDungeon.dungeonMap[row][column].lightingBitMask = LightCategory.Hero
+                
+                //Make walls and "nothing" cast shadows
+                if (dungeonMap[row][column].tileType == Tile.Wall) || (dungeonMap[row][column].tileType == Tile.Nothing) {
+                    dungeonMap[row][column].shadowCastBitMask = LightCategory.Hero
+                }
+                
+                dungeonMap[row][column].removeFromParent()
+                
+                self.addChild(dungeonMap[row][column])
+            }
+            
+        }
+        
+    }
+    
+    
+    
+    
+    
     
     //=====================================================================================================//
     //Set the dungeon back to basics
@@ -769,6 +826,8 @@ class Dungeon {
                 }
             }
         }
+        
+        
     }
     
     
