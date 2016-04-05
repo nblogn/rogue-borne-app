@@ -106,7 +106,6 @@ class PlayScene: SKScene {
         
         view2D.yScale = CGFloat(yScale)
         view2D.xScale = CGFloat(xScale)
-        view2D.lightingBitMask = 1
 
         addChild(view2D)
         
@@ -147,7 +146,7 @@ class PlayScene: SKScene {
     
 
         //Set the background...
-        self.backgroundColor = SKColor.grayColor()
+        self.backgroundColor = SKColor(red: 0.03, green: 0.01, blue: 0.01, alpha: 1.0)
         
         
         //Button to return to main menu
