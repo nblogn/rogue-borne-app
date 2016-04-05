@@ -795,7 +795,7 @@ class Dungeon: SKNode {
             room.anchorPoint = CGPoint(x:0, y:0)
             room.lightingBitMask = LightCategory.Hero
             room.size = CGSize(width: width, height: height)
-            room.texture = SKTexture(imageNamed: Tile.Ground.image)
+            room.texture = SKTexture(imageNamed: "bricksNormal")
             addChild(room)
         }
         
