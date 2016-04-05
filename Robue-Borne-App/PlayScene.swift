@@ -128,8 +128,8 @@ class PlayScene: SKScene {
         aMonster.shadowCastBitMask = LightCategory.Hero
         view2D.addChild(aMonster)
 
-        /*//Set the hero's light:
-        heroTorch.position = CGPointMake(32,32)
+        //Set the hero's light:
+        heroTorch.position = CGPointMake(0,0)
         //Kind of prefer it with this off, but leaving it on to see monsters:
         //heroTorch.ambientColor = UIColor.brownColor()
         heroTorch.falloff = 1
@@ -138,17 +138,7 @@ class PlayScene: SKScene {
         heroTorch.categoryBitMask = LightCategory.Hero
         myHero.addChild(heroTorch)
         
-        //view2D.lightingBitMask = LightCategory.Hero
-        
-        //Set the dungeon's light to the upper right
-        dungeonLight.position = CGPointMake(CGFloat(myDungeon.dungeonSizeHeight/2), CGFloat(myDungeon.dungeonSizeWidth/2))
-        dungeonLight.ambientColor = UIColor.greenColor()
-        dungeonLight.falloff = 1
-        dungeonLight.lightColor = UIColor.redColor()
-        dungeonLight.zPosition = 5
-        dungeonLight.enabled = true
-        view2D.addChild(dungeonLight)*/
-
+        view2D.lightingBitMask = LightCategory.Hero
         
         
         //Configure and add the d-pad
