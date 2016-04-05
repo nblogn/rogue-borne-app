@@ -76,7 +76,7 @@
 		03C1DE931C6C3C8D00CDCF8F /* Robue-Borne-AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Robue-Borne-AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C1DE971C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Robue_Borne_AppUITests.swift; sourceTree = "<group>"; };
 		03C1DE991C6C3C8D00CDCF8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		03C1DEA51C6C420E00CDCF8F /* Dungeon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dungeon.swift; sourceTree = "<group>"; };
+		03C1DEA51C6C420E00CDCF8F /* Dungeon.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = Dungeon.swift; sourceTree = "<group>"; };
 		03C1DEA71C6C467500CDCF8F /* Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
 		03D001B71C9F843100685F29 /* CorridorVertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CorridorVertical.png; sourceTree = "<group>"; };
 		03D001B81C9F843100685F29 /* Door.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Door.png; sourceTree = "<group>"; };

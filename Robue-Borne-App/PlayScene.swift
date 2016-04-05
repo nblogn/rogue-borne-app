@@ -121,8 +121,8 @@ class PlayScene: SKScene {
         view2D.addChild(myHero)
         
         //Set the monster
-        aMonster.location.x = myDungeon.dungeonRooms[1].location.x1+1
-        aMonster.location.y = myDungeon.dungeonRooms[1].location.y1+2
+        aMonster.location.x = myDungeon.dungeonRooms[0].location.x1+1
+        aMonster.location.y = myDungeon.dungeonRooms[0].location.y1+2
         aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
         //Added a shadow to the monster
         aMonster.shadowCastBitMask = LightCategory.Hero

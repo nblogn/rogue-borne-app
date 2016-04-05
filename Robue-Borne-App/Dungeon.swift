@@ -14,7 +14,6 @@ import SpriteKit
 
 
 class Dungeon: SKNode {
-    
 
     //Constants and initializers...
     let dungeonSizeWidth: Int
@@ -44,9 +43,7 @@ class Dungeon: SKNode {
     //The key components of our dungeon...
     var dungeonMap = [[TileClass]]()
     var dungeonRooms: [DungeonRoom]
-    var heros: [Hero]
-    var monsters: [Monster]
-    var items: [Item]
+    
     
     
     /*
@@ -60,6 +57,11 @@ class Dungeon: SKNode {
 
     That said, I'm not totally sure about this.
     */
+    var heros: [Hero]
+    var monsters: [Monster]
+    var items: [Item]
+    
+
     
     
     func getTileByLocation (X: Int, Y: Int) -> TileClass {
@@ -762,14 +764,37 @@ class Dungeon: SKNode {
     
     
     //=====================================================================================================//
-    //Set the dungeon back to basics
+    //
+    //Draw the dungeon nodes!
     //
     //=====================================================================================================//
 
     //Draws the dungone using the array of dungeon tiles within the myDungeon object
-    func drawDungeonSpriteNodes(){
+    private func drawDungeonSpriteNodes(){
         
-        //Loop through all tiles
+        //Draw the rooms using CGRect
+        for roomIterator in 0...dungeonRooms.count-1 {
+            
+            let coordinate1 = convertBoardCoordinatetoCGPoint(dungeonRooms[roomIterator].location.x1, y: dungeonRooms[roomIterator].location.y1)
+            let coordinate2 = convertBoardCoordinatetoCGPoint(dungeonRooms[roomIterator].location.x2, y: dungeonRooms[roomIterator].location.y2)
+            let width = coordinate2.x - coordinate1.x
+            let height = coordinate2.y - coordinate1.y
+            
+            let shape = SKShapeNode()
+            shape.path = UIBezierPath(roundedRect: CGRect(x: coordinate1.x, y: coordinate1.y, width: width, height: height), cornerRadius: 8).CGPath
+            shape.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
+            shape.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.5)
+            shape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.4)
+            shape.lineWidth = 10
+            shape.zPosition = 1
+            addChild(shape)
+            
+            
+        }
+        
+        
+        
+        //Loop through all tiles, draw other shit (hallways, doors, etc.)
         for row in 0..<dungeonMap.count {
             
             for column in 0..<dungeonMap[row].count {
@@ -777,24 +802,23 @@ class Dungeon: SKNode {
                 //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system,
                 //y values increase as you move up the screen and decrease as you move down.
                 let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
-                
                 dungeonMap[row][column].position = point
-                
                 dungeonMap[row][column].anchorPoint = CGPoint(x:0, y:0)
-                
-                //Only setup lighing for a section with 10 tiles for perf reasons for now.
-                //if (abs(row - myHero.location.y) < 10) && (abs(column - myHero.location.x) < 10) {
-                
-                //myDungeon.dungeonMap[row][column].lightingBitMask = LightCategory.Hero
+                dungeonMap[row][column].lightingBitMask = LightCategory.Hero
                 
                 //Make walls and "nothing" cast shadows
                 if (dungeonMap[row][column].tileType == Tile.Wall) || (dungeonMap[row][column].tileType == Tile.Nothing) {
                     dungeonMap[row][column].shadowCastBitMask = LightCategory.Hero
                 }
                 
-                dungeonMap[row][column].removeFromParent()
-                
-                self.addChild(dungeonMap[row][column])
+                //Let's not add the "nothing" tiles, they hit the CPU way too much...
+                if (dungeonMap[row][column].tileType != Tile.Nothing) && (dungeonMap[row][column].tileType != Tile.Ground) && (dungeonMap[row][column].tileType != Tile.Wall) {
+                    
+                    dungeonMap[row][column].removeFromParent()
+                    self.addChild(dungeonMap[row][column])
+                    
+                }
+
             }
             
         }
@@ -803,6 +827,15 @@ class Dungeon: SKNode {
     
     
     
+    private func convertBoardCoordinatetoCGPoint (x: Int, y: Int) -> CGPoint {
+        
+        let retX = ((x+1) * tileSize.width) - (tileSize.width/2)
+        let retY = ((y+1) * tileSize.height) - (tileSize.height/2)
+        
+        return CGPoint(x: retX, y: retY)
+        
+    }
+
     
     
     
@@ -826,8 +859,6 @@ class Dungeon: SKNode {
                 }
             }
         }
-        
-        
     }
     
     
