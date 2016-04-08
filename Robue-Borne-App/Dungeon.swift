@@ -109,6 +109,7 @@ class Dungeon: SKNode {
     }
 
     //Configurable init values...
+    //TODO: Add dungeonType to the init (versus the other way I'm doing it now in PlayScene
     init (dungeonSizeWidth: Int, dungeonSizeHeight: Int, cellSizeHeight: Int, cellSizeWidth: Int, numberOfRooms: Int) {
         self.dungeonSizeWidth = dungeonSizeWidth
         self.dungeonSizeHeight = dungeonSizeHeight
@@ -790,12 +791,21 @@ class Dungeon: SKNode {
             shape.zPosition = 1
             addChild(shape)*/
             
+            
+            //Let's use circuit boards for the rooms!! TRON ftw!
+            //https://www.google.com/search?q=circuit+board&client=safari&rls=en&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiuxq365vbLAhUW-mMKHdFIDtYQ_AUIBygB&biw=1440&bih=839
+            
+            
             let room = SKSpriteNode()
             room.position = coordinate1
             room.anchorPoint = CGPoint(x:0, y:0)
             room.lightingBitMask = LightCategory.Hero
             room.size = CGSize(width: width, height: height)
-            room.texture = SKTexture(imageNamed: "bricksNormal")
+            
+            let imageNumber = String(1+arc4random_uniform(UInt32(9)))
+            let imageName = "cb" + imageNumber + "_n"
+            
+            room.texture = SKTexture(imageNamed: imageName)
             addChild(room)
         }
         
