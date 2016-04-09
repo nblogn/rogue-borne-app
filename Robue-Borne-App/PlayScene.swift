@@ -127,6 +127,13 @@ class PlayScene: SKScene {
         aMonster.shadowCastBitMask = LightCategory.Hero
         view2D.addChild(aMonster)
 
+        if let particles = SKEmitterNode(fileNamed: "FireParticle.sks") {
+            //particles.position = player.position
+            aMonster.addChild(particles)
+        }
+
+        
+        
         //Set the hero's light:
         heroTorch.position = CGPointMake(0,0)
         //Kind of prefer it with this off, but leaving it on to see monsters:

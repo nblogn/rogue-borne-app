@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03337F881CB8800200C8CE98 /* FireParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03337F861CB8800200C8CE98 /* FireParticle.sks */; };
+		03337F891CB8800200C8CE98 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 03337F871CB8800200C8CE98 /* spark.png */; };
 		035A6F3B1CB385BF005B04FD /* bricksNormal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 035A6F3A1CB385BF005B04FD /* bricksNormal.jpg */; };
 		035C2F511CB4B59D0087651F /* cb1_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 035C2F471CB4B59D0087651F /* cb1_n.png */; };
 		035C2F521CB4B59D0087651F /* cb2_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 035C2F481CB4B59D0087651F /* cb2_n.png */; };
@@ -64,6 +66,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03337F861CB8800200C8CE98 /* FireParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireParticle.sks; sourceTree = "<group>"; };
+		03337F871CB8800200C8CE98 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		035A6F3A1CB385BF005B04FD /* bricksNormal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bricksNormal.jpg; sourceTree = "<group>"; };
 		035C2F471CB4B59D0087651F /* cb1_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb1_n.png; sourceTree = "<group>"; };
 		035C2F481CB4B59D0087651F /* cb2_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb2_n.png; sourceTree = "<group>"; };
@@ -198,6 +202,8 @@
 				03B4535F1C93DEAD00E937D0 /* Monster.swift */,
 				03B453611C93DEBB00E937D0 /* ItemClass.swift */,
 				03E3A0D91CAF9B0C0044758D /* Light.swift */,
+				03337F861CB8800200C8CE98 /* FireParticle.sks */,
+				03337F871CB8800200C8CE98 /* spark.png */,
 				038229E41C8CBC4700D84701 /* DPad.swift */,
 				03D001BD1C9FAAF000685F29 /* Tile.swift */,
 				03D001BF1C9FAF7300685F29 /* HelperFunctions.swift */,
@@ -353,8 +359,10 @@
 				03C1DE821C6C3C8D00CDCF8F /* LaunchScreen.storyboard in Resources */,
 				0394FFFE1C702FCB00654A19 /* RB_Floor_Grey_2x.png in Resources */,
 				0394FFFB1C702FCB00654A19 /* RB_Wall_2x.png in Resources */,
+				03337F881CB8800200C8CE98 /* FireParticle.sks in Resources */,
 				03C1DE7F1C6C3C8D00CDCF8F /* Assets.xcassets in Resources */,
 				03D001BC1C9F843100685F29 /* CorridorHorizontal.png in Resources */,
+				03337F891CB8800200C8CE98 /* spark.png in Resources */,
 				0394FFFC1C702FCB00654A19 /* RB_Dude_2x.png in Resources */,
 				0394FFFD1C702FCB00654A19 /* RB_Floor_Green_2x.png in Resources */,
 				03D001BB1C9F843100685F29 /* Door.png in Resources */,
