@@ -21,10 +21,12 @@ class PlayScene: SKScene {
     
     
     
+    
     //-------------------------------------------------------------------------------------------//
+    //
     //lets and vars for the class
+    //
     //-------------------------------------------------------------------------------------------//
-
     //Global variables and constants...
     let view2D:SKSpriteNode
     
@@ -43,13 +45,13 @@ class PlayScene: SKScene {
     var heroTorch = SKLightNode();
     var dungeonLight = SKLightNode();
     
-    //To detect the touched node...
-    var selectedNode = SKNode()
     
     
     
     //-------------------------------------------------------------------------------------------//
-    //INITS and didMoveToView
+    //
+    // INITS and didMoveToView
+    //
     //-------------------------------------------------------------------------------------------//
 
     //Default init in case of errors...
@@ -157,29 +159,46 @@ class PlayScene: SKScene {
         
         
         //Button to return to main menu
-        let mainMenuButton = SKLabelNode(fontNamed:"Cochin")
-        mainMenuButton.text = "Main Menu"
+        let mainMenuButton = SKShapeNode()
+        mainMenuButton.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 160, height: 60), cornerRadius: 8).CGPath
+        mainMenuButton.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
+        mainMenuButton.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
+        mainMenuButton.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
+        mainMenuButton.lineWidth = 2
+        mainMenuButton.glowWidth = 3
+        mainMenuButton.zPosition = 99
         mainMenuButton.name = "mainMenuButton"
-        mainMenuButton.fontSize = 30
-        mainMenuButton.fontColor = SKColor.blueColor()
-        mainMenuButton.position = CGPoint(x:100, y:720)
-        mainMenuButton.zPosition = 100
+        mainMenuButton.position = CGPoint(x: 20, y:675)
+        
+        let mainMenuButtonText = SKLabelNode(fontNamed:"Cochin")
+        mainMenuButtonText.text = "Main Menu"
+        mainMenuButtonText.name = "mainMenuButtonText"
+        mainMenuButtonText.fontSize = 28
+        mainMenuButtonText.fontColor = SKColor.whiteColor()
+        mainMenuButtonText.position = CGPoint(x:80, y:20)
+        mainMenuButtonText.zPosition = 100
+        mainMenuButtonText.userInteractionEnabled = false
+        
+        mainMenuButton.addChild(mainMenuButtonText)
+        
         addChild(mainMenuButton)
         
     }
 
     
+    
+    
 
     //-------------------------------------------------------------------------------------------//
     //
-    //The next funcs are used for panning the whole PlayScene...
+    // PANNING -- The next funcs are used for panning the whole PlayScene...
     //
     //-------------------------------------------------------------------------------------------//
     
     //Callback handler for Pan gestureRecognizer
     func handlePanFrom(recognizer: UIPanGestureRecognizer) {
-        
-        selectedNode = view2D
+
+        let selectedNode = view2D
         
         if recognizer.state == .Began {
             var touchLocation = recognizer.locationInView(recognizer.view)
@@ -237,9 +256,11 @@ class PlayScene: SKScene {
     
     
     
+    
+    
     //-------------------------------------------------------------------------------------------//
     //
-    //Handle zooming the entire dungeon
+    // ZOOMING the entire dungeon
     //
     //-------------------------------------------------------------------------------------------//
     func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
@@ -288,9 +309,11 @@ class PlayScene: SKScene {
     }
     
     
+    
+    
     //-------------------------------------------------------------------------------------------//
     //
-    //Handle tapping, including d-pad and hero movement
+    // TAPPING, including d-pad and hero movement
     //
     //-------------------------------------------------------------------------------------------//
     func handleTapFrom (recognizer: UITapGestureRecognizer) {
@@ -317,11 +340,9 @@ class PlayScene: SKScene {
                     moveHero(1, y: 0)
                     moveMonster()
                 
-                
                 case "RB_Cntrl_Left":
                     moveHero(-1, y: 0)
                     moveMonster()
-                
                 
                 case "RB_Cntrl_Middle": break
                     //rest and move monsters
@@ -332,18 +353,62 @@ class PlayScene: SKScene {
                     let startScene = StartScene(size: self.size)
                     self.view?.presentScene(startScene, transition: reveal)
                 
+                case "hero", "monster", "item":
+                    //popup a screen to show the details for the character, monster, or item attributes
+                    showDetailsModalForNode(touchedNode)
+                
                 default:
                     //Go back to the StartScene if Main Menu is pressed
-                    let reveal = SKTransition.flipHorizontalWithDuration(0.5)
-                    let startScene = StartScene(size: self.size)
-                    self.view?.presentScene(startScene, transition: reveal)
-
-                
+                    hideDetailsModal ()
             }
         }
     }
 
     
+    
+    
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // DETAILS -- Draw/hide the details modal popup window
+    //
+    //-------------------------------------------------------------------------------------------//
+    func showDetailsModalForNode (nodeToDetail: SKNode) {
+        let detailsModal = SKShapeNode()
+        detailsModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 400, height: 400), cornerRadius: 8).CGPath
+        detailsModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
+        detailsModal.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
+        detailsModal.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
+        detailsModal.lineWidth = 10
+        detailsModal.glowWidth = 5
+        detailsModal.zPosition = 99
+        detailsModal.name = "details"
+        detailsModal.position = CGPoint(x: 400, y:100)
+        addChild(detailsModal)
+        
+        //TODO: lookup the details nodeToDetail and print out details!
+        
+
+    }
+    
+    func hideDetailsModal () {
+        //remove details window
+        self.childNodeWithName("details")?.removeFromParent()
+        
+        //TODO: this shit aint working. Tried zindex first it sorta worked.
+    }
+    
+    
+    
+    
+    
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // MOVE characters and monsters
+    //
+    //-------------------------------------------------------------------------------------------//
+
     func moveHero(x:Int, y:Int) {
         
         switch myDungeon.dungeonMap[myHero.location.y + y][myHero.location.x + x].tileType {
@@ -452,12 +517,14 @@ class PlayScene: SKScene {
     }
 
     
+    
+    
     //-------------------------------------------------------------------------------------------//
     //Handling board coordinate space
-    //-------------------------------------------------------------------------------------------//
     //Generic func to place a tile on the board.
     //Given a board position convert to CGPoint
     //From me: I probably need some conversions of array coordinates to CGPoint coordinate...
+    //-------------------------------------------------------------------------------------------//
     func convertBoardCoordinatetoCGPoint (x: Int, y: Int) -> CGPoint {
         
         let retX = ((x+1) * tileSize.width) - (tileSize.width/2)

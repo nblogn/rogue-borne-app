@@ -36,7 +36,7 @@ class Monster: SKSpriteNode {
         let texture = SKTexture(imageNamed: "RB_Monster1")
         super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
         
-        self.name = "monster1"
+        self.name = "monster"
         self.zPosition = 50
         
     }
