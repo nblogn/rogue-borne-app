@@ -781,20 +781,9 @@ class Dungeon: SKNode {
             let width = coordinate2.x - coordinate1.x
             let height = coordinate2.y - coordinate1.y
             
-            /*let shape = SKShapeNode()
-            shape.path = UIBezierPath(roundedRect: CGRect(x: coordinate1.x, y: coordinate1.y, width: width, height: height), cornerRadius: 8).CGPath
-            shape.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
-            shape.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
-            shape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
-            shape.lineWidth = 10
-            shape.glowWidth = 5
-            shape.zPosition = 1
-            addChild(shape)*/
-            
             
             //Let's use circuit boards for the rooms!! TRON ftw!
             //https://www.google.com/search?q=circuit+board&client=safari&rls=en&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiuxq365vbLAhUW-mMKHdFIDtYQ_AUIBygB&biw=1440&bih=839
-            
             
             let room = SKSpriteNode()
             room.position = coordinate1
@@ -806,13 +795,29 @@ class Dungeon: SKNode {
             let imageName = "cb" + imageNumber + "_n"
             
             room.texture = SKTexture(imageNamed: imageName)
+            room.normalTexture = SKTexture(imageNamed: imageName)
+        
+            
+            //Draw borders (walls) Using skShapeNode
+            //BUG: This is not working quite right, I think the scaling of the scene is screwing it up.
+            /*let shape = SKShapeNode()
+            shape.path = UIBezierPath(roundedRect: CGRect(x: coordinate1.x, y: coordinate1.y, width: width, height: height), cornerRadius: 8).CGPath
+            shape.position = coordinate1 //CGPoint(x: 0, y: 0)
+            shape.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
+            shape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
+            shape.lineWidth = 10
+            shape.glowWidth = 5
+            shape.zPosition = 1
+            addChild(shape)*/
+            
+            //Add the room to the dungeon:
             addChild(room)
+            
         }
         
         
         //Draw the hallways using paths:
         /*
-        SKShapeNode *yourline = [SKShapeNode node];
         CGMutablePathRef pathToDraw = CGPathCreateMutable();
         CGPathMoveToPoint(pathToDraw, NULL, 100.0, 100.0);
         CGPathAddLineToPoint(pathToDraw, NULL, 50.0, 50.0);
@@ -820,7 +825,6 @@ class Dungeon: SKNode {
         [yourline setStrokeColor:[SKColor redColor]];
         [self addChild:yourline];
         */
-        
         
         
         //Loop through all tiles, draw other shit (hallways, doors, etc.)
@@ -841,7 +845,7 @@ class Dungeon: SKNode {
                 }
                 
                 //Let's not add the "nothing" tiles, they hit the CPU way too much...
-                if (dungeonMap[row][column].tileType != Tile.Nothing) && (dungeonMap[row][column].tileType != Tile.Ground) && (dungeonMap[row][column].tileType != Tile.Wall) {
+                if (dungeonMap[row][column].tileType != Tile.Nothing) && (dungeonMap[row][column].tileType != Tile.Ground) {
                     
                     dungeonMap[row][column].removeFromParent()
                     self.addChild(dungeonMap[row][column])

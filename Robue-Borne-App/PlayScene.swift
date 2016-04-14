@@ -137,10 +137,10 @@ class PlayScene: SKScene {
         
         
         //Set the hero's light:
-        heroTorch.position = CGPointMake(0,0)
+        heroTorch.position = CGPointMake(0.25,0.25)
         //Kind of prefer it with this off, but leaving it on to see monsters:
         //heroTorch.ambientColor = UIColor.brownColor()
-        heroTorch.falloff = 1
+        //heroTorch.falloff = 1
         heroTorch.lightColor = UIColor.redColor()
         heroTorch.enabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
