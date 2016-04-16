@@ -192,13 +192,13 @@ class Dungeon: SKNode {
                 }
                 
                 columnIterator += cellSizeWidth
-                numberOfWidthCellsIterator++
+                numberOfWidthCellsIterator += 1
             }
             
             columnIterator = 0
             numberOfWidthCellsIterator = 0
             rowIterator += cellSizeHeight
-            numberOfHeightCellsIterator++
+            numberOfHeightCellsIterator += 1
         }
         
         
@@ -252,19 +252,19 @@ class Dungeon: SKNode {
                     else {
                         generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.Ground)
                     }
-                    columnIterator++
+                    columnIterator += 1
                     
                 }
                 
                 columnIterator = 0
-                rowIterator++
+                rowIterator += 1
                 
             }
             
             rowIterator = 0
             columnIterator = 0
             
-            numberOfCellsIterator++
+            numberOfCellsIterator += 1
             
         }
         
@@ -298,8 +298,8 @@ class Dungeon: SKNode {
         //TODO: Make extensible so this can be a single room within a larger dungeon
         dungeonRooms.append(DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: dungeonSizeWidth, y2: dungeonSizeHeight), connectedRooms: nil))
         
-        for var row = 0; row < dungeonMap.count; row++ {
-            for var column = 0; column < dungeonMap[row].count; column++ {
+        for row in 0 ..< dungeonMap.count {
+            for column in 0 ..< dungeonMap[row].count {
                 
                 randWalls = Int(arc4random_uniform(UInt32(100)))
                 
@@ -312,8 +312,8 @@ class Dungeon: SKNode {
         
         for _ in 1...5 {
             
-            for var row2 = 0; row2 < dungeonMap.count; row2++ {
-                for var column2 = 0; column2 < dungeonMap[row2].count; column2++ {
+            for row2 in 0 ..< dungeonMap.count {
+                for column2 in 0 ..< dungeonMap[row2].count {
                     
                     if howManyWallsAreAroundMe(x:column2,y:row2) > 5 {
                         dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.Wall)
@@ -407,12 +407,12 @@ class Dungeon: SKNode {
                         
                     }
                     
-                    rowCheck++
+                    rowCheck += 1
                     
                 }
                 
                 rowCheck = 0
-                columnCheck++
+                columnCheck += 1
                 
             }
             
@@ -428,11 +428,11 @@ class Dungeon: SKNode {
                 dungeonRooms[createdRooms].location.y1 = minY + randomHeightOffset
                 dungeonRooms[createdRooms].location.y2 = minY + randomHeight - randomHeightOffset2
                 
-                createdRooms++
+                createdRooms += 1
 
             } else {
                 
-                roomDoesNotFit++
+                roomDoesNotFit += 1
 
             }
 
@@ -488,9 +488,9 @@ class Dungeon: SKNode {
             var row = 0
             var column = 0
             
-            for row = dungeonRooms[drawRoomIterator].location.y1; ((row <= dungeonRooms[drawRoomIterator].location.y2) && (row < dungeonSizeHeight)); row++ {
+            for row = dungeonRooms[drawRoomIterator].location.y1; ((row <= dungeonRooms[drawRoomIterator].location.y2) && (row < dungeonSizeHeight)); row += 1 {
                 
-                for column = dungeonRooms[drawRoomIterator].location.x1; ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)); column++ {
+                for column = dungeonRooms[drawRoomIterator].location.x1; ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)); column += 1 {
                     
                     //Check to see if we are drawing walls or floor...
                     if ((row == dungeonRooms[drawRoomIterator].location.y1) || (row == dungeonRooms[drawRoomIterator].location.y2) || (column == dungeonRooms[drawRoomIterator].location.x1) || (column == dungeonRooms[drawRoomIterator].location.x2)) {
@@ -525,35 +525,35 @@ class Dungeon: SKNode {
         } else {
 
             if dungeonMap[y][x-1].tileType == tileType {
-                walls++
+                walls += 1
             }
 
             if dungeonMap[y-1][x+1].tileType == tileType {
-                walls++
+                walls += 1
             }
             
             if dungeonMap[y-1][x-1].tileType == tileType {
-                walls++
+                walls += 1
             }
         
             if dungeonMap[y+1][x].tileType == tileType {
-                walls++
+                walls += 1
             }
             
             if dungeonMap[y+1][x+1].tileType == tileType {
-                walls++
+                walls += 1
             }
             
             if dungeonMap[y+1][x-1].tileType == tileType {
-                walls++
+                walls += 1
             }
             
             if dungeonMap[y][x+1].tileType == tileType {
-                walls++
+                walls += 1
             }
             
             if dungeonMap[y][x-1].tileType == tileType {
-                walls++
+                walls += 1
             }
         }
         
@@ -608,7 +608,7 @@ class Dungeon: SKNode {
                     dungeonRooms[closestRoom!].connectedRooms = []
                 }
                 dungeonRooms[closestRoom!].connectedRooms?.append(dungeonRooms[roomIterator])
-                connectedRooms++
+                connectedRooms += 1
                 
                 
                 //Dig the connection between the rooms
@@ -654,18 +654,18 @@ class Dungeon: SKNode {
                     if doorCreatedInHorizontalWall {
                         
                         if (yDigger < destinationY){
-                            yDigger++
+                            yDigger += 1
                             doorCreatedInHorizontalWall = false
                         } else {
-                            yDigger--
+                            yDigger -= 1
                             doorCreatedInHorizontalWall = false
                         }
                     } else if doorCreatedInVerticalWall {
                         if (xDigger < destinationX){
-                            xDigger++
+                            xDigger += 1
                             doorCreatedInVerticalWall = false
                         } else {
-                            xDigger--
+                            xDigger -= 1
                             doorCreatedInVerticalWall = false
                         }
                         
@@ -674,16 +674,16 @@ class Dungeon: SKNode {
                         if (randNum < 6)
                         {
                             if xDigger > destinationX {
-                                xDigger--
+                                xDigger -= 1
                             } else  if xDigger < destinationX {
-                                xDigger++
+                                xDigger += 1
                             }
                             
                         } else {
                             if yDigger > destinationY {
-                                yDigger--
+                                yDigger -= 1
                             } else if yDigger < destinationY {
-                                yDigger++
+                                yDigger += 1
                             }
                         }
                     }
@@ -706,7 +706,7 @@ class Dungeon: SKNode {
                     
                 } else {
                     
-                    roomIterator++
+                    roomIterator += 1
                     
                 }
                 
@@ -878,8 +878,8 @@ class Dungeon: SKNode {
     //=====================================================================================================//
     private func createBlankDungeonMap() -> Void {
         
-        for var row = 0; row < dungeonSizeHeight; row++ {
-            for var column = 0; column < dungeonSizeWidth; column++ {
+        for row in 0 ..< dungeonSizeHeight {
+            for column in 0 ..< dungeonSizeWidth {
                 
                 if (column == 0){
                     
@@ -904,8 +904,8 @@ class Dungeon: SKNode {
     //=====================================================================================================//
     private func printDungeon(mazeToPrint: [[String]]){
         
-        for var row = 0; row < mazeToPrint.count; row++ {
-            for var column = 0; column < mazeToPrint[row].count; column++ {
+        for row in 0 ..< mazeToPrint.count {
+            for column in 0 ..< mazeToPrint[row].count {
                 print("\(mazeToPrint[row][column])", terminator:"")
             }
             print(" - \(row)")

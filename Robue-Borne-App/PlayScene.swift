@@ -88,13 +88,13 @@ class PlayScene: SKScene {
     override func didMoveToView(view: SKView) {
         
         //Setup Gestures...
-        let gesturePanRecognizer = UIPanGestureRecognizer(target: self, action: Selector("handlePanFrom:"))
+        let gesturePanRecognizer = UIPanGestureRecognizer(target: self, action: #selector(PlayScene.handlePanFrom(_:)))
         self.view!.addGestureRecognizer(gesturePanRecognizer)
         
-        let gesturePinchRecognizer = UIPinchGestureRecognizer(target: self, action: Selector("handlePinchFrom:"))
+        let gesturePinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(PlayScene.handlePinchFrom(_:)))
         self.view!.addGestureRecognizer(gesturePinchRecognizer)
             
-        let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: Selector("handleTapFrom:"))
+        let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(PlayScene.handleTapFrom(_:)))
         self.view!.addGestureRecognizer(gestureTapRecognizer)
     
         //Scale the view to ensure all tiles will fit within the view...
