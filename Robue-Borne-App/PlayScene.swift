@@ -21,7 +21,6 @@ class PlayScene: SKScene {
     
     
     
-    
     //-------------------------------------------------------------------------------------------//
     //
     //lets and vars for the class
@@ -39,6 +38,7 @@ class PlayScene: SKScene {
     let myHero: Hero
     let aMonster: Monster
     let myDPad: dPad
+    let myDetails: CharacterDetailsPopup
     
     //Add a light source for the hero...
     var ambientColor:UIColor?
@@ -69,6 +69,8 @@ class PlayScene: SKScene {
         self.myDPad = dPad()
         self.myHero = Hero()
         self.aMonster = Monster()
+        self.myDetails = CharacterDetailsPopup()
+        myDetails.name = "details"
         
         //Change the different map creation algorithms to happen on UI button press
         switch dungeonType {
@@ -86,7 +88,8 @@ class PlayScene: SKScene {
     
     //didMoveToView is the first event in the PlayScene after inits
     override func didMoveToView(view: SKView) {
-        
+
+        ////
         //Setup Gestures...
         let gesturePanRecognizer = UIPanGestureRecognizer(target: self, action: #selector(PlayScene.handlePanFrom(_:)))
         self.view!.addGestureRecognizer(gesturePanRecognizer)
@@ -96,45 +99,23 @@ class PlayScene: SKScene {
             
         let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(PlayScene.handleTapFrom(_:)))
         self.view!.addGestureRecognizer(gestureTapRecognizer)
-    
-        //Scale the view to ensure all tiles will fit within the view...
-        print(self.size)
-        
-        let yScale = Float(self.size.height) / (Float(myDungeon.dungeonSizeHeight) * Float(tileSize.height))
-        let xScale = Float(self.size.width) / (Float(myDungeon.dungeonSizeWidth) * Float(tileSize.width))
-        
-        print(xScale)
-        print(yScale)
-        
-        view2D.yScale = CGFloat(yScale)
-        view2D.xScale = CGFloat(xScale)
 
+        
+        ////
+        //Add the dungeon to the view2D node, and add the view2D node to the PlayScene scene.
+        view2D.addChild(myDungeon)
         addChild(view2D)
         
-        //Add the dungeon to the self SKScene view2D var
-        view2D.addChild(myDungeon)
-
+        ////
+        //Add details window, hidden for now
+        addChild(myDetails)
         
+        ////
         //Set the hero
         myHero.location.x = myDungeon.dungeonRooms[0].location.x1+1
         myHero.location.y = myDungeon.dungeonRooms[0].location.y1+1
         myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
         view2D.addChild(myHero)
-        
-        //Set the monster
-        aMonster.location.x = myDungeon.dungeonRooms[0].location.x1+1
-        aMonster.location.y = myDungeon.dungeonRooms[0].location.y1+2
-        aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
-        //Added a shadow to the monster
-        aMonster.shadowCastBitMask = LightCategory.Hero
-        view2D.addChild(aMonster)
-
-        if let particles = SKEmitterNode(fileNamed: "FireParticle.sks") {
-            //particles.position = player.position
-            aMonster.addChild(particles)
-        }
-
-        
         
         //Set the hero's light:
         heroTorch.position = CGPointMake(0.25,0.25)
@@ -149,15 +130,36 @@ class PlayScene: SKScene {
         view2D.lightingBitMask = LightCategory.Hero
         
         
+        ////
+        //Set the monster
+        aMonster.location.x = myDungeon.dungeonRooms[0].location.x1+1
+        aMonster.location.y = myDungeon.dungeonRooms[0].location.y1+2
+        aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
+
+        //Added a shadow to the monster
+        aMonster.shadowCastBitMask = LightCategory.Hero
+        view2D.addChild(aMonster)
+
+        //Light the monster on fire
+        if let particles = SKEmitterNode(fileNamed: "FireParticle.sks") {
+            //particles.position = player.position
+            aMonster.addChild(particles)
+        }
+
+
+        
+        ////
         //Configure and add the d-pad
-        myDPad.zPosition = 100
+        myDPad.zPosition = 99
         addChild(myDPad)
     
-
+        
+        ////
         //Set the background...
-        self.backgroundColor = SKColor(red: 0.03, green: 0.01, blue: 0.01, alpha: 1.0)
+        self.backgroundColor = SKColor(red: 0.1, green: 0.01, blue: 0.01, alpha: 1.0)
         
         
+        ////
         //Button to return to main menu
         let mainMenuButton = SKShapeNode()
         mainMenuButton.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 160, height: 60), cornerRadius: 8).CGPath
@@ -177,7 +179,6 @@ class PlayScene: SKScene {
         mainMenuButtonText.fontColor = SKColor.whiteColor()
         mainMenuButtonText.position = CGPoint(x:80, y:20)
         mainMenuButtonText.zPosition = 100
-        mainMenuButtonText.userInteractionEnabled = false
         
         mainMenuButton.addChild(mainMenuButtonText)
         
@@ -258,6 +259,7 @@ class PlayScene: SKScene {
     
     
     
+    
     //-------------------------------------------------------------------------------------------//
     //
     // ZOOMING the entire dungeon
@@ -284,18 +286,53 @@ class PlayScene: SKScene {
             
         } else if (recognizer.state == .Changed) {
 
-            let anchorPointInMyNode = view2D.convertPoint(anchorPoint, fromNode: self)
+            //////////
+            //Position:
+            print("view2D.position.x: ", view2D.position.x)
+            
+            let view2dBounds: CGRect = view2D.calculateAccumulatedFrame()
+            let view2dMidpoint: CGPoint = CGPoint(x: ((view2dBounds.width - view2D.position.x)/2), y: ((view2dBounds.height - view2D.position.y)/2))
+            let view2dMidpointInScene = view2D.convertPoint(view2dMidpoint, fromNode: self)
+            
+            
+            if recognizer.scale > 1 { //zooming out
+                
+                if touchedAnchorPoint.x < view2dMidpointInScene.x {
+                    view2D.position.x += 10 * recognizer.scale
+                } else {
+                    view2D.position.x -= 10 * recognizer.scale
+                }
+                
+                if touchedAnchorPoint.y < view2dMidpointInScene.y {
+                    view2D.position.y += 7 * recognizer.scale
+                } else {
+                    view2D.position.y -= 7 * recognizer.scale
+                }
+                
+            } else { //zooming in
+                
+                if touchedAnchorPoint.x < view2dMidpointInScene.x {
+                    view2D.position.x -= 10 * recognizer.scale
+                } else {
+                    view2D.position.x += 10 * recognizer.scale
+                }
+                
+                if touchedAnchorPoint.y < view2dMidpointInScene.y {
+                    view2D.position.y -= 7 * recognizer.scale
+                } else {
+                    view2D.position.y += 7 * recognizer.scale
+                }
+
+            }
+    
+            
+            //////////
+            //Scale:
+            print ("recognizer.scale == ", recognizer.scale)
             
             view2D.xScale = (view2D.xScale * recognizer.scale)
             view2D.yScale = (view2D.yScale * recognizer.scale)
-            
-            
-            let mySkNodeAnchorPointInScene = self.convertPoint(anchorPointInMyNode, fromNode: view2D)
-            
-            let translationOfAnchorInScene = CGPointMake(anchorPoint.x - mySkNodeAnchorPointInScene.x, anchorPoint.y - mySkNodeAnchorPointInScene.y)
-            
-            view2D.position = CGPointMake(view2D.position.x + translationOfAnchorInScene.x, view2D.position.y + translationOfAnchorInScene.y)
-            
+
             recognizer.scale = 1.0
             
         } else if (recognizer.state == .Ended) {
@@ -355,49 +392,16 @@ class PlayScene: SKScene {
                 
                 case "hero", "monster", "item":
                     //popup a screen to show the details for the character, monster, or item attributes
-                    showDetailsModalForNode(touchedNode)
+                    //addChild(myDetails)
+                    myDetails.showDetailsModalForNode(touchedNode, parent: self)
                 
                 default:
                     //Go back to the StartScene if Main Menu is pressed
-                    hideDetailsModal ()
+                    //self.childNodeWithName("details")?.removeFromParent()
+                    myDetails.hideDetailsModal ()
             }
         }
     }
-
-    
-    
-    
-    
-    //-------------------------------------------------------------------------------------------//
-    //
-    // DETAILS -- Draw/hide the details modal popup window
-    //
-    //-------------------------------------------------------------------------------------------//
-    func showDetailsModalForNode (nodeToDetail: SKNode) {
-        let detailsModal = SKShapeNode()
-        detailsModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 400, height: 400), cornerRadius: 8).CGPath
-        detailsModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
-        detailsModal.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
-        detailsModal.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
-        detailsModal.lineWidth = 10
-        detailsModal.glowWidth = 5
-        detailsModal.zPosition = 99
-        detailsModal.name = "details"
-        detailsModal.position = CGPoint(x: 400, y:100)
-        addChild(detailsModal)
-        
-        //TODO: lookup the details nodeToDetail and print out details!
-        
-
-    }
-    
-    func hideDetailsModal () {
-        //remove details window
-        self.childNodeWithName("details")?.removeFromParent()
-        
-        //TODO: this shit aint working. Tried zindex first it sorta worked.
-    }
-    
     
     
     
@@ -519,6 +523,35 @@ class PlayScene: SKScene {
     
     
     
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // SCALE and FIT the view into the screen space:
+    //
+    // Turning this off, as it's actually nice to start zoomed in. Note this might make a good func for double tap
+    //
+    //-------------------------------------------------------------------------------------------//
+    
+    func scaleToFitViewIntoScene () {
+        
+        //Scale the view to ensure all tiles will fit within the view...
+        print("PlayScene.size== ", self.size)
+        
+        let yScale = Float(self.size.height) / (Float(myDungeon.dungeonSizeHeight) * Float(tileSize.height))
+        let xScale = Float(self.size.width) / (Float(myDungeon.dungeonSizeWidth) * Float(tileSize.width))
+        
+        print("PlayScene xScale== ", xScale)
+        print("PlayScene yScale== ", yScale)
+        
+        view2D.yScale = CGFloat(yScale)
+        view2D.xScale = CGFloat(xScale)
+
+    }
+
+
+ 
+ 
+ 
     //-------------------------------------------------------------------------------------------//
     //Handling board coordinate space
     //Generic func to place a tile on the board.

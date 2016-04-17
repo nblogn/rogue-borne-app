@@ -12,7 +12,7 @@ import Foundation
 
 
 protocol basicCharacterAbilities {
-    var hitPoints:Int {get set}
+    var hitPoints: Int {get set}
 }
 
 protocol magic {
@@ -22,3 +22,17 @@ protocol magic {
 protocol teleportation {
     //?
 }
+
+
+/*
+struct mage: basicCharacterAbilities, magic {
+    
+}
+
+struct warrior: basicCharacterAbilities {
+
+    var hitPoints: Int = 20
+    
+}
+ 
+*/

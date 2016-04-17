@@ -1,22 +1,19 @@
 //
-//  dungeonObject.swift
+//  Hero.swift
 //  Robue-Borne-App
 //
 //  Created by Joshua Wright on 2/10/16.
 //  Copyright © 2016 nblogn.com. All rights reserved.
 //
-//
-// I'm thinking this will be the file that defines dungeon "things". 
-// Such as monsters, heros, scrolls, lazer guns, chocobo testicles, etc.
 
 
 import Foundation
 import Darwin
 import SpriteKit
 
-//Create a class for a "thing" that is in a certain dungeon tile
-//TODO: This should probably go in its own file???
-class Hero: SKSpriteNode {
+
+
+class Hero: SKSpriteNode, basicCharacterAbilities {
     
     
     struct dungeonLocation {
@@ -24,7 +21,8 @@ class Hero: SKSpriteNode {
         var y: Int
     }
     
-    
+    var hitPoints: Int = 20
+
     var location: dungeonLocation
 
     required init?(coder aDecoder: NSCoder) {
@@ -51,9 +49,3 @@ class Hero: SKSpriteNode {
 }
 
     
-/*
-class DungeonMonster: DungeonObject {
-    
-    
-}
-*/

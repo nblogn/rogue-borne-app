@@ -773,7 +773,7 @@ class Dungeon: SKNode {
     //Draws the dungone using the array of dungeon tiles within the myDungeon object
     private func drawDungeonSpriteNodes(){
         
-        //Draw the rooms using CGRect
+        //Draw the rooms
         for roomIterator in 0...dungeonRooms.count-1 {
             
             let coordinate1 = convertBoardCoordinatetoCGPoint(dungeonRooms[roomIterator].location.x1, y: dungeonRooms[roomIterator].location.y1)
@@ -790,6 +790,7 @@ class Dungeon: SKNode {
             room.anchorPoint = CGPoint(x:0, y:0)
             room.lightingBitMask = LightCategory.Hero
             room.size = CGSize(width: width, height: height)
+            room.zPosition = 1
             
             let imageNumber = String(1+arc4random_uniform(UInt32(9)))
             let imageName = "cb" + imageNumber + "_n"
@@ -838,6 +839,7 @@ class Dungeon: SKNode {
                 dungeonMap[row][column].position = point
                 dungeonMap[row][column].anchorPoint = CGPoint(x:0, y:0)
                 dungeonMap[row][column].lightingBitMask = LightCategory.Hero
+                dungeonMap[row][column].zPosition = 2
                 
                 //Make walls and "nothing" cast shadows
                 if (dungeonMap[row][column].tileType == Tile.Wall) || (dungeonMap[row][column].tileType == Tile.Nothing) {

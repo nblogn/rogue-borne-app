@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-
+//TODO refactor to "DPad", capital D for class.
 class dPad: SKNode {
     
     required init?(coder aDecoder: NSCoder) {
