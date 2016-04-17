@@ -101,16 +101,16 @@ class PlayScene: SKScene {
         self.view!.addGestureRecognizer(gestureTapRecognizer)
 
         
-        ////
+        //////////
         //Add the dungeon to the view2D node, and add the view2D node to the PlayScene scene.
         view2D.addChild(myDungeon)
         addChild(view2D)
         
-        ////
+        //////////
         //Add details window, hidden for now
         addChild(myDetails)
         
-        ////
+        //////////
         //Set the hero
         myHero.location.x = myDungeon.dungeonRooms[0].location.x1+1
         myHero.location.y = myDungeon.dungeonRooms[0].location.y1+1
@@ -120,17 +120,19 @@ class PlayScene: SKScene {
         //Set the hero's light:
         heroTorch.position = CGPointMake(0.25,0.25)
         //Kind of prefer it with this off, but leaving it on to see monsters:
-        //heroTorch.ambientColor = UIColor.brownColor()
+        //NOTE: My floors are currently only normal maps, so doesn't work
+        //heroTorch.ambientColor = UIColor.whiteColor()
         //heroTorch.falloff = 1
         heroTorch.lightColor = UIColor.redColor()
         heroTorch.enabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
+        heroTorch.zPosition = 50
         myHero.addChild(heroTorch)
         
         view2D.lightingBitMask = LightCategory.Hero
         
         
-        ////
+        //////////
         //Set the monster
         aMonster.location.x = myDungeon.dungeonRooms[0].location.x1+1
         aMonster.location.y = myDungeon.dungeonRooms[0].location.y1+2
@@ -148,18 +150,18 @@ class PlayScene: SKScene {
 
 
         
-        ////
+        //////////
         //Configure and add the d-pad
         myDPad.zPosition = 99
         addChild(myDPad)
     
         
-        ////
+        //////////
         //Set the background...
         self.backgroundColor = SKColor(red: 0.1, green: 0.01, blue: 0.01, alpha: 1.0)
         
         
-        ////
+        //////////
         //Button to return to main menu
         let mainMenuButton = SKShapeNode()
         mainMenuButton.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 160, height: 60), cornerRadius: 8).CGPath
@@ -312,15 +314,15 @@ class PlayScene: SKScene {
             } else { //zooming in
                 
                 if touchedAnchorPoint.x < view2dMidpointInScene.x {
-                    view2D.position.x -= 10 * recognizer.scale
-                } else {
                     view2D.position.x += 10 * recognizer.scale
+                } else {
+                    view2D.position.x -= 10 * recognizer.scale
                 }
                 
                 if touchedAnchorPoint.y < view2dMidpointInScene.y {
-                    view2D.position.y -= 7 * recognizer.scale
-                } else {
                     view2D.position.y += 7 * recognizer.scale
+                } else {
+                    view2D.position.y -= 7 * recognizer.scale
                 }
 
             }

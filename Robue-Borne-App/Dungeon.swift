@@ -477,7 +477,9 @@ class Dungeon: SKNode {
     
     
     //=====================================================================================================//
+    //
     //Func to define the rooms within the dungeon, if all dungeonRooms are populated
+    //
     //=====================================================================================================//
     private func drawDungeonRooms() -> Void {
         
@@ -766,7 +768,7 @@ class Dungeon: SKNode {
     
     //=====================================================================================================//
     //
-    //Draw the dungeon nodes!
+    //Draw the dungeon sprite nodes!
     //
     //=====================================================================================================//
 
@@ -837,7 +839,7 @@ class Dungeon: SKNode {
                 //y values increase as you move up the screen and decrease as you move down.
                 let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
                 dungeonMap[row][column].position = point
-                dungeonMap[row][column].anchorPoint = CGPoint(x:0, y:0)
+                dungeonMap[row][column].anchorPoint = CGPoint(x:0.5, y:0.5)
                 dungeonMap[row][column].lightingBitMask = LightCategory.Hero
                 dungeonMap[row][column].zPosition = 2
                 
