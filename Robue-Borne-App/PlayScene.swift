@@ -101,8 +101,7 @@ class PlayScene: SKScene {
         //////////
         //Add the dungeon to the view2D node, and add the view2D node to the PlayScene scene.
         view2D.addChild(myDungeon)
-        addChild(view2D)
-        
+
         //////////
         //Add details window, hidden for now
         addChild(myDetails)
@@ -158,7 +157,7 @@ class PlayScene: SKScene {
         //Configure and add the d-pad
         myDPad.zPosition = 99
         myDPad.xScale = 0.5
-        myDPad.yScale = 0.7
+        myDPad.yScale = 0.65
         addChild(myDPad)
     
         
@@ -169,28 +168,19 @@ class PlayScene: SKScene {
         
         //////////
         //Button to return to main menu
-        let mainMenuButton = SKShapeNode()
-        mainMenuButton.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 160, height: 60), cornerRadius: 8).CGPath
-        mainMenuButton.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
-        mainMenuButton.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
-        mainMenuButton.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
-        mainMenuButton.lineWidth = 2
-        mainMenuButton.glowWidth = 3
-        mainMenuButton.zPosition = 99
-        mainMenuButton.name = "mainMenuButton"
+        let mainMenuButton = GenericRoundButtonWithName("mainMenuButton", text: "Main Menu")
         mainMenuButton.position = CGPoint(x: 20, y:675)
-        
-        let mainMenuButtonText = SKLabelNode(fontNamed:"Cochin")
-        mainMenuButtonText.text = "Main Menu"
-        mainMenuButtonText.name = "mainMenuButtonText"
-        mainMenuButtonText.fontSize = 28
-        mainMenuButtonText.fontColor = SKColor.whiteColor()
-        mainMenuButtonText.position = CGPoint(x:80, y:20)
-        mainMenuButtonText.zPosition = 100
-        
-        mainMenuButton.addChild(mainMenuButtonText)
-        
         addChild(mainMenuButton)
+        
+        
+        /////////
+        //Center the dungeon on the hero, then add the dungeon to the scene!
+        
+        // !!!! THIS ISN'T WORKING QUITE YET...
+        //centerDungeonOnNode(myHero)
+        
+        addChild(view2D)
+
         
         print("view2D accumulated frame at end of didMoveToView == ", view2D.calculateAccumulatedFrame())
         
@@ -561,6 +551,26 @@ class PlayScene: SKScene {
         view2D.position = CGPointZero
 
     }
+    
+    
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // CENTER VIEW on a character
+    //
+    //-------------------------------------------------------------------------------------------//
+/*
+    func centerDungeonOnNode(centeredNode: SKNode) {
+        
+        let newPosition = convertBoardCoordinatetoCGPoint(centeredNode.location.x, y: centeredNode.location?.y)
+        
+        view2D.position = newPosition
+        
+        view2D.xScale = 0.25
+        view2D.yScale = 0.25
+        
+    }
+*/
 
     
 } //End PlayScene

@@ -11,6 +11,8 @@ import SpriteKit
 
 class CharacterDetailsPopup: SKNode {
     
+    let detailsModal = SKShapeNode()
+    
     //-------------------------------------------------------------------------------------------//
     //
     // DETAILS -- Draw/hide the details modal popup window
@@ -20,7 +22,6 @@ class CharacterDetailsPopup: SKNode {
         
         self.moveToParent(parent)
         
-        let detailsModal = SKShapeNode()
         detailsModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 500, height: 500), cornerRadius: 8).CGPath
         detailsModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
         detailsModal.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
@@ -33,6 +34,12 @@ class CharacterDetailsPopup: SKNode {
         
         self.zPosition = 99
         
+        let exitButton = GenericRoundButtonWithName("exitButton", text: "Exit")
+        exitButton.position = CGPoint (x: 20, y: 20)
+        
+        detailsModal.addChild(exitButton)
+        
+        
         //TODO: lookup the details nodeToDetail and print out details!
         
         
@@ -41,6 +48,7 @@ class CharacterDetailsPopup: SKNode {
     func hideDetailsModal () {
         //remove details window
         self.removeFromParent()
+        detailsModal.removeFromParent()
     }
 
     
