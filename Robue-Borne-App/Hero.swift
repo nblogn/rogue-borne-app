@@ -15,7 +15,7 @@ import SpriteKit
 
 class Hero: SKSpriteNode, basicCharacterAbilities {
     
-    
+    //TODO: - This needs to be decoupled and made extensible
     struct dungeonLocation {
         var x: Int
         var y: Int

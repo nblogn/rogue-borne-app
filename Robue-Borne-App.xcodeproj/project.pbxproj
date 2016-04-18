@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		03337F881CB8800200C8CE98 /* FireParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03337F861CB8800200C8CE98 /* FireParticle.sks */; };
 		03337F891CB8800200C8CE98 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 03337F871CB8800200C8CE98 /* spark.png */; };
+		033F8D1D1CC4204B009722FF /* testScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F8D1C1CC4204B009722FF /* testScene.swift */; };
 		035A6F3B1CB385BF005B04FD /* bricksNormal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 035A6F3A1CB385BF005B04FD /* bricksNormal.jpg */; };
 		035C2F511CB4B59D0087651F /* cb1_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 035C2F471CB4B59D0087651F /* cb1_n.png */; };
 		035C2F521CB4B59D0087651F /* cb2_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 035C2F481CB4B59D0087651F /* cb2_n.png */; };
@@ -40,6 +41,7 @@
 		03C1DE981C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE971C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift */; };
 		03C1DEA61C6C420E00CDCF8F /* Dungeon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA51C6C420E00CDCF8F /* Dungeon.swift */; };
 		03C1DEA81C6C467500CDCF8F /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA71C6C467500CDCF8F /* Hero.swift */; };
+		03C64A151CC456AE00DC8968 /* GenericRoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */; };
 		03D001BA1C9F843100685F29 /* CorridorVertical.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B71C9F843100685F29 /* CorridorVertical.png */; };
 		03D001BB1C9F843100685F29 /* Door.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B81C9F843100685F29 /* Door.png */; };
 		03D001BC1C9F843100685F29 /* CorridorHorizontal.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B91C9F843100685F29 /* CorridorHorizontal.png */; };
@@ -71,6 +73,7 @@
 /* Begin PBXFileReference section */
 		03337F861CB8800200C8CE98 /* FireParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireParticle.sks; sourceTree = "<group>"; };
 		03337F871CB8800200C8CE98 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		033F8D1C1CC4204B009722FF /* testScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = testScene.swift; sourceTree = "<group>"; };
 		035A6F3A1CB385BF005B04FD /* bricksNormal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bricksNormal.jpg; sourceTree = "<group>"; };
 		035C2F471CB4B59D0087651F /* cb1_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb1_n.png; sourceTree = "<group>"; };
 		035C2F481CB4B59D0087651F /* cb2_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb2_n.png; sourceTree = "<group>"; };
@@ -108,6 +111,7 @@
 		03C1DE991C6C3C8D00CDCF8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03C1DEA51C6C420E00CDCF8F /* Dungeon.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = Dungeon.swift; sourceTree = "<group>"; };
 		03C1DEA71C6C467500CDCF8F /* Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
+		03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericRoundButton.swift; sourceTree = "<group>"; };
 		03D001B71C9F843100685F29 /* CorridorVertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CorridorVertical.png; sourceTree = "<group>"; };
 		03D001B81C9F843100685F29 /* Door.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Door.png; sourceTree = "<group>"; };
 		03D001B91C9F843100685F29 /* CorridorHorizontal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CorridorHorizontal.png; sourceTree = "<group>"; };
@@ -211,6 +215,7 @@
 				03B453611C93DEBB00E937D0 /* ItemClass.swift */,
 				03E3A0D91CAF9B0C0044758D /* Light.swift */,
 				03337F861CB8800200C8CE98 /* FireParticle.sks */,
+				03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */,
 				03337F871CB8800200C8CE98 /* spark.png */,
 				035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */,
 				038229E41C8CBC4700D84701 /* DPad.swift */,
@@ -221,6 +226,7 @@
 				03C1DE751C6C3C8D00CDCF8F /* StartScene.sks */,
 				03C1DE791C6C3C8D00CDCF8F /* GameViewController.swift */,
 				03C1DE7B1C6C3C8D00CDCF8F /* Main.storyboard */,
+				033F8D1C1CC4204B009722FF /* testScene.swift */,
 				03C1DE7E1C6C3C8D00CDCF8F /* Assets.xcassets */,
 				03C1DE801C6C3C8D00CDCF8F /* LaunchScreen.storyboard */,
 				03C1DE831C6C3C8D00CDCF8F /* Info.plist */,
@@ -407,7 +413,9 @@
 				03C1DE781C6C3C8D00CDCF8F /* StartScene.swift in Sources */,
 				03C1DEA81C6C467500CDCF8F /* Hero.swift in Sources */,
 				03B453601C93DEAD00E937D0 /* Monster.swift in Sources */,
+				03C64A151CC456AE00DC8968 /* GenericRoundButton.swift in Sources */,
 				03E3A0DA1CAF9B0C0044758D /* Light.swift in Sources */,
+				033F8D1D1CC4204B009722FF /* testScene.swift in Sources */,
 				03C1DE7A1C6C3C8D00CDCF8F /* GameViewController.swift in Sources */,
 				03C1DE741C6C3C8D00CDCF8F /* AppDelegate.swift in Sources */,
 				03EE7FDE1C6FA1DC00244144 /* PlayScene.swift in Sources */,

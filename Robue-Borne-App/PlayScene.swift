@@ -29,9 +29,6 @@ class PlayScene: SKScene {
     //Global variables and constants...
     let view2D:SKSpriteNode
     
-    //JOSH: Pretty sure these are measured in pixels.
-    let tileSize = (width:32, height:32)
-    
     
     //Init the dungeon, hero, monsters, and dPad control...
     let myDungeon = Dungeon()
@@ -112,34 +109,41 @@ class PlayScene: SKScene {
         
         //////////
         //Set the hero
-        myHero.location.x = myDungeon.dungeonRooms[0].location.x1+1
-        myHero.location.y = myDungeon.dungeonRooms[0].location.y1+1
+        myHero.location.x = myDungeon.dungeonRooms[myDungeon.dungeonRooms.count - 1].location.x1+1
+        myHero.location.y = myDungeon.dungeonRooms[myDungeon.dungeonRooms.count - 1].location.y1+1
         myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
+        //myHero.anchorPoint = CGPoint(x:0, y:0)
+        myHero.zPosition = 5
         view2D.addChild(myHero)
         
+        
+        //////////
         //Set the hero's light:
-        heroTorch.position = CGPointMake(0.25,0.25)
+        //heroTorch.position = CGPointMake(0,0)
         //Kind of prefer it with this off, but leaving it on to see monsters:
-        //NOTE: My floors are currently only normal maps, so doesn't work
+        //NOTE: My floors are currently only normal maps, so ambient doesn't work
         //heroTorch.ambientColor = UIColor.whiteColor()
         //heroTorch.falloff = 1
         heroTorch.lightColor = UIColor.redColor()
         heroTorch.enabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
-        heroTorch.zPosition = 50
+        heroTorch.zPosition = 51
+        heroTorch.position = CGPoint (x: 0, y: 0)
         myHero.addChild(heroTorch)
         
-        view2D.lightingBitMask = LightCategory.Hero
         
         
         //////////
         //Set the monster
-        aMonster.location.x = myDungeon.dungeonRooms[0].location.x1+1
-        aMonster.location.y = myDungeon.dungeonRooms[0].location.y1+2
+        aMonster.location.x = myDungeon.dungeonRooms[0].location.x1 + 1
+        aMonster.location.y = myDungeon.dungeonRooms[0].location.y1 + 1
         aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
+        //aMonster.anchorPoint = CGPoint(x:0, y:0)
+        aMonster.zPosition = 5
 
         //Added a shadow to the monster
         aMonster.shadowCastBitMask = LightCategory.Hero
+        aMonster.lightingBitMask = LightCategory.Hero
         view2D.addChild(aMonster)
 
         //Light the monster on fire
@@ -153,6 +157,8 @@ class PlayScene: SKScene {
         //////////
         //Configure and add the d-pad
         myDPad.zPosition = 99
+        myDPad.xScale = 0.5
+        myDPad.yScale = 0.7
         addChild(myDPad)
     
         
@@ -185,6 +191,8 @@ class PlayScene: SKScene {
         mainMenuButton.addChild(mainMenuButtonText)
         
         addChild(mainMenuButton)
+        
+        print("view2D accumulated frame at end of didMoveToView == ", view2D.calculateAccumulatedFrame())
         
     }
 
@@ -300,29 +308,29 @@ class PlayScene: SKScene {
             if recognizer.scale > 1 { //zooming out
                 
                 if touchedAnchorPoint.x < view2dMidpointInScene.x {
-                    view2D.position.x += 10 * recognizer.scale
+                    view2D.position.x += 5 * recognizer.scale
                 } else {
-                    view2D.position.x -= 10 * recognizer.scale
+                    view2D.position.x -= 5 * recognizer.scale
                 }
                 
                 if touchedAnchorPoint.y < view2dMidpointInScene.y {
-                    view2D.position.y += 7 * recognizer.scale
+                    view2D.position.y += 3 * recognizer.scale
                 } else {
-                    view2D.position.y -= 7 * recognizer.scale
+                    view2D.position.y -= 3 * recognizer.scale
                 }
                 
             } else { //zooming in
                 
                 if touchedAnchorPoint.x < view2dMidpointInScene.x {
-                    view2D.position.x += 10 * recognizer.scale
+                    view2D.position.x -= 5 * recognizer.scale
                 } else {
-                    view2D.position.x -= 10 * recognizer.scale
+                    view2D.position.x += 5 * recognizer.scale
                 }
                 
                 if touchedAnchorPoint.y < view2dMidpointInScene.y {
-                    view2D.position.y += 7 * recognizer.scale
+                    view2D.position.y -= 3 * recognizer.scale
                 } else {
-                    view2D.position.y -= 7 * recognizer.scale
+                    view2D.position.y += 3 * recognizer.scale
                 }
 
             }
@@ -383,8 +391,10 @@ class PlayScene: SKScene {
                     moveHero(-1, y: 0)
                     moveMonster()
                 
-                case "RB_Cntrl_Middle": break
+                case "RB_Cntrl_Middle":
                     //rest and move monsters
+                    //Temp...
+                    scaleDungeonToFitIntoPlayScene()
                 
                 case "mainMenuButton":
                     //Go back to the StartScene if Main Menu is pressed
@@ -534,7 +544,7 @@ class PlayScene: SKScene {
     //
     //-------------------------------------------------------------------------------------------//
     
-    func scaleToFitViewIntoScene () {
+    func scaleDungeonToFitIntoPlayScene () {
         
         //Scale the view to ensure all tiles will fit within the view...
         print("PlayScene.size== ", self.size)
@@ -547,27 +557,10 @@ class PlayScene: SKScene {
         
         view2D.yScale = CGFloat(yScale)
         view2D.xScale = CGFloat(xScale)
+        
+        view2D.position = CGPointZero
 
     }
 
-
- 
- 
- 
-    //-------------------------------------------------------------------------------------------//
-    //Handling board coordinate space
-    //Generic func to place a tile on the board.
-    //Given a board position convert to CGPoint
-    //From me: I probably need some conversions of array coordinates to CGPoint coordinate...
-    //-------------------------------------------------------------------------------------------//
-    func convertBoardCoordinatetoCGPoint (x: Int, y: Int) -> CGPoint {
-        
-        let retX = ((x+1) * tileSize.width) - (tileSize.width/2)
-        let retY = ((y+1) * tileSize.height) - (tileSize.height/2)
-        
-        return CGPoint(x: retX, y: retY)
-        
-    }
     
-    
-}
+} //End PlayScene

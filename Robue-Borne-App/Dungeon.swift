@@ -50,18 +50,21 @@ class Dungeon: SKNode {
     I think these should be in the Dungeon class, since they're in the dungeon.
     I'm thinking something needs to keep track of where all the objects are.
     Example of why this would be helpful...
-    
+
     func getObjectsInLineOfSight (myLocation: dungeonLocation) -> [objects] {
-    
+
     }
 
     That said, I'm not totally sure about this.
-    */
+
     var heros: [Hero]
     var monsters: [Monster]
     var items: [Item]
-    
 
+    On second thought, I think maybe there should be a "level" class which includes all of this? 
+    Or maybe each instance of the dungeon class is a level? Ugh. No idea.
+     
+    */
     
     
     func getTileByLocation (X: Int, Y: Int) -> TileClass {
@@ -96,9 +99,9 @@ class Dungeon: SKNode {
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
         
-        self.heros = [Hero()]
+        /*self.heros = [Hero()]
         self.monsters = [Monster()]
-        self.items = [Item()]
+        self.items = [Item()]*/
         
         super.init()
         
@@ -119,9 +122,9 @@ class Dungeon: SKNode {
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
 
-        self.heros = [Hero()]
+        /*self.heros = [Hero()]
         self.monsters = [Monster()]
-        self.items = [Item()]
+        self.items = [Item()]*/
         
         super.init()
         
@@ -697,7 +700,7 @@ class Dungeon: SKNode {
                     roomIterator = closestRoom!
                 }
                 
-                print(roomIterator)
+                print("connectDungeon roomIterator == ", roomIterator)
                 
                 
             } else {
@@ -769,13 +772,24 @@ class Dungeon: SKNode {
     //=====================================================================================================//
     //
     //Draw the dungeon sprite nodes!
+    //            
+    //Let's use circuit boards for the rooms!! TRON ftw!
+    //https://www.google.com/search?q=circuit+board&client=safari&rls=en&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiuxq365vbLAhUW-mMKHdFIDtYQ_AUIBygB&biw=1440&bih=839
+    //
+    //
+    // A note about anchor points: Sprites are drawn by default centered on their position (anchor .5/.5)
+    // However, if you change this, the shadows don't seem to work correctly. Therefor, for walls and characters
+    // I'm using the default. But for placing the rooms, I'm using 0/0 because there are no shadows, and I
+    // already have this coordinate, so it's easier. Reference:
+    // https://developer.apple.com/library/ios/documentation/GraphicsAnimation/Conceptual/SpriteKit_PG/Sprites/Sprites.html
     //
     //=====================================================================================================//
 
-    //Draws the dungone using the array of dungeon tiles within the myDungeon object
+    //Draws the dungeon using the array of dungeon tiles within the myDungeon object
     private func drawDungeonSpriteNodes(){
         
-        //Draw the rooms
+        ////
+        //Draw the rooms first
         for roomIterator in 0...dungeonRooms.count-1 {
             
             let coordinate1 = convertBoardCoordinatetoCGPoint(dungeonRooms[roomIterator].location.x1, y: dungeonRooms[roomIterator].location.y1)
@@ -784,15 +798,13 @@ class Dungeon: SKNode {
             let height = coordinate2.y - coordinate1.y
             
             
-            //Let's use circuit boards for the rooms!! TRON ftw!
-            //https://www.google.com/search?q=circuit+board&client=safari&rls=en&source=lnms&tbm=isch&sa=X&ved=0ahUKEwiuxq365vbLAhUW-mMKHdFIDtYQ_AUIBygB&biw=1440&bih=839
-            
             let room = SKSpriteNode()
             room.position = coordinate1
             room.anchorPoint = CGPoint(x:0, y:0)
             room.lightingBitMask = LightCategory.Hero
             room.size = CGSize(width: width, height: height)
             room.zPosition = 1
+            room.shadowedBitMask = LightCategory.Hero
             
             let imageNumber = String(1+arc4random_uniform(UInt32(9)))
             let imageName = "cb" + imageNumber + "_n"
@@ -800,7 +812,7 @@ class Dungeon: SKNode {
             room.texture = SKTexture(imageNamed: imageName)
             room.normalTexture = SKTexture(imageNamed: imageName)
         
-            
+            ////
             //Draw borders (walls) Using skShapeNode
             //BUG: This is not working quite right, I think the scaling of the scene is screwing it up.
             /*let shape = SKShapeNode()
@@ -819,7 +831,8 @@ class Dungeon: SKNode {
         }
         
         
-        //Draw the hallways using paths:
+        ////
+        //Draw hallways using paths:
         /*
         CGMutablePathRef pathToDraw = CGPathCreateMutable();
         CGPathMoveToPoint(pathToDraw, NULL, 100.0, 100.0);
@@ -830,7 +843,12 @@ class Dungeon: SKNode {
         */
         
         
-        //Loop through all tiles, draw other shit (hallways, doors, etc.)
+        //////////
+        //Draw hallways -- Loop through all tiles, draw other shit (hallways, doors, etc.)
+        
+        // TODO: Currently drawing walls as tiles, should move this to be drawn with the rooms for lighting
+        // Note this spritekit bug: http://stackoverflow.com/questions/28662600/sklightnode-cast-shadow-issue
+        
         for row in 0..<dungeonMap.count {
             
             for column in 0..<dungeonMap[row].count {
@@ -839,7 +857,6 @@ class Dungeon: SKNode {
                 //y values increase as you move up the screen and decrease as you move down.
                 let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
                 dungeonMap[row][column].position = point
-                dungeonMap[row][column].anchorPoint = CGPoint(x:0.5, y:0.5)
                 dungeonMap[row][column].lightingBitMask = LightCategory.Hero
                 dungeonMap[row][column].zPosition = 2
                 
@@ -863,17 +880,7 @@ class Dungeon: SKNode {
     }
     
     
-    
-    private func convertBoardCoordinatetoCGPoint (x: Int, y: Int) -> CGPoint {
-        
-        let retX = ((x+1) * tileSize.width) - (tileSize.width/2)
-        let retY = ((y+1) * tileSize.height) - (tileSize.height/2)
-        
-        return CGPoint(x: retX, y: retY)
-        
-    }
 
-    
     
     
     //=====================================================================================================//

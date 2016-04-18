@@ -22,6 +22,24 @@ import SpriteKit
 
 
 
+//-------------------------------------------------------------------------------------------//
+//Handling board coordinate space
+//Generic func to place a tile on the board.
+//Given a board position convert to CGPoint
+//From me: I probably need some conversions of array coordinates to CGPoint coordinate...
+//-------------------------------------------------------------------------------------------//
+func convertBoardCoordinatetoCGPoint (x: Int, y: Int) -> CGPoint {
+    
+    let retX = x * tileSize.width
+    let retY = y * tileSize.height
+    
+    return CGPoint(x: retX, y: retY)
+    
+}
+
+
+
+
 /*Note: You may be wondering what the fancy syntax is here. Note that the category on Sprite Kit is just a single 32-bit integer, and acts as a bitmask. This is a fancy way of saying each of the 32-bits in the integer represents a single category (and hence you can have 32 categories max). Here you’re setting the first bit to indicate a monster, the next bit over to represent a projectile, and so on.*/
 struct PhysicsCategory {
     static let None      : UInt32 = 0

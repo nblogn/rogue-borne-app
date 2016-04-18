@@ -12,7 +12,7 @@ class StartScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         
-        self.backgroundColor = SKColor.whiteColor()
+        self.backgroundColor = SKColor(red: 0.13, green: 0.1, blue: 0.15, alpha: 0.9)
         
         let myLabel = SKLabelNode(fontNamed:"Chalkduster")
         myLabel.text = "RogueBorne"
@@ -27,8 +27,8 @@ class StartScene: SKScene {
         createCellMapButton.text = "Create a Cell map"
         createCellMapButton.name = "cellMapButton"
         createCellMapButton.fontSize = 30
-        createCellMapButton.fontColor = SKColor.blackColor()
-        createCellMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-40)
+        createCellMapButton.fontColor = SKColor.whiteColor()
+        createCellMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-50)
         
         self.addChild(createCellMapButton)
         
@@ -37,8 +37,8 @@ class StartScene: SKScene {
         createCellAutoMapButton.text = "Create a Cellular Automata Map"
         createCellAutoMapButton.name = "cellAutoMapButton"
         createCellAutoMapButton.fontSize = 30
-        createCellAutoMapButton.fontColor = SKColor.blackColor()
-        createCellAutoMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-80)
+        createCellAutoMapButton.fontColor = SKColor.whiteColor()
+        createCellAutoMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-100)
 
         self.addChild(createCellAutoMapButton)
         
@@ -47,10 +47,21 @@ class StartScene: SKScene {
         createBigBangMapButton.text = "Create a best fit, Left To Right map"
         createBigBangMapButton.name = "bigBangMapButton"
         createBigBangMapButton.fontSize = 30
-        createBigBangMapButton.fontColor = SKColor.blackColor()
-        createBigBangMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-120)
+        createBigBangMapButton.fontColor = SKColor.whiteColor()
+        createBigBangMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-150)
         
         self.addChild(createBigBangMapButton)
+        
+        
+        let testSceneMapButton = SKLabelNode(fontNamed: "Cochin")
+        testSceneMapButton.text = "Test Shit Goes Here"
+        testSceneMapButton.name = "testScenePlayground"
+        testSceneMapButton.fontSize = 30
+        testSceneMapButton.fontColor = SKColor.whiteColor()
+        testSceneMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-200)
+        
+        self.addChild(testSceneMapButton)
+
     }
     
     
@@ -76,6 +87,12 @@ class StartScene: SKScene {
         if (node.name == "bigBangMapButton") {
             let playScene = PlayScene(size: self.size, dungeonType: "bigBangMap")
             self.view?.presentScene(playScene, transition: reveal)
+        }
+        
+        if (node.name == "testScenePlayground") {
+            let testScene = TestScene(size: self.size)
+            self.view?.presentScene(testScene, transition: reveal)
+
         }
         
     }
