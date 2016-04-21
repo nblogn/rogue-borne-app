@@ -23,14 +23,12 @@ class GenericRoundButtonWithName: SKNode {
         
         //////////
         //Button
-        
         let buttonText = SKLabelNode(fontNamed:"Cochin")
         buttonText.text = text
         buttonText.fontSize = 28
         buttonText.fontColor = SKColor.whiteColor()
         buttonText.position = CGPoint(x:80, y:20)
         buttonText.zPosition = 100
-        
         
         var textBounds = buttonText.calculateAccumulatedFrame()
         textBounds.size.height += 15
@@ -49,6 +47,8 @@ class GenericRoundButtonWithName: SKNode {
 
         
         button.addChild(buttonText)
+        
+        buttonText.position = CGPoint(x:80, y:20)
         
         addChild(button)
 

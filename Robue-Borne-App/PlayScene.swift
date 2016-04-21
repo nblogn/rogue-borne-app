@@ -155,9 +155,9 @@ class PlayScene: SKScene {
         
         //////////
         //Configure and add the d-pad
-        myDPad.zPosition = 99
-        myDPad.xScale = 0.5
-        myDPad.yScale = 0.65
+        myDPad.zPosition = 100
+        myDPad.xScale = 0.7
+        myDPad.yScale = 0.85
         addChild(myDPad)
     
         
@@ -176,8 +176,9 @@ class PlayScene: SKScene {
         /////////
         //Center the dungeon on the hero, then add the dungeon to the scene!
         
+        print("myHero.position: ", myHero.position)
         // !!!! THIS ISN'T WORKING QUITE YET...
-        //centerDungeonOnNode(myHero)
+        centerDungeonOnNode(myHero)
         
         addChild(view2D)
 
@@ -215,6 +216,7 @@ class PlayScene: SKScene {
             
             recognizer.setTranslation(CGPointZero, inView: recognizer.view)
             
+            print("view2D.position on pan == ", view2D.position)
             
         } else if recognizer.state == .Ended {
             
@@ -290,6 +292,14 @@ class PlayScene: SKScene {
             //Position:
             print("view2D.position.x: ", view2D.position.x)
             
+            
+            
+            //I tried to do a bunch of shit to make this work better, removing for now
+            /*
+             
+             Note that a lot of people have this issue, since SpriteKit doesn't support pinch/zoom properly on a node (just a scene)
+             http://stackoverflow.com/questions/19922792/center-skspritenode-during-pinch
+             
             let view2dBounds: CGRect = view2D.calculateAccumulatedFrame()
             let view2dMidpoint: CGPoint = CGPoint(x: ((view2dBounds.width - view2D.position.x)/2), y: ((view2dBounds.height - view2D.position.y)/2))
             let view2dMidpointInScene = view2D.convertPoint(view2dMidpoint, fromNode: self)
@@ -312,9 +322,9 @@ class PlayScene: SKScene {
             } else { //zooming in
                 
                 if touchedAnchorPoint.x < view2dMidpointInScene.x {
-                    view2D.position.x -= 5 * recognizer.scale
-                } else {
                     view2D.position.x += 5 * recognizer.scale
+                } else {
+                    view2D.position.x -= 5 * recognizer.scale
                 }
                 
                 if touchedAnchorPoint.y < view2dMidpointInScene.y {
@@ -323,8 +333,22 @@ class PlayScene: SKScene {
                     view2D.position.y += 3 * recognizer.scale
                 }
 
-            }
+            }*/
+            
+            
     
+            if recognizer.scale > 1 { //zooming out
+                
+                view2D.position.x += 5 * recognizer.scale
+                view2D.position.y += 3 * recognizer.scale
+                
+            } else { //zooming in
+                
+                view2D.position.x -= 10 * recognizer.scale
+                view2D.position.y -= 10 * recognizer.scale
+                
+            }
+            
             
             //////////
             //Scale:
@@ -537,14 +561,15 @@ class PlayScene: SKScene {
     func scaleDungeonToFitIntoPlayScene () {
         
         //Scale the view to ensure all tiles will fit within the view...
-        print("PlayScene.size== ", self.size)
+        print("PlayScene.size == ", self.size)
         
         let yScale = Float(self.size.height) / (Float(myDungeon.dungeonSizeHeight) * Float(tileSize.height))
         let xScale = Float(self.size.width) / (Float(myDungeon.dungeonSizeWidth) * Float(tileSize.width))
         
-        print("PlayScene xScale== ", xScale)
-        print("PlayScene yScale== ", yScale)
-        
+        print("view2D.xScale == ", xScale)
+        print("view2D.yScale == ", yScale)
+        print("view2D.position == ", view2D.position)
+
         view2D.yScale = CGFloat(yScale)
         view2D.xScale = CGFloat(xScale)
         
@@ -559,18 +584,36 @@ class PlayScene: SKScene {
     // CENTER VIEW on a character
     //
     //-------------------------------------------------------------------------------------------//
-/*
-    func centerDungeonOnNode(centeredNode: SKNode) {
+
+    func centerDungeonOnNode(centeredNode: SKSpriteNode) {
         
-        let newPosition = convertBoardCoordinatetoCGPoint(centeredNode.location.x, y: centeredNode.location?.y)
+        //GOOD GOD THIS TOOK WAY TOO MUCH TIME BECAUSE I CAN"T FUCKING FOCUS. FUCK. I STILL DON'T THINK IT'S RIGHT. AND FUCK THE SHIFT KEY< I SHOULD BE ABLE TO HOLD IT DOWN AND GET APPROPRIATE PUNCTUATION WHEN I"M FUCKING YELLING YOU FUCKING FUCK SHIT OF A FUCK>
         
-        view2D.position = newPosition
+        print("centeredNode.position == ", centeredNode.position)
+        print("myDungeon.position ==  ", myDungeon.position)
+        print("view2D.position:", view2D.position)
+        print("view2D.size", view2D.calculateAccumulatedFrame())
+        print("self.size == ", self.size)
         
-        view2D.xScale = 0.25
-        view2D.yScale = 0.25
+        let centeredNodePositionInScene = view2D.convertPoint(centeredNode.position, toNode: self)
+        
+        let view2DFrame = view2D.calculateAccumulatedFrame()
+        
+        var newView2DPosition = CGPoint()
+        
+        newView2DPosition.x = -((centeredNodePositionInScene.x / view2DFrame.width) * self.size.width)
+        newView2DPosition.y = -((centeredNodePositionInScene.y / view2DFrame.height) * self.size.height)
+        
+        view2D.position = newView2DPosition
+
+        print("newView2DPosition == ", newView2DPosition)
+        print("view2D.position == ", view2D.position)
+ 
+        view2D.xScale = 0.5
+        view2D.yScale = 0.5
         
     }
-*/
+
 
     
 } //End PlayScene
