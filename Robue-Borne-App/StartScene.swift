@@ -14,52 +14,39 @@ class StartScene: SKScene {
         
         self.backgroundColor = SKColor(red: 0.13, green: 0.1, blue: 0.15, alpha: 0.9)
         
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "RogueBorne"
-        myLabel.fontSize = 45
-        myLabel.fontColor = SKColor.redColor()
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)+100)
         
-        self.addChild(myLabel)
+        let myTitle = SKLabelNode(fontNamed:"Chalkduster")
+        myTitle.text = "Mimeophobia"
+        myTitle.fontSize = 45
+        myTitle.fontColor = SKColor.redColor()
+        myTitle.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)+200)
+        self.addChild(myTitle)
         
+        let mySubTitle = SKLabelNode(fontNamed: "cochin")
+        mySubTitle.text = "...Or How I Learned To Love My Doppleganger"
+        mySubTitle.fontSize = 20
+        mySubTitle.fontColor = SKColor.redColor()
+        mySubTitle.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)+150)
+        self.addChild(mySubTitle)
+
         
-        let createCellMapButton = SKLabelNode(fontNamed: "Cochin")
-        createCellMapButton.text = "Create a Cell map"
-        createCellMapButton.name = "cellMapButton"
-        createCellMapButton.fontSize = 30
-        createCellMapButton.fontColor = SKColor.whiteColor()
-        createCellMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-50)
-        
+        let createCellMapButton = GenericRoundButtonWithName("cellMapButton", text: "Create a Cell Map")
+        createCellMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-40)
         self.addChild(createCellMapButton)
         
         
-        let createCellAutoMapButton = SKLabelNode(fontNamed: "Cochin")
-        createCellAutoMapButton.text = "Create a Cellular Automata Map"
-        createCellAutoMapButton.name = "cellAutoMapButton"
-        createCellAutoMapButton.fontSize = 30
-        createCellAutoMapButton.fontColor = SKColor.whiteColor()
-        createCellAutoMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-100)
-
+        let createCellAutoMapButton = GenericRoundButtonWithName("cellAutoMapButton", text: "Create a Cellular Automata Map")
+        createCellAutoMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-110)
         self.addChild(createCellAutoMapButton)
         
-        
-        let createBigBangMapButton = SKLabelNode(fontNamed: "Cochin")
-        createBigBangMapButton.text = "Create a best fit, Left To Right map"
-        createBigBangMapButton.name = "bigBangMapButton"
-        createBigBangMapButton.fontSize = 30
-        createBigBangMapButton.fontColor = SKColor.whiteColor()
-        createBigBangMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-150)
-        
+
+        let createBigBangMapButton = GenericRoundButtonWithName("bigBangMapButton", text: "Create a Best Fit, left to Right Map")
+        createBigBangMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-180)
         self.addChild(createBigBangMapButton)
         
         
-        let testSceneMapButton = SKLabelNode(fontNamed: "Cochin")
-        testSceneMapButton.text = "Test Shit Goes Here"
-        testSceneMapButton.name = "testScenePlayground"
-        testSceneMapButton.fontSize = 30
-        testSceneMapButton.fontColor = SKColor.whiteColor()
-        testSceneMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-200)
-        
+        let testSceneMapButton = GenericRoundButtonWithName("testScenePlayground", text: "Test Shit Goes Here")
+        testSceneMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-250)
         self.addChild(testSceneMapButton)
 
     }

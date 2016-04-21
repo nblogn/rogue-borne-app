@@ -169,22 +169,17 @@ class PlayScene: SKScene {
         //////////
         //Button to return to main menu
         let mainMenuButton = GenericRoundButtonWithName("mainMenuButton", text: "Main Menu")
-        mainMenuButton.position = CGPoint(x: 20, y:675)
+        mainMenuButton.position = CGPoint(x: 100, y:700)
         addChild(mainMenuButton)
         
         
         /////////
         //Center the dungeon on the hero, then add the dungeon to the scene!
-        
-        print("myHero.position: ", myHero.position)
-        // !!!! THIS ISN'T WORKING QUITE YET...
         centerDungeonOnNode(myHero)
         
+
         addChild(view2D)
 
-        
-        print("view2D accumulated frame at end of didMoveToView == ", view2D.calculateAccumulatedFrame())
-        
     }
 
     
