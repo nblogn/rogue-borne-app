@@ -26,22 +26,12 @@ class PlayScene: SKScene {
     //lets and vars for the class
     //
     //-------------------------------------------------------------------------------------------//
-    //Global variables and constants...
-    let view2D:SKSpriteNode
     
-    
-    //Init the dungeon, hero, monsters, and dPad control...
-    let myDungeon = Dungeon()
-    let myHero: Hero
-    let aMonster: Monster
+    //Init the dungeon level
+    let myDungeonLevel: DungeonLevel
     let myDPad: dPad
     let myDetails: CharacterDetailsPopup
-    
-    //Add a light source for the hero...
-    var ambientColor:UIColor?
-    var heroTorch = SKLightNode();
-    var dungeonLight = SKLightNode();
-    
+
     
     
     
@@ -60,25 +50,18 @@ class PlayScene: SKScene {
     //Init with the dungeonType (note, not an override since I'm adding attributes)
     init(size: CGSize, dungeonType: String) {
         
-        self.view2D = SKSpriteNode()
-        self.view2D.userInteractionEnabled = true
-        
+
+        //INIT UI Elements
         self.myDPad = dPad()
-        self.myHero = Hero()
-        self.aMonster = Monster()
         self.myDetails = CharacterDetailsPopup()
         myDetails.name = "details"
+
         
-        //Change the different map creation algorithms to happen on UI button press
-        switch dungeonType {
-            case "cellMap": myDungeon.createDungeonUsingCellMethod()
-            case "cellAutoMap": myDungeon.generateDungeonRoomUsingCellularAutomota()
-            case "bigBangMap": myDungeon.generateDungeonRoomsUsingFitLeftToRight()
-            default:myDungeon.createDungeonUsingCellMethod()
-        }
+        //Create the entire dungeon level: map, monsters, heros, et al.
+        myDungeonLevel = DungeonLevel(dungeonType: dungeonType)
+        
         
         super.init(size: size)
-        self.anchorPoint = CGPoint(x:0, y:0)
 
     }
     
@@ -98,59 +81,11 @@ class PlayScene: SKScene {
         self.view!.addGestureRecognizer(gestureTapRecognizer)
 
         
-        //////////
-        //Add the dungeon to the view2D node, and add the view2D node to the PlayScene scene.
-        view2D.addChild(myDungeon)
 
         //////////
         //Add details window, hidden for now
         addChild(myDetails)
         
-        //////////
-        //Set the hero
-        myHero.location.x = myDungeon.dungeonRooms[myDungeon.dungeonRooms.count - 1].location.x1+1
-        myHero.location.y = myDungeon.dungeonRooms[myDungeon.dungeonRooms.count - 1].location.y1+1
-        myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
-        //myHero.anchorPoint = CGPoint(x:0, y:0)
-        myHero.zPosition = 5
-        view2D.addChild(myHero)
-        
-        
-        //////////
-        //Set the hero's light:
-        //heroTorch.position = CGPointMake(0,0)
-        //Kind of prefer it with this off, but leaving it on to see monsters:
-        //NOTE: My floors are currently only normal maps, so ambient doesn't work
-        //heroTorch.ambientColor = UIColor.whiteColor()
-        //heroTorch.falloff = 1
-        heroTorch.lightColor = UIColor.redColor()
-        heroTorch.enabled = true
-        heroTorch.categoryBitMask = LightCategory.Hero
-        heroTorch.zPosition = 51
-        heroTorch.position = CGPoint (x: 0, y: 0)
-        myHero.addChild(heroTorch)
-        
-        
-        
-        //////////
-        //Set the monster
-        aMonster.location.x = myDungeon.dungeonRooms[0].location.x1 + 1
-        aMonster.location.y = myDungeon.dungeonRooms[0].location.y1 + 1
-        aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
-        //aMonster.anchorPoint = CGPoint(x:0, y:0)
-        aMonster.zPosition = 5
-
-        //Added a shadow to the monster
-        aMonster.shadowCastBitMask = LightCategory.Hero
-        aMonster.lightingBitMask = LightCategory.Hero
-        view2D.addChild(aMonster)
-
-        //Light the monster on fire
-        if let particles = SKEmitterNode(fileNamed: "FireParticle.sks") {
-            //particles.position = player.position
-            aMonster.addChild(particles)
-        }
-
 
         
         //////////
@@ -166,6 +101,7 @@ class PlayScene: SKScene {
         self.backgroundColor = SKColor(red: 0.1, green: 0.01, blue: 0.01, alpha: 1.0)
         
         
+        
         //////////
         //Button to return to main menu
         let mainMenuButton = GenericRoundButtonWithName("mainMenuButton", text: "Main Menu")
@@ -175,10 +111,10 @@ class PlayScene: SKScene {
         
         /////////
         //Center the dungeon on the hero, then add the dungeon to the scene!
-        centerDungeonOnNode(myHero)
-        
+        centerDungeonOnHero()
 
-        addChild(view2D)
+        
+        addChild(myDungeonLevel)
 
     }
 
@@ -195,7 +131,8 @@ class PlayScene: SKScene {
     //Callback handler for Pan gestureRecognizer
     func handlePanFrom(recognizer: UIPanGestureRecognizer) {
 
-        let selectedNode = view2D
+        let selectedNode = myDungeonLevel
+        
         
         if recognizer.state == .Began {
             var touchLocation = recognizer.locationInView(recognizer.view)
@@ -207,11 +144,11 @@ class PlayScene: SKScene {
             translation = CGPoint(x: translation.x, y: -translation.y)
             
             let position = selectedNode.position
-            view2D.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+            myDungeonLevel.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
             
             recognizer.setTranslation(CGPointZero, inView: recognizer.view)
             
-            print("view2D.position on pan == ", view2D.position)
+            print("view2D.position on pan == ", myDungeonLevel.position)
             
         } else if recognizer.state == .Ended {
             
@@ -285,7 +222,7 @@ class PlayScene: SKScene {
 
             //////////
             //Position:
-            print("view2D.position.x: ", view2D.position.x)
+            print("myDungeonLevel.position.x: ", myDungeonLevel.position.x)
             
             
             
@@ -334,13 +271,13 @@ class PlayScene: SKScene {
     
             if recognizer.scale > 1 { //zooming out
                 
-                view2D.position.x += 5 * recognizer.scale
-                view2D.position.y += 3 * recognizer.scale
+                myDungeonLevel.position.x += 5 * recognizer.scale
+                myDungeonLevel.position.y += 3 * recognizer.scale
                 
             } else { //zooming in
                 
-                view2D.position.x -= 10 * recognizer.scale
-                view2D.position.y -= 10 * recognizer.scale
+                myDungeonLevel.position.x -= 10 * recognizer.scale
+                myDungeonLevel.position.y -= 10 * recognizer.scale
                 
             }
             
@@ -349,8 +286,8 @@ class PlayScene: SKScene {
             //Scale:
             print ("recognizer.scale == ", recognizer.scale)
             
-            view2D.xScale = (view2D.xScale * recognizer.scale)
-            view2D.yScale = (view2D.yScale * recognizer.scale)
+            myDungeonLevel.xScale = (myDungeonLevel.xScale * recognizer.scale)
+            myDungeonLevel.yScale = (myDungeonLevel.yScale * recognizer.scale)
 
             recognizer.scale = 1.0
             
@@ -385,25 +322,28 @@ class PlayScene: SKScene {
             
             switch touchedNode.name! {
                 case "RB_Cntrl_Up":
-                    moveHero(0, y:1)
-                    moveMonster()
-
+                    myDungeonLevel.moveHero(0, y: 1)
+                    myDungeonLevel.moveMonster()
+                
                 case "RB_Cntrl_Down":
-                    moveHero(0, y:-1)
-                    moveMonster()
+                    myDungeonLevel.moveHero(0, y: -1)
+                    myDungeonLevel.moveMonster()
                 
                 case "RB_Cntrl_Right":
-                    moveHero(1, y: 0)
-                    moveMonster()
+                    myDungeonLevel.moveHero(1, y: 0)
+                    myDungeonLevel.moveMonster()
+
                 
                 case "RB_Cntrl_Left":
-                    moveHero(-1, y: 0)
-                    moveMonster()
+                    myDungeonLevel.moveHero(-1, y: 0)
+                    myDungeonLevel.moveMonster()
+
                 
                 case "RB_Cntrl_Middle":
                     //rest and move monsters
                     //Temp...
-                    scaleDungeonToFitIntoPlayScene()
+                    scaleDungeonLevelToFitIntoPlayScene()
+                
                 
                 case "mainMenuButton":
                     //Go back to the StartScene if Main Menu is pressed
@@ -411,10 +351,12 @@ class PlayScene: SKScene {
                     let startScene = StartScene(size: self.size)
                     self.view?.presentScene(startScene, transition: reveal)
                 
+                
                 case "hero", "monster", "item":
                     //popup a screen to show the details for the character, monster, or item attributes
                     //addChild(myDetails)
                     myDetails.showDetailsModalForNode(touchedNode, parent: self)
+                
                 
                 default:
                     //Go back to the StartScene if Main Menu is pressed
@@ -428,187 +370,75 @@ class PlayScene: SKScene {
     
     
     
-    //-------------------------------------------------------------------------------------------//
-    //
-    // MOVE characters and monsters
-    //
-    //-------------------------------------------------------------------------------------------//
-
-    func moveHero(x:Int, y:Int) {
-        
-        switch myDungeon.dungeonMap[myHero.location.y + y][myHero.location.x + x].tileType {
-            
-        case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
-            myHero.location.x = myHero.location.x + x
-            myHero.location.y = myHero.location.y + y
-
-            let xyPointDiff = convertBoardCoordinatetoCGPoint(myHero.location.x, y:myHero.location.y)
-            
-            //let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
-            //    SKAction.rotateByAngle(0.0, duration: 0.1),
-            //    SKAction.rotateByAngle(degToRad(4.0), duration: 0.1),
-            //    SKAction.moveTo(xyPointDiff, duration: 0.2)])
-            
-            myHero.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
-            
-        default: break
-        }
-        
-    }
     
-    
-    func moveMonster() -> Void {
-        // Let's just move randomly for now.
-        // Pick a cardinal direction and check for collision
-        // Repeat until a successful move has occurred or
-        // the number of tries reaches 5. Dude could be trapped
-        // like a Piner in a closet and we don't want to hang
-        // JOSH: LOL!
-        
-        var hasMoved: Bool=false
-        var numTries: Int=0
-        var direction: Int
-        
-        
-        while ( hasMoved == false ) && ( numTries < 5) {
-            
-            direction = Int(arc4random_uniform(4))
-            
-            
-            switch direction {
-            case 0:
-                // Try north
-            
-                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y-1][aMonster.getCurrentLocation().x].tileType  {
-                        
-                    case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
-                        aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y-1)
-                        hasMoved = true
-                    default:
-                        break
-                    }
-                
-            case 1:
-                // Try south
-              
-                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y+1][aMonster.getCurrentLocation().x].tileType {
-                        
-                    case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
-                        aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y+1)
-                        hasMoved = true
-                    default:
-                        break
-                    }
-                
-                
-            case 2:
-                // Try east
-               
-                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x-1].tileType {
-                        
-                    case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
-                        aMonster.setCurrentLocation(aMonster.getCurrentLocation().x-1, Y: aMonster.getCurrentLocation().y)
-                        hasMoved = true
-                    default:
-                        break
-                    }
-               
-                
-            case 3:
-                // Try west
-                
-                    switch myDungeon.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x+1].tileType {
-                        
-                    case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
-                        aMonster.setCurrentLocation(aMonster.getCurrentLocation().x+1, Y: aMonster.getCurrentLocation().y)
-                        hasMoved = true
-                    default:
-                        break
-                    }
-               
-                
-            default:
-                
-                print("Fell through monster move switch")
-            }
-            
-            numTries += 1
-        }
-        
-        let xyPointDiff = convertBoardCoordinatetoCGPoint(aMonster.location.x, y:aMonster.location.y)
-        
-        aMonster.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
-        
-    }
-
     
     
     
     
     //-------------------------------------------------------------------------------------------//
     //
-    // SCALE and FIT the view into the screen space:
-    //
-    // Turning this off, as it's actually nice to start zoomed in. Note this might make a good func for double tap
+    // SCALE and FIT the view into the screen space -- myDungeonLevel
     //
     //-------------------------------------------------------------------------------------------//
     
-    func scaleDungeonToFitIntoPlayScene () {
+    func scaleDungeonLevelToFitIntoPlayScene () {
         
         //Scale the view to ensure all tiles will fit within the view...
         print("PlayScene.size == ", self.size)
         
-        let yScale = Float(self.size.height) / (Float(myDungeon.dungeonSizeHeight) * Float(tileSize.height))
-        let xScale = Float(self.size.width) / (Float(myDungeon.dungeonSizeWidth) * Float(tileSize.width))
+        let yScale = Float(self.size.height) / (Float(myDungeonLevel.myDungeonMap.dungeonSizeHeight) * Float(tileSize.height))
+        let xScale = Float(self.size.width) / (Float(myDungeonLevel.myDungeonMap.dungeonSizeWidth) * Float(tileSize.width))
         
-        print("view2D.xScale == ", xScale)
-        print("view2D.yScale == ", yScale)
-        print("view2D.position == ", view2D.position)
-
-        view2D.yScale = CGFloat(yScale)
-        view2D.xScale = CGFloat(xScale)
+        print("myDungeonLevel.xScale == ", xScale)
+        print("myDungeonLevel.yScale == ", yScale)
+        print("myDungeonLevel.position == ", myDungeonLevel.position)
         
-        view2D.position = CGPointZero
-
+        myDungeonLevel.yScale = CGFloat(yScale)
+        myDungeonLevel.xScale = CGFloat(xScale)
+        
+        myDungeonLevel.position = CGPointZero
+        
     }
     
-    
-    
-    //-------------------------------------------------------------------------------------------//
-    //
-    // CENTER VIEW on a character
-    //
-    //-------------------------------------------------------------------------------------------//
 
-    func centerDungeonOnNode(centeredNode: SKSpriteNode) {
+    
+    
+    
+
+    //-------------------------------------------------------------------------------------------//
+    //
+    // CENTER VIEW on the HERO within myDungeonLevel
+    //
+    //-------------------------------------------------------------------------------------------//
+    
+    func centerDungeonOnHero() {
         
         //GOOD GOD THIS TOOK WAY TOO MUCH TIME BECAUSE I CAN"T FUCKING FOCUS. FUCK. I STILL DON'T THINK IT'S RIGHT. AND FUCK THE SHIFT KEY< I SHOULD BE ABLE TO HOLD IT DOWN AND GET APPROPRIATE PUNCTUATION WHEN I"M FUCKING YELLING YOU FUCKING FUCK SHIT OF A FUCK>
         
-        print("centeredNode.position == ", centeredNode.position)
-        print("myDungeon.position ==  ", myDungeon.position)
-        print("view2D.position:", view2D.position)
-        print("view2D.size", view2D.calculateAccumulatedFrame())
+        print("myDungeonLevel.myDungeonMap.position ==  ", myDungeonLevel.myDungeonMap.position)
+        print("myDungeonLevel.position == ", myDungeonLevel.position)
+        print("myDungeonLevel.size", myDungeonLevel.calculateAccumulatedFrame())
         print("self.size == ", self.size)
         
-        let centeredNodePositionInScene = view2D.convertPoint(centeredNode.position, toNode: self)
+        let centeredNodePositionInScene = myDungeonLevel.convertPoint(myDungeonLevel.myHero.position, toNode: self)
         
-        let view2DFrame = view2D.calculateAccumulatedFrame()
+        let myDungeonLevel2DFrame = myDungeonLevel.calculateAccumulatedFrame()
         
-        var newView2DPosition = CGPoint()
+        var newDungeonLevelPosition = CGPoint()
         
-        newView2DPosition.x = -((centeredNodePositionInScene.x / view2DFrame.width) * self.size.width)
-        newView2DPosition.y = -((centeredNodePositionInScene.y / view2DFrame.height) * self.size.height)
+        newDungeonLevelPosition.x = -((centeredNodePositionInScene.x / myDungeonLevel2DFrame.width) * self.size.width)
+        newDungeonLevelPosition.y = -((centeredNodePositionInScene.y / myDungeonLevel2DFrame.height) * self.size.height)
         
-        view2D.position = newView2DPosition
-
-        print("newView2DPosition == ", newView2DPosition)
-        print("view2D.position == ", view2D.position)
- 
-        view2D.xScale = 0.5
-        view2D.yScale = 0.5
+        myDungeonLevel.position = newDungeonLevelPosition
+        
+        print("newDungeonLevelPosition == ", newDungeonLevelPosition)
+        print("myDungeonLevel.position == ", myDungeonLevel.position)
+        
+        myDungeonLevel.xScale = 0.5
+        myDungeonLevel.yScale = 0.5
         
     }
 
-
+    
     
 } //End PlayScene

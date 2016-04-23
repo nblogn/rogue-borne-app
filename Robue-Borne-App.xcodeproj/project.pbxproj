@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		03337F881CB8800200C8CE98 /* FireParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03337F861CB8800200C8CE98 /* FireParticle.sks */; };
 		03337F891CB8800200C8CE98 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 03337F871CB8800200C8CE98 /* spark.png */; };
+		0333EC391CCBD44700BB0522 /* DungeonLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0333EC381CCBD44700BB0522 /* DungeonLevel.swift */; };
 		033F8D1D1CC4204B009722FF /* testScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033F8D1C1CC4204B009722FF /* testScene.swift */; };
 		035A6F3B1CB385BF005B04FD /* bricksNormal.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 035A6F3A1CB385BF005B04FD /* bricksNormal.jpg */; };
 		035C2F511CB4B59D0087651F /* cb1_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 035C2F471CB4B59D0087651F /* cb1_n.png */; };
@@ -39,7 +40,7 @@
 		03C1DE821C6C3C8D00CDCF8F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03C1DE801C6C3C8D00CDCF8F /* LaunchScreen.storyboard */; };
 		03C1DE8D1C6C3C8D00CDCF8F /* Robue_Borne_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE8C1C6C3C8D00CDCF8F /* Robue_Borne_AppTests.swift */; };
 		03C1DE981C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE971C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift */; };
-		03C1DEA61C6C420E00CDCF8F /* Dungeon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA51C6C420E00CDCF8F /* Dungeon.swift */; };
+		03C1DEA61C6C420E00CDCF8F /* DungeonMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */; };
 		03C1DEA81C6C467500CDCF8F /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA71C6C467500CDCF8F /* Hero.swift */; };
 		03C64A151CC456AE00DC8968 /* GenericRoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */; };
 		03D001BA1C9F843100685F29 /* CorridorVertical.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B71C9F843100685F29 /* CorridorVertical.png */; };
@@ -73,6 +74,7 @@
 /* Begin PBXFileReference section */
 		03337F861CB8800200C8CE98 /* FireParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireParticle.sks; sourceTree = "<group>"; };
 		03337F871CB8800200C8CE98 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		0333EC381CCBD44700BB0522 /* DungeonLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DungeonLevel.swift; sourceTree = "<group>"; };
 		033F8D1C1CC4204B009722FF /* testScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = testScene.swift; sourceTree = "<group>"; };
 		035A6F3A1CB385BF005B04FD /* bricksNormal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bricksNormal.jpg; sourceTree = "<group>"; };
 		035C2F471CB4B59D0087651F /* cb1_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb1_n.png; sourceTree = "<group>"; };
@@ -109,7 +111,7 @@
 		03C1DE931C6C3C8D00CDCF8F /* Robue-Borne-AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Robue-Borne-AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C1DE971C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Robue_Borne_AppUITests.swift; sourceTree = "<group>"; };
 		03C1DE991C6C3C8D00CDCF8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		03C1DEA51C6C420E00CDCF8F /* Dungeon.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = Dungeon.swift; sourceTree = "<group>"; };
+		03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = DungeonMap.swift; sourceTree = "<group>"; };
 		03C1DEA71C6C467500CDCF8F /* Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
 		03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericRoundButton.swift; sourceTree = "<group>"; };
 		03D001B71C9F843100685F29 /* CorridorVertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CorridorVertical.png; sourceTree = "<group>"; };
@@ -207,7 +209,8 @@
 			isa = PBXGroup;
 			children = (
 				03C1DE731C6C3C8D00CDCF8F /* AppDelegate.swift */,
-				03C1DEA51C6C420E00CDCF8F /* Dungeon.swift */,
+				03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */,
+				0333EC381CCBD44700BB0522 /* DungeonLevel.swift */,
 				03D53B941CBCAA37009DBD30 /* ItemProtocols.swift */,
 				03D53B961CBCAA71009DBD30 /* CharacterProtocols.swift */,
 				03C1DEA71C6C467500CDCF8F /* Hero.swift */,
@@ -422,7 +425,8 @@
 				035F06AF1CC2F70600C53A49 /* CharacterDetailsPopup.swift in Sources */,
 				03D001C01C9FAF7300685F29 /* HelperFunctions.swift in Sources */,
 				03D53B951CBCAA37009DBD30 /* ItemProtocols.swift in Sources */,
-				03C1DEA61C6C420E00CDCF8F /* Dungeon.swift in Sources */,
+				03C1DEA61C6C420E00CDCF8F /* DungeonMap.swift in Sources */,
+				0333EC391CCBD44700BB0522 /* DungeonLevel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

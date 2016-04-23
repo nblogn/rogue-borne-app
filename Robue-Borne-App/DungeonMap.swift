@@ -13,7 +13,7 @@ import Darwin
 import SpriteKit
 
 
-class Dungeon: SKNode {
+class DungeonMap: SKNode {
 
     //Constants and initializers...
     let dungeonSizeWidth: Int
