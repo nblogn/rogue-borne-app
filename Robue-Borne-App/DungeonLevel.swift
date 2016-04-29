@@ -139,7 +139,7 @@ class DungeonLevel: SKNode {
         default: break
         }
         
-    }
+    }//moveHer()
     
     
     func moveMonster() -> Void {
@@ -224,7 +224,7 @@ class DungeonLevel: SKNode {
         
         aMonster.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
         
-    }
+    }//moveMonster()
     
     
 }
