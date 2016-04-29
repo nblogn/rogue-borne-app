@@ -36,9 +36,8 @@ class DungeonLevel: SKNode {
     
     /* TODO:
      Add stuff for init() like...
-     - map type
      - Difficulty (How many monsters, how hard, etc)
-     - Size
+     - Size of map
      */
     init(dungeonType: String) {
         
