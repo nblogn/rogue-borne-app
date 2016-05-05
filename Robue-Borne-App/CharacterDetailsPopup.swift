@@ -18,7 +18,7 @@ class CharacterDetailsPopup: SKNode {
     // DETAILS -- Draw/hide the details modal popup window
     //
     //-------------------------------------------------------------------------------------------//
-    func showDetailsModalForNode<T>(nodeToDetail: T, parent: SKNode) {
+    func showDetailsModalForNode <T where T: basicCharacterAbilities> (nodeToDetail: T, parent: SKScene) {
         
         self.moveToParent(parent)
         
@@ -41,14 +41,18 @@ class CharacterDetailsPopup: SKNode {
         
         
         //TODO: lookup the details nodeToDetail and print out details!
-        //print(nodeToDetail.hitPoints)
+        let stats: String = nodeToDetail.getStats()
+        
+        self.addChild(GenericText.init(name: "statsText", text: stats))
         
     }
     
     func hideDetailsModal () {
         //remove details window
         self.removeFromParent()
-        detailsModal.removeFromParent()
+        
+        //Don't think I need this...
+        //detailsModal.removeFromParent()
     }
 
     

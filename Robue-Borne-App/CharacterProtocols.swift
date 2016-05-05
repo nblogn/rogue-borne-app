@@ -11,24 +11,47 @@
 import Foundation
 
 
+
+struct dungeonLocation {
+    var x: Int
+    var y: Int
+}
+
+
+
 protocol basicCharacterAbilities {
     var hitPoints: Int {get set}
+    var location: dungeonLocation {get set}
+
+    func getStats() -> String
+    func getCurrentLocation() -> dungeonLocation
 }
+
+
+
 
 protocol magic {
     //?
 }
+
+
+
 
 protocol teleportation {
     //?
 }
 
 
+
+
 /*
 struct mage: basicCharacterAbilities, magic {
     
+
 }
 
+
+ 
 struct warrior: basicCharacterAbilities {
 
     var hitPoints: Int = 20
@@ -36,3 +59,6 @@ struct warrior: basicCharacterAbilities {
 }
  
 */
+
+
+

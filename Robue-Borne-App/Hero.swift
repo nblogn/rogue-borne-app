@@ -15,19 +15,19 @@ import SpriteKit
 
 class Hero: SKSpriteNode, basicCharacterAbilities {
     
-    //TODO: - dungeonLocation probably needs to be decoupled and made extensible
-    struct dungeonLocation {
-        var x: Int
-        var y: Int
-    }
+
     
     var hitPoints: Int = 20
-
     var location: dungeonLocation
 
+    
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
+    
     
     init() {
 
@@ -41,11 +41,24 @@ class Hero: SKSpriteNode, basicCharacterAbilities {
         
     }
     
+    
+    
     func getCurrentLocation() -> dungeonLocation {
         
         return location
     
     }
+    
+    
+    
+    func getStats () -> String {
+    
+        return "Hit Points: " + String(self.hitPoints)
+    }
+    
+    
+    
+    
 }
 
     

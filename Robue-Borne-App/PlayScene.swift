@@ -354,8 +354,15 @@ class PlayScene: SKScene {
                 
                 case "hero", "monster", "item":
                     //popup a screen to show the details for the character, monster, or item attributes
-                    //addChild(myDetails)
-                    myDetails.showDetailsModalForNode(touchedNode, parent: self)
+                    //let test: Hero = touchedNode
+                    
+////////////////////////////////////////////////////////////////////////////WHY THE FUCK DOESN"T THIS WORK?!?!?!?!
+                    //myDetails.showDetailsModalForNode(touchedNode, parent: self)
+                
+                    if touchedNode.isKindOfClass(Hero) {
+                        print("touchedNode is a Hero")
+                    }
+
                 
                 
                 default:
