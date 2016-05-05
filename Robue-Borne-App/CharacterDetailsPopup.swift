@@ -18,7 +18,7 @@ class CharacterDetailsPopup: SKNode {
     // DETAILS -- Draw/hide the details modal popup window
     //
     //-------------------------------------------------------------------------------------------//
-    func showDetailsModalForNode (nodeToDetail: SKNode, parent: SKNode) {
+    func showDetailsModalForNode<T>(nodeToDetail: T, parent: SKNode) {
         
         self.moveToParent(parent)
         
@@ -31,7 +31,7 @@ class CharacterDetailsPopup: SKNode {
         detailsModal.zPosition = 99
         detailsModal.position = CGPoint(x: 285, y:50)
         addChild(detailsModal)
-        
+                
         self.zPosition = 99
         
         let exitButton = GenericRoundButtonWithName("exitButton", text: "Exit")
@@ -41,7 +41,7 @@ class CharacterDetailsPopup: SKNode {
         
         
         //TODO: lookup the details nodeToDetail and print out details!
-        
+        //print(nodeToDetail.hitPoints)
         
     }
     

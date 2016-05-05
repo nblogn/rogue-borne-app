@@ -73,7 +73,7 @@
 
 /* Begin PBXFileReference section */
 		03337F861CB8800200C8CE98 /* FireParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireParticle.sks; sourceTree = "<group>"; };
-		03337F871CB8800200C8CE98 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		03337F871CB8800200C8CE98 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = "Robue-Borne-App/spark.png"; sourceTree = "<group>"; };
 		0333EC381CCBD44700BB0522 /* DungeonLevel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DungeonLevel.swift; sourceTree = "<group>"; };
 		033F8D1C1CC4204B009722FF /* testScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = testScene.swift; sourceTree = "<group>"; };
 		035A6F3A1CB385BF005B04FD /* bricksNormal.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bricksNormal.jpg; sourceTree = "<group>"; };
@@ -170,6 +170,7 @@
 		0394FFFF1C702FDC00654A19 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				03337F871CB8800200C8CE98 /* spark.png */,
 				035C2F461CB4B5820087651F /* CircuitFloors */,
 				035A6F3A1CB385BF005B04FD /* bricksNormal.jpg */,
 				03D001B71C9F843100685F29 /* CorridorVertical.png */,
@@ -219,7 +220,6 @@
 				03E3A0D91CAF9B0C0044758D /* Light.swift */,
 				03337F861CB8800200C8CE98 /* FireParticle.sks */,
 				03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */,
-				03337F871CB8800200C8CE98 /* spark.png */,
 				035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */,
 				038229E41C8CBC4700D84701 /* DPad.swift */,
 				03D001BD1C9FAAF000685F29 /* Tile.swift */,

@@ -359,7 +359,7 @@ class PlayScene: SKScene {
                 
                 
                 default:
-                    //Go back to the StartScene if Main Menu is pressed
+                    //Remove modals
                     //self.childNodeWithName("details")?.removeFromParent()
                     myDetails.hideDetailsModal ()
             }
