@@ -18,7 +18,7 @@ class CharacterDetailsPopup: SKNode {
     // DETAILS -- Draw/hide the details modal popup window
     //
     //-------------------------------------------------------------------------------------------//
-    func showDetailsModalForNode <T where T: basicCharacterAbilities> (nodeToDetail: T, parent: SKScene) {
+    func showDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene) {
         
         self.moveToParent(parent)
         
@@ -39,13 +39,35 @@ class CharacterDetailsPopup: SKNode {
         
         detailsModal.addChild(exitButton)
         
+
+        if nodeToDetail.isKindOfClass(Hero) {
+            
+            
+            print("touchedNode is a Hero")
+            print (nodeToDetail)
+            
+            //Force cast nodeToDetail to Hero (from SKNode)
+            let temp = nodeToDetail as! Hero
+            let stats: String = temp.getStats()
+            
+            let memText = GenericText.init(name: "statsText", text: stats)
+            memText.position = CGPoint(x: 150, y: 450)
+            
+            detailsModal.addChild(memText)
+            
+            print(temp.hitPoints)
+
         
-        //TODO: lookup the details nodeToDetail and print out details!
-        let stats: String = nodeToDetail.getStats()
         
-        self.addChild(GenericText.init(name: "statsText", text: stats))
+        } else if nodeToDetail.isKindOfClass(Monster) {
+            
+        }
+
+        
+        
         
     }
+
     
     func hideDetailsModal () {
         //remove details window

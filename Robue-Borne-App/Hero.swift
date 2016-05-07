@@ -53,7 +53,7 @@ class Hero: SKSpriteNode, basicCharacterAbilities {
     
     func getStats () -> String {
     
-        return "Hit Points: " + String(self.hitPoints)
+        return "Mem: " + String(self.hitPoints)
     }
     
     

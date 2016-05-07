@@ -356,14 +356,7 @@ class PlayScene: SKScene {
                     //popup a screen to show the details for the character, monster, or item attributes
                     //let test: Hero = touchedNode
                     
-////////////////////////////////////////////////////////////////////////////WHY THE FUCK DOESN"T THIS WORK?!?!?!?!
-                    //myDetails.showDetailsModalForNode(touchedNode, parent: self)
-                
-                    if touchedNode.isKindOfClass(Hero) {
-                        print("touchedNode is a Hero")
-                    }
-
-                
+                    myDetails.showDetailsModalForNode(touchedNode, parent: self)
                 
                 default:
                     //Remove modals
