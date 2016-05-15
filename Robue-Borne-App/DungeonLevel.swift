@@ -111,7 +111,7 @@ class DungeonLevel: SKNode {
         /////////
         //Set the Exit
         
-        myExit.location = myDungeonMap.getFurthestLocationFromLocation(myHero.getCurrentLocation())
+        myExit.location = getFurthestLocationFromLocation(myHero.getCurrentLocation())
         
     }
     
