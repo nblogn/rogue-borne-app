@@ -880,7 +880,43 @@ class DungeonMap: SKNode {
     }
     
     
+    //=====================================================================================================//
+    // PATHFINDING Utilities
+    //
+    // Find locations far away from, and closest to a given location
+    //
+    // Also could use an "explore everything until you hit something" function, this is for the
+    // auto explore modes in more modern roguelikes.
+    //
+    //=====================================================================================================//
 
+    
+    //Set a farthest (furthest?) path location away from the given (hero's) starting point
+    func getFurthestLocationFromLocation(targetLocation: dungeonLocation) -> dungeonLocation {
+        
+        
+        var furthestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
+        
+        //Implement farthest path algorithm...
+        
+        return furthestLocation
+    }
+
+    
+    
+    
+    func getClosestLocationToLocation(targetLocation: dungeonLocation) -> dungeonLocation {
+
+        var closestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
+        
+        //Implement nearest path algorithm... (dyjkstra)
+        
+        return closestLocation
+    
+    }
+    
+    
+    
     
     
     //=====================================================================================================//

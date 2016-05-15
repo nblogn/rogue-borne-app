@@ -13,20 +13,13 @@ import SpriteKit
 
 class Item: SKSpriteNode {
     
-    
-    struct dungeonLocation {
-        var x: Int
-        var y: Int
-    }
-    
-    
     var location: dungeonLocation
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init() {
+    init() { //Need to override with the image name... or more, to make this more configurable
         
         self.location = dungeonLocation.init(x: 15, y: 15)
         
@@ -43,4 +36,6 @@ class Item: SKSpriteNode {
         return location
         
     }
+    
+    
 }

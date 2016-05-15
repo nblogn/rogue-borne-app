@@ -15,7 +15,8 @@ class DungeonLevel: SKNode {
     let myDungeonMap = DungeonMap()
     let myHero: Hero
     let aMonster: Monster
-    let myDPad: dPad
+    
+    let myExit: Item
     
     
     //Add a light source for the hero...
@@ -42,9 +43,9 @@ class DungeonLevel: SKNode {
     init(dungeonType: String) {
         
         
-        self.myDPad = dPad()
         self.myHero = Hero()
         self.aMonster = Monster()
+        self.myExit = Item()
         
         //Change the different map creation algorithms to happen on UI button press
         switch dungeonType {
@@ -107,6 +108,10 @@ class DungeonLevel: SKNode {
         }
         
 
+        /////////
+        //Set the Exit
+        
+        myExit.location = myDungeonMap.getFurthestLocationFromLocation(myHero.getCurrentLocation())
         
     }
     
@@ -139,7 +144,7 @@ class DungeonLevel: SKNode {
         default: break
         }
         
-    }//moveHer()
+    }//moveHero()
     
     
     func moveMonster() -> Void {

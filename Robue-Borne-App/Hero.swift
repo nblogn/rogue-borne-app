@@ -38,7 +38,7 @@ class Hero: SKSpriteNode, basicCharacterAbilities {
 
         self.name = "hero"
         self.zPosition = 50
-        
+
     }
     
     
