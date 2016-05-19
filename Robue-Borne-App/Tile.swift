@@ -88,6 +88,7 @@ class TileClass: SKSpriteNode {
 
     var tileType: Tile
     var passable: Bool
+    var discovered: Bool
     
     //Default init in case of errors...
     required init(coder aDecoder: NSCoder) {
@@ -98,6 +99,7 @@ class TileClass: SKSpriteNode {
         
         self.tileType = Tile.Nothing
         self.passable = false
+        self.discovered = false
         
         let texture = SKTexture(imageNamed: self.tileType.image)
         super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
@@ -124,6 +126,8 @@ class TileClass: SKSpriteNode {
             case Tile.Door:
                 self.passable = true
             }
+        
+        self.discovered = false
 
         let texture = SKTexture(imageNamed: self.tileType.image)
         super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
