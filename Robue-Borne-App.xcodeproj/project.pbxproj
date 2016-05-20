@@ -23,6 +23,7 @@
 		035C2F591CB4B59D0087651F /* cb9_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 035C2F4F1CB4B59D0087651F /* cb9_n.png */; };
 		035C2F5A1CB4B59D0087651F /* cb10_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 035C2F501CB4B59D0087651F /* cb10_n.png */; };
 		035F06AF1CC2F70600C53A49 /* CharacterDetailsPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */; };
+		036264611CEEC72B0060257D /* MiniMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036264601CEEC72B0060257D /* MiniMapView.swift */; };
 		038229E51C8CBC4700D84701 /* DPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038229E41C8CBC4700D84701 /* DPad.swift */; };
 		0394FFFA1C702FCB00654A19 /* RB_Grass_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF51C702FCB00654A19 /* RB_Grass_2x.png */; };
 		0394FFFB1C702FCB00654A19 /* RB_Wall_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF61C702FCB00654A19 /* RB_Wall_2x.png */; };
@@ -89,6 +90,7 @@
 		035C2F4F1CB4B59D0087651F /* cb9_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb9_n.png; sourceTree = "<group>"; };
 		035C2F501CB4B59D0087651F /* cb10_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb10_n.png; sourceTree = "<group>"; };
 		035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterDetailsPopup.swift; sourceTree = "<group>"; };
+		036264601CEEC72B0060257D /* MiniMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniMapView.swift; sourceTree = "<group>"; };
 		038229E41C8CBC4700D84701 /* DPad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPad.swift; sourceTree = "<group>"; };
 		0394FFF51C702FCB00654A19 /* RB_Grass_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Grass_2x.png; path = "Robue-Borne-App/RB_Grass_2x.png"; sourceTree = "<group>"; };
 		0394FFF61C702FCB00654A19 /* RB_Wall_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Wall_2x.png; path = "Robue-Borne-App/RB_Wall_2x.png"; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */,
 				03A04D921CDB148B00A9E2E8 /* GenericText.swift */,
 				035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */,
+				036264601CEEC72B0060257D /* MiniMapView.swift */,
 				038229E41C8CBC4700D84701 /* DPad.swift */,
 				03D001BD1C9FAAF000685F29 /* Tile.swift */,
 				03D001BF1C9FAF7300685F29 /* HelperFunctions.swift */,
@@ -426,6 +429,7 @@
 				03C1DE7A1C6C3C8D00CDCF8F /* GameViewController.swift in Sources */,
 				03C1DE741C6C3C8D00CDCF8F /* AppDelegate.swift in Sources */,
 				03EE7FDE1C6FA1DC00244144 /* PlayScene.swift in Sources */,
+				036264611CEEC72B0060257D /* MiniMapView.swift in Sources */,
 				035F06AF1CC2F70600C53A49 /* CharacterDetailsPopup.swift in Sources */,
 				03D001C01C9FAF7300685F29 /* HelperFunctions.swift in Sources */,
 				03D53B951CBCAA37009DBD30 /* ItemProtocols.swift in Sources */,

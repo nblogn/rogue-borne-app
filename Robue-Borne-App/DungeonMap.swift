@@ -811,19 +811,6 @@ class DungeonMap: SKNode {
             
             room.texture = SKTexture(imageNamed: imageName)
             room.normalTexture = SKTexture(imageNamed: imageName)
-        
-            ////
-            //Draw borders (walls) Using skShapeNode
-            //BUG: This is not working quite right, I think the scaling of the scene is screwing it up.
-            /*let shape = SKShapeNode()
-            shape.path = UIBezierPath(roundedRect: CGRect(x: coordinate1.x, y: coordinate1.y, width: width, height: height), cornerRadius: 8).CGPath
-            shape.position = coordinate1 //CGPoint(x: 0, y: 0)
-            shape.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
-            shape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
-            shape.lineWidth = 10
-            shape.glowWidth = 5
-            shape.zPosition = 1
-            addChild(shape)*/
             
             //Add the room to the dungeon:
             addChild(room)
@@ -904,24 +891,6 @@ class DungeonMap: SKNode {
         }
     }
     
-    
-    
-    
-    
-    //=====================================================================================================//
-    // Print a 2D array
-    // Mostly for debugging at this point. Or whatever.
-    //=====================================================================================================//
-    private func printDungeon(mazeToPrint: [[String]]){
-        
-        for row in 0 ..< mazeToPrint.count {
-            for column in 0 ..< mazeToPrint[row].count {
-                print("\(mazeToPrint[row][column])", terminator:"")
-            }
-            print(" - \(row)")
-        }
-        
-    }
     
 
 
