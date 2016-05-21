@@ -31,7 +31,7 @@ class PlayScene: SKScene {
     let myDungeonLevel: DungeonLevel
     let myDPad: dPad
     let myDetails: CharacterDetailsPopup
-
+    let myMiniMap: MiniMapView
     
     
     
@@ -54,12 +54,12 @@ class PlayScene: SKScene {
         //INIT UI Elements
         self.myDPad = dPad()
         self.myDetails = CharacterDetailsPopup()
-        myDetails.name = "details"
+        self.myDetails.name = "details"
 
+        self.myMiniMap = MiniMapView()
         
         //Create the entire dungeon level: map, monsters, heros, et al.
         myDungeonLevel = DungeonLevel(dungeonType: dungeonType)
-        
         
         super.init(size: size)
 
@@ -83,9 +83,9 @@ class PlayScene: SKScene {
         
 
         //////////
-        //Add details window, hidden for now
+        //Add details window and miniMap, hidden for now
         addChild(myDetails)
-        
+        addChild(myMiniMap)
 
         
         //////////
@@ -108,6 +108,12 @@ class PlayScene: SKScene {
         mainMenuButton.position = CGPoint(x: 100, y:700)
         addChild(mainMenuButton)
         
+        //////////
+        //Button to show mini map
+        let miniMapButton = GenericRoundButtonWithName("miniMapButton", text: "Map")
+        miniMapButton.position = CGPoint(x: 100, y:650)
+        addChild(miniMapButton)
+
         
         /////////
         //Center the dungeon on the hero, then add the dungeon to the scene!
@@ -352,25 +358,24 @@ class PlayScene: SKScene {
                     self.view?.presentScene(startScene, transition: reveal)
                 
                 
+                case "miniMapButton":
+                    //Popup the minimap
+                    myMiniMap.showMiniMapModal(myDungeonLevel.myDungeonMap, parent: self)
+                
+                
                 case "hero", "monster", "item":
                     //popup a screen to show the details for the character, monster, or item attributes
-                    //let test: Hero = touchedNode
-                    
                     myDetails.showDetailsModalForNode(touchedNode, parent: self)
                 
                 default:
                     //Remove modals
                     //self.childNodeWithName("details")?.removeFromParent()
-                    myDetails.hideDetailsModal ()
+                    myDetails.hideDetailsModal()
+                    myMiniMap.hideMiniMapModal()
+                
             }
         }
     }
-    
-    
-    
-    
-    
-    
     
     
     
@@ -402,12 +407,12 @@ class PlayScene: SKScene {
     
 
     
-    
-    
 
     //-------------------------------------------------------------------------------------------//
     //
     // CENTER VIEW on the HERO within myDungeonLevel
+    //
+    // TODO: Animate the re-positioning of the map, pass an argument for scaling or not
     //
     //-------------------------------------------------------------------------------------------//
     
