@@ -49,10 +49,10 @@ class DungeonLevel: SKNode {
         
         //Change the different map creation algorithms to happen on UI button press
         switch dungeonType {
-        case "cellMap": myDungeonMap.createDungeonUsingCellMethod()
-        case "cellAutoMap": myDungeonMap.generateDungeonRoomUsingCellularAutomota()
-        case "bigBangMap": myDungeonMap.generateDungeonRoomsUsingFitLeftToRight()
-        default:myDungeonMap.createDungeonUsingCellMethod()
+            case "cellMap": myDungeonMap.createDungeonUsingCellMethod()
+            case "cellAutoMap": myDungeonMap.generateDungeonRoomUsingCellularAutomota()
+            case "bigBangMap": myDungeonMap.generateDungeonRoomsUsingFitLeftToRight()
+            default:myDungeonMap.createDungeonUsingCellMethod()
         }
         
         super.init()
@@ -110,12 +110,12 @@ class DungeonLevel: SKNode {
 
         /////////
         //Set the Exit
-        
         myExit.location = getFurthestLocationFromLocation(myHero.getCurrentLocation())
         
     }
     
 
+    
     
     
     //-------------------------------------------------------------------------------------------//
@@ -230,6 +230,9 @@ class DungeonLevel: SKNode {
         aMonster.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
         
     }//moveMonster()
+    
+    
+    
     
     
     

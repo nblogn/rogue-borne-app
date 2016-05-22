@@ -481,7 +481,7 @@ class DungeonMap: SKNode {
     
     //=====================================================================================================//
     //
-    //Func to define the rooms within the dungeon, if all dungeonRooms are populated
+    //Func to define the rooms within the dungeon, when all dungeonRooms are populated
     //
     //=====================================================================================================//
     private func drawDungeonRooms() -> Void {

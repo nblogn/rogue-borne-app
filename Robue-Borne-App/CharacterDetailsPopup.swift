@@ -13,15 +13,15 @@ class CharacterDetailsPopup: SKNode {
     
     let detailsModal = SKShapeNode()
     
+    
+    
     //-------------------------------------------------------------------------------------------//
     //
     // DETAILS -- Draw/hide the details modal popup window
     //
     //-------------------------------------------------------------------------------------------//
-    func showDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene) {
-        
-        self.moveToParent(parent)
-        
+    func buildDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene) {
+                
         detailsModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 700, height: 650), cornerRadius: 8).CGPath
         detailsModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
         detailsModal.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
@@ -30,8 +30,7 @@ class CharacterDetailsPopup: SKNode {
         detailsModal.glowWidth = 5
         detailsModal.zPosition = 99
         detailsModal.position = CGPoint(x: 285, y:50)
-        addChild(detailsModal)
-                
+        
         self.zPosition = 99
         
         let exitButton = GenericRoundButtonWithName("exitButton", text: "Exit")
@@ -62,19 +61,33 @@ class CharacterDetailsPopup: SKNode {
         } else if nodeToDetail.isKindOfClass(Monster) {
             
         }
-
-        
-        
         
     }
+    
+    
+    //Show the model, build if needed...
+    func showDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene) {
+        
+        //If there's no parent, add this to parent (note, it's already added in PlayScene)
+        if (detailsModal.parent == nil) {
+            self.addChild(detailsModal)
+            
+            if (detailsModal.children.count == 0) {
+                buildDetailsModalForNode(nodeToDetail, parent: parent)
+            }
+        } else { //toggle OFF
+            hideDetailsModal()
+        }
+    }
+    
 
     
     func hideDetailsModal () {
+
         //remove details window
-        self.removeFromParent()
-        
-        //Don't think I need this...
-        //detailsModal.removeFromParent()
+        detailsModal.removeFromParent()
+        detailsModal.removeAllChildren()
+
     }
 
     

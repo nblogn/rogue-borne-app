@@ -26,7 +26,7 @@ class GenericText: SKLabelNode {
     }
     
     
-    init(name name: String, text: String) {
+    init(name: String, text: String) {
         
         super.init()
         

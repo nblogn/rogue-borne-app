@@ -15,16 +15,7 @@ class MiniMapView: SKNode {
     let miniMapModal = SKShapeNode()
     
     
-    
-    
-    
-    
-    //I'm doing too much code copying here from the DungeonMap class, but oh well...
-    func showMiniMapModal (myDungeonMiniMap: DungeonMap, parent: SKScene) {
-        
-        self.moveToParent(parent)
-        
-        
+    func buildMiniMapModal (myDungeonMiniMap: DungeonMap, parent: SKScene) {
         
         //Set the size of the miniMap
         let miniTileSize = 3
@@ -41,12 +32,10 @@ class MiniMapView: SKNode {
         miniMapModal.glowWidth = 1
         miniMapModal.zPosition = 99
         miniMapModal.position = CGPoint(x: miniMapPositionX, y: miniMapPositionY)
-        addChild(miniMapModal)
         
         self.zPosition = 99
-
         
-    
+        
         
         for row in 0..<myDungeonMiniMap.dungeonMap.count {
             
@@ -55,7 +44,7 @@ class MiniMapView: SKNode {
                 
                 //Let's skip the "nothing" tiles
                 if (myDungeonMiniMap.dungeonMap[row][column].tileType != Tile.Nothing) {
-
+                    
                     
                     //Calculate the current position
                     //Note: in the SpriteKit coordinate system, Y values increase as you move up the screen and decrease as you move down.
@@ -65,7 +54,7 @@ class MiniMapView: SKNode {
                     
                     //Add mini walls
                     if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.Wall) || (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.Nothing) {
-
+                        
                         let wallShape = SKShapeNode(rectOfSize: CGSize(width: 3, height: 3))
                         wallShape.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
                         wallShape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
@@ -81,7 +70,7 @@ class MiniMapView: SKNode {
                     
                     //Add mini corridors
                     if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.CorridorHorizontal) || (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.CorridorVertical) {
-
+                        
                         let corridorShape = SKShapeNode(rectOfSize: CGSize(width: 3, height: 3))
                         corridorShape.fillColor = UIColor(red: 0.1, green: 0.5, blue: 0.1, alpha: 0.7)
                         corridorShape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
@@ -104,24 +93,57 @@ class MiniMapView: SKNode {
                         groundShape.glowWidth = 1
                         groundShape.zPosition = 100
                         groundShape.position = point
-            
+                        
                         miniMapModal.addChild(groundShape)
                     }
                 }
-
+                
             }
             
         }
+
+    }
+
+    
+    
+    
+    func updateMiniMapModal (myDungeonMiniMap: DungeonMap, parent: SKScene) {
+        
+        //iterate and find diffs, then move the diff
         
     }
     
     
-    func hideMiniMapModal () {
-        //remove details window
-        self.removeFromParent()
+    
+    
+    //I'm doing too much code copying here from the DungeonMap class, but oh well...
+    func showMiniMapModal (myDungeonMiniMap: DungeonMap, parent: SKScene) {
         
-        //Don't think I need this...
-        //detailsModal.removeFromParent()
+        //If there's no parent, add this to parent and build
+        if (miniMapModal.parent == nil) {
+            
+            addChild(miniMapModal)
+            
+            //If there ARE children in miniMapModal, don't rebuild the map. TODO: Update instead.
+            if (miniMapModal.children.count == 0) {
+                buildMiniMapModal(myDungeonMiniMap, parent: parent)
+            }
+            
+            
+        } else { //the button was clicked while the map was shown, so toggle it closed.
+            hideMiniMapModal()
+        }
+        
+        
+
+    }
+    
+    
+    func hideMiniMapModal () {
+
+        miniMapModal.removeFromParent()
+        miniMapModal.removeAllChildren()
+        
     }
     
     

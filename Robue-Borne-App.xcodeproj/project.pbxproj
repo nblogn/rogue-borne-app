@@ -30,6 +30,7 @@
 		0394FFFC1C702FCB00654A19 /* RB_Dude_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF71C702FCB00654A19 /* RB_Dude_2x.png */; };
 		0394FFFD1C702FCB00654A19 /* RB_Floor_Green_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF81C702FCB00654A19 /* RB_Floor_Green_2x.png */; };
 		0394FFFE1C702FCB00654A19 /* RB_Floor_Grey_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF91C702FCB00654A19 /* RB_Floor_Grey_2x.png */; };
+		039A0BBB1CF1899000C489D6 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 039A0BBA1CF1899000C489D6 /* LoadingView.swift */; };
 		03A04D931CDB148B00A9E2E8 /* GenericText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A04D921CDB148B00A9E2E8 /* GenericText.swift */; };
 		03B453601C93DEAD00E937D0 /* Monster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B4535F1C93DEAD00E937D0 /* Monster.swift */; };
 		03B453621C93DEBB00E937D0 /* ItemClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B453611C93DEBB00E937D0 /* ItemClass.swift */; };
@@ -97,6 +98,7 @@
 		0394FFF71C702FCB00654A19 /* RB_Dude_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Dude_2x.png; path = "Robue-Borne-App/RB_Dude_2x.png"; sourceTree = "<group>"; };
 		0394FFF81C702FCB00654A19 /* RB_Floor_Green_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Floor_Green_2x.png; path = "Robue-Borne-App/RB_Floor_Green_2x.png"; sourceTree = "<group>"; };
 		0394FFF91C702FCB00654A19 /* RB_Floor_Grey_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Floor_Grey_2x.png; path = "Robue-Borne-App/RB_Floor_Grey_2x.png"; sourceTree = "<group>"; };
+		039A0BBA1CF1899000C489D6 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		03A04D921CDB148B00A9E2E8 /* GenericText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericText.swift; sourceTree = "<group>"; };
 		03B4535F1C93DEAD00E937D0 /* Monster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monster.swift; sourceTree = "<group>"; };
 		03B453611C93DEBB00E937D0 /* ItemClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemClass.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				03A04D921CDB148B00A9E2E8 /* GenericText.swift */,
 				035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */,
 				036264601CEEC72B0060257D /* MiniMapView.swift */,
+				039A0BBA1CF1899000C489D6 /* LoadingView.swift */,
 				038229E41C8CBC4700D84701 /* DPad.swift */,
 				03D001BD1C9FAAF000685F29 /* Tile.swift */,
 				03D001BF1C9FAF7300685F29 /* HelperFunctions.swift */,
@@ -420,6 +423,7 @@
 				038229E51C8CBC4700D84701 /* DPad.swift in Sources */,
 				03D53B971CBCAA71009DBD30 /* CharacterProtocols.swift in Sources */,
 				03B453621C93DEBB00E937D0 /* ItemClass.swift in Sources */,
+				039A0BBB1CF1899000C489D6 /* LoadingView.swift in Sources */,
 				03C1DE781C6C3C8D00CDCF8F /* StartScene.swift in Sources */,
 				03C1DEA81C6C467500CDCF8F /* Hero.swift in Sources */,
 				03B453601C93DEAD00E937D0 /* Monster.swift in Sources */,

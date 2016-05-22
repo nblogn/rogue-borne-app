@@ -32,7 +32,7 @@ class PlayScene: SKScene {
     let myDPad: dPad
     let myDetails: CharacterDetailsPopup
     let myMiniMap: MiniMapView
-    
+    let myLoadingView: LoadingView
     
     
     //-------------------------------------------------------------------------------------------//
@@ -47,19 +47,23 @@ class PlayScene: SKScene {
     }
     
 
-    //Init with the dungeonType (note, not an override since I'm adding attributes)
+    //Init with the dungeonType (NOTE: not an override since I'm adding attributes)
     init(size: CGSize, dungeonType: String) {
         
-
+        
         //INIT UI Elements
+        //TODO: Design pattern for naming? Name here or in the init of the class?
         self.myDPad = dPad()
         self.myDetails = CharacterDetailsPopup()
         self.myDetails.name = "details"
-
+        self.myLoadingView = LoadingView()
         self.myMiniMap = MiniMapView()
         
+        
+        
         //Create the entire dungeon level: map, monsters, heros, et al.
-        myDungeonLevel = DungeonLevel(dungeonType: dungeonType)
+        self.myDungeonLevel = DungeonLevel(dungeonType: dungeonType)
+        self.myDungeonLevel.name = "dungeon"
         
         super.init(size: size)
 
@@ -117,7 +121,7 @@ class PlayScene: SKScene {
         
         /////////
         //Center the dungeon on the hero, then add the dungeon to the scene!
-        centerDungeonOnHero()
+        centerDungeonOnHero(nil)
 
         
         addChild(myDungeonLevel)
@@ -222,7 +226,7 @@ class PlayScene: SKScene {
         
         if (recognizer.state == .Began) {
             
-            // No code needed for zooming...
+            // No code needed here for zooming...
             
         } else if (recognizer.state == .Changed) {
 
@@ -271,21 +275,20 @@ class PlayScene: SKScene {
                     view2D.position.y += 3 * recognizer.scale
                 }
 
-            }*/
-            
+            }
             
     
             if recognizer.scale > 1 { //zooming out
                 
-                myDungeonLevel.position.x += 5 * recognizer.scale
-                myDungeonLevel.position.y += 3 * recognizer.scale
+                myDungeonLevel.position.x += recognizer.scale
+                myDungeonLevel.position.y += recognizer.scale
                 
             } else { //zooming in
                 
                 myDungeonLevel.position.x -= 10 * recognizer.scale
                 myDungeonLevel.position.y -= 10 * recognizer.scale
                 
-            }
+            }*/
             
             
             //////////
@@ -297,10 +300,13 @@ class PlayScene: SKScene {
 
             recognizer.scale = 1.0
             
+            //centerDungeonOnHero(1)
+
+            
         } else if (recognizer.state == .Ended) {
             
             // No code needed here for zooming...
-            
+            //centerDungeonOnHero(1)
         }
 
         
@@ -359,13 +365,22 @@ class PlayScene: SKScene {
                 
                 
                 case "miniMapButton":
-                    //Popup the minimap
+                    //Popup OR CLOSE the minimap
                     myMiniMap.showMiniMapModal(myDungeonLevel.myDungeonMap, parent: self)
+                
                 
                 
                 case "hero", "monster", "item":
                     //popup a screen to show the details for the character, monster, or item attributes
                     myDetails.showDetailsModalForNode(touchedNode, parent: self)
+                
+                
+                case "dungeon", "tile", "wall", "ground":
+                    //Remove modals
+                    //self.childNodeWithName("details")?.removeFromParent()
+                    myDetails.hideDetailsModal()
+                    myMiniMap.hideMiniMapModal()
+                
                 
                 default:
                     //Remove modals
@@ -416,7 +431,7 @@ class PlayScene: SKScene {
     //
     //-------------------------------------------------------------------------------------------//
     
-    func centerDungeonOnHero() {
+    func centerDungeonOnHero(scale: Float?) {
         
         //GOOD GOD THIS TOOK WAY TOO MUCH TIME BECAUSE I CAN"T FUCKING FOCUS. FUCK. I STILL DON'T THINK IT'S RIGHT. AND FUCK THE SHIFT KEY< I SHOULD BE ABLE TO HOLD IT DOWN AND GET APPROPRIATE PUNCTUATION WHEN I"M FUCKING YELLING YOU FUCKING FUCK SHIT OF A FUCK>
         
@@ -439,8 +454,10 @@ class PlayScene: SKScene {
         print("newDungeonLevelPosition == ", newDungeonLevelPosition)
         print("myDungeonLevel.position == ", myDungeonLevel.position)
         
-        myDungeonLevel.xScale = 0.5
-        myDungeonLevel.yScale = 0.5
+        if (scale == nil) {
+            myDungeonLevel.xScale = 0.5
+            myDungeonLevel.yScale = 0.5
+        }
         
     }
 

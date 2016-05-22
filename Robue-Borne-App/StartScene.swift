@@ -54,6 +54,11 @@ class StartScene: SKScene {
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
+        /*
+        let myLoadingView = LoadingView()
+        myLoadingView.showLoadingModal(self)
+        */
+        
         let reveal = SKTransition.flipHorizontalWithDuration(0.5)
 
         let touch = touches 
