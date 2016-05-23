@@ -12,10 +12,12 @@ import SpriteKit
 class DungeonLevel: SKNode {
 
     
+    let initDungeonType: String
+    
+    
     let myDungeonMap = DungeonMap()
     let myHero: Hero
     let aMonster: Monster
-    
     let myExit: Item
     
     
@@ -24,22 +26,14 @@ class DungeonLevel: SKNode {
     var heroTorch = SKLightNode();
     var dungeonLight = SKLightNode();
     
-
-    
     
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     
     
-    
-    
-    /* TODO:
-     Add stuff for init() like...
-     - Difficulty (How many monsters, how hard, etc)
-     - Size of map
-     */
     init(dungeonType: String) {
         
         
@@ -47,19 +41,28 @@ class DungeonLevel: SKNode {
         self.aMonster = Monster()
         self.myExit = Item()
         
-        //Change the different map creation algorithms to happen on UI button press
-        switch dungeonType {
-            case "cellMap": myDungeonMap.createDungeonUsingCellMethod()
-            case "cellAutoMap": myDungeonMap.generateDungeonRoomUsingCellularAutomota()
-            case "bigBangMap": myDungeonMap.generateDungeonRoomsUsingFitLeftToRight()
-            default:myDungeonMap.createDungeonUsingCellMethod()
-        }
+        self.initDungeonType = dungeonType
+
         
         super.init()
         
         
         self.addChild(myDungeonMap)
+
         
+    }
+    
+
+    func buildDungeonLevel() {
+        
+
+        //Change the different map creation algorithms to happen on UI button press
+        switch initDungeonType {
+            case "cellMap": myDungeonMap.createDungeonUsingCellMethod()
+            case "cellAutoMap": myDungeonMap.generateDungeonRoomUsingCellularAutomota()
+            case "bigBangMap": myDungeonMap.generateDungeonRoomsUsingFitLeftToRight()
+        default:myDungeonMap.createDungeonUsingCellMethod()
+        }
         
         
         //////////
@@ -76,7 +79,6 @@ class DungeonLevel: SKNode {
         //Set the hero's light:
         //heroTorch.position = CGPointMake(0,0)
         //Kind of prefer it with this off, but leaving it on to see monsters:
-        //NOTE: My floors are currently only normal maps, so ambient doesn't work
         //heroTorch.ambientColor = UIColor.whiteColor()
         //heroTorch.falloff = 1
         heroTorch.lightColor = UIColor.redColor()
@@ -107,15 +109,13 @@ class DungeonLevel: SKNode {
             aMonster.addChild(particles)
         }
         
-
+        
         /////////
         //Set the Exit
         myExit.location = getFurthestLocationFromLocation(myHero.getCurrentLocation())
         
+        
     }
-    
-
-    
     
     
     //-------------------------------------------------------------------------------------------//

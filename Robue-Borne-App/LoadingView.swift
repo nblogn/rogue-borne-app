@@ -53,7 +53,7 @@ class LoadingView: SKNode {
 
         aMonster.position = CGPoint(x: 0, y: 0)
         
-        self.addChild(aMonster)
+        loadingModal.addChild(aMonster)
         
         //Light the monster on fire
         if let particles = SKEmitterNode(fileNamed: "FireParticle.sks") {

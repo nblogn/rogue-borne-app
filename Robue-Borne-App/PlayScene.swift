@@ -90,6 +90,7 @@ class PlayScene: SKScene {
         //Add details window and miniMap, hidden for now
         addChild(myDetails)
         addChild(myMiniMap)
+        addChild(myLoadingView)
 
         
         //////////
@@ -118,6 +119,12 @@ class PlayScene: SKScene {
         miniMapButton.position = CGPoint(x: 100, y:650)
         addChild(miniMapButton)
 
+        
+        /////////
+        //Build dungeon and show loading spinner:
+        myLoadingView.showLoadingModal(self)
+        myDungeonLevel.buildDungeonLevel()
+        myLoadingView.hideLoadingModal()
         
         /////////
         //Center the dungeon on the hero, then add the dungeon to the scene!
@@ -301,6 +308,7 @@ class PlayScene: SKScene {
             recognizer.scale = 1.0
             
             //centerDungeonOnHero(1)
+        
 
             
         } else if (recognizer.state == .Ended) {
