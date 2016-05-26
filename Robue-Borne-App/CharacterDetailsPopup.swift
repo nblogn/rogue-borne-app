@@ -23,13 +23,12 @@ class CharacterDetailsPopup: SKNode {
     func buildDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene) {
                 
         detailsModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 700, height: 650), cornerRadius: 8).CGPath
-        detailsModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
         detailsModal.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
         detailsModal.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
         detailsModal.lineWidth = 10
         detailsModal.glowWidth = 5
         detailsModal.zPosition = 99
-        detailsModal.position = CGPoint(x: 285, y:50)
+        detailsModal.position = CGPoint(x: (-(parent.size.width/2) + 200), y:(-(parent.size.height/2) + 50))
         
         self.zPosition = 99
         

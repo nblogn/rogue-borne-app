@@ -25,13 +25,12 @@ class MiniMapView: SKNode {
         let miniMapPositionY = Int(parent.size.height * 2) - miniMapHeight - 40
         
         miniMapModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: miniMapWidth, height: miniMapHeight), cornerRadius: 8).CGPath
-        miniMapModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
         miniMapModal.fillColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.7)
         miniMapModal.strokeColor = UIColor(red: 0.9, green: 0.1, blue: 0.1, alpha: 0.5)
         miniMapModal.lineWidth = 1
         miniMapModal.glowWidth = 1
         miniMapModal.zPosition = 99
-        miniMapModal.position = CGPoint(x: miniMapPositionX, y: miniMapPositionY)
+        miniMapModal.position = CGPoint(x: 0, y: 0)
         
         self.zPosition = 99
         

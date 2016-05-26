@@ -110,7 +110,7 @@ class PlayScene: SKScene {
         
         //////////
         //Position other UI elements
-        myMiniMap.position = CGPoint(x: (-(Int(self.size.width / 2))), y: (-(Int(self.size.height) / 2)))
+        myMiniMap.position = CGPoint(x: 0, y: 0)
     
         
         //////////
@@ -230,84 +230,6 @@ class PlayScene: SKScene {
     //-------------------------------------------------------------------------------------------//
     func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
     
-        
-/*
-        //The following pinches/zooms the entire view, since the gestures are on PlayScene's (SKScene, which is a node) *SKView* (subclasses of UIView):
-        //recognizer.view!.transform = CGAffineTransformScale(recognizer.view!.transform, recognizer.scale, recognizer.scale)
-        
-        
-        //I cribbed the code below and I'm too fucking burnt out to freaking understand it right now...
-        //http://stackoverflow.com/questions/21900614/sknode-scale-from-the-touched-point/21947549#21947549
-        
-        
-        //Find out which node was touched
-        var touchedAnchorPoint = recognizer.locationInView(recognizer.view)
-        touchedAnchorPoint = self.convertPointFromView(touchedAnchorPoint)
-        
-        
-        /*
-        //CGPoint anchorPoint = [recognizer locationInView:recognizer.view];
-        anchorPoint = [self convertPointFromView:anchorPoint];
-        */
- 
-        if (recognizer.state == .Began) {
-            
-            // No code needed here for zooming...
-            
-        } else if (recognizer.state == .Changed) {
-
-            //////////
-            //debug:
-            print("myDungeonLevel.position.x: ", myDungeonLevel.position.x)
-            
-            
-            //////////////////////////////////////////////////////////////////////////////
-            /* ... A supposedly correct solution in Objective C ...
-
-             //CGPoint anchorPointInMySkNode = [_mySkNode convertPoint:anchorPoint fromNode:self];
-            
-            //[_mySkNode setScale:(_mySkNode.xScale * recognizer.scale)];
-            
-            //CGPoint mySkNodeAnchorPointInScene = [self convertPoint:anchorPointInMySkNode fromNode:_mySkNode];
-            //CGPoint translationOfAnchorInScene = CGPointSubtract(anchorPoint, mySkNodeAnchorPointInScene);
-            
-            _mySkNode.position = CGPointAdd(_mySkNode.position, translationOfAnchorInScene);
-            
-            //recognizer.scale = 1.0;
-            */
-            //////////////////////////////////////////////////////////////////////////////
-            
-            
-            let anchorPointInMySkNode = myDungeonLevel.convertPoint(touchedAnchorPoint, fromNode: self)
-            
-            myDungeonLevel.xScale = (myDungeonLevel.xScale * recognizer.scale)
-            
-            //This works except for the Y. As soon as I add that, it kablooies.
-            //myDungeonLevel.yScale = (myDungeonLevel.yScale + recognizer.scale)
-            
-            let mySkNodeAnchorPointInScene = self.convertPoint(anchorPointInMySkNode, fromNode: myDungeonLevel)
-            let translationOfAnchorInScene = touchedAnchorPoint - mySkNodeAnchorPointInScene
-            
-            myDungeonLevel.position = myDungeonLevel.position + translationOfAnchorInScene
-            
-            
-            recognizer.scale = 1.0
-
-    
-            //////////
-            //debug:
-            print ("recognizer.scale == ", recognizer.scale)
-
-            
-        } else if (recognizer.state == .Ended) {
-            
-            // No code needed here for zooming...
-            //centerDungeonOnHero(1)
-        }
-
-*/
-        
-        
         
         if recognizer.numberOfTouches() == 2 {
             
@@ -485,6 +407,18 @@ class PlayScene: SKScene {
         }
         
     }
+    
+    
+    override func update(currentTime: CFTimeInterval)
+    {
+        /* Called before each frame is rendered */
+        
+        let centeredNodePositionInScene = myDungeonLevel.convertPoint(myDungeonLevel.myHero.position, toNode: self)
+
+        myCamera.position = centeredNodePositionInScene
+        
+    }
+
 
     
     
