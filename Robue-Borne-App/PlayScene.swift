@@ -380,26 +380,9 @@ class PlayScene: SKScene {
     
     func centerDungeonOnHero(scale: Float?) {
         
-        //GOOD GOD THIS TOOK WAY TOO MUCH TIME BECAUSE I CAN"T FUCKING FOCUS. FUCK. I STILL DON'T THINK IT'S RIGHT. AND FUCK THE SHIFT KEY< I SHOULD BE ABLE TO HOLD IT DOWN AND GET APPROPRIATE PUNCTUATION WHEN I"M FUCKING YELLING YOU FUCKING FUCK SHIT OF A FUCK>
-        
-        print("myDungeonLevel.myDungeonMap.position ==  ", myDungeonLevel.myDungeonMap.position)
-        print("myDungeonLevel.position == ", myDungeonLevel.position)
-        print("myDungeonLevel.size", myDungeonLevel.calculateAccumulatedFrame())
-        print("self.size == ", self.size)
-        
         let centeredNodePositionInScene = myDungeonLevel.convertPoint(myDungeonLevel.myHero.position, toNode: self)
         
-        let myDungeonLevel2DFrame = myDungeonLevel.calculateAccumulatedFrame()
-        
-        var newDungeonLevelPosition = CGPoint()
-        
-        newDungeonLevelPosition.x = -((centeredNodePositionInScene.x / myDungeonLevel2DFrame.width) * self.size.width)
-        newDungeonLevelPosition.y = -((centeredNodePositionInScene.y / myDungeonLevel2DFrame.height) * self.size.height)
-        
-        myDungeonLevel.position = newDungeonLevelPosition
-        
-        print("newDungeonLevelPosition == ", newDungeonLevelPosition)
-        print("myDungeonLevel.position == ", myDungeonLevel.position)
+        myCamera.position = centeredNodePositionInScene
         
         if (scale == nil) {
             myDungeonLevel.xScale = 0.5
