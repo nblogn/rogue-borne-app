@@ -21,8 +21,8 @@ class MiniMapView: SKNode {
         let miniTileSize = 3
         let miniMapWidth = miniTileSize * myDungeonMiniMap.dungeonSizeWidth + 5
         let miniMapHeight = miniTileSize * myDungeonMiniMap.dungeonSizeHeight + 5
-        let miniMapPositionX = Int(parent.size.width) - miniMapWidth - 30
-        let miniMapPositionY = Int(parent.size.height) - miniMapHeight - 40
+        let miniMapPositionX = Int(parent.size.width * 2) - miniMapWidth - 30
+        let miniMapPositionY = Int(parent.size.height * 2) - miniMapHeight - 40
         
         miniMapModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: miniMapWidth, height: miniMapHeight), cornerRadius: 8).CGPath
         miniMapModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))

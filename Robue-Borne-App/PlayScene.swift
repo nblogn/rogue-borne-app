@@ -34,6 +34,9 @@ class PlayScene: SKScene {
     let myMiniMap: MiniMapView
     let myLoadingView: LoadingView
     
+    let myCamera: SKCameraNode
+    
+    
     
     //-------------------------------------------------------------------------------------------//
     //
@@ -59,7 +62,7 @@ class PlayScene: SKScene {
         self.myLoadingView = LoadingView()
         self.myMiniMap = MiniMapView()
         
-        
+        self.myCamera = SKCameraNode()
         
         //Create the entire dungeon level: map, monsters, heros, et al.
         self.myDungeonLevel = DungeonLevel(dungeonType: dungeonType)
@@ -88,17 +91,26 @@ class PlayScene: SKScene {
 
         //////////
         //Add details window and miniMap, hidden for now
-        addChild(myDetails)
-        addChild(myMiniMap)
-        addChild(myLoadingView)
-
+        myCamera.addChild(myDetails)
+        myCamera.addChild(myMiniMap)
+        myCamera.addChild(myLoadingView)
+        
+        
+        addChild(myCamera)
+        self.camera = myCamera
         
         //////////
         //Configure and add the d-pad
         myDPad.zPosition = 100
-        myDPad.xScale = 0.7
-        myDPad.yScale = 0.85
-        addChild(myDPad)
+        myDPad.position = CGPoint(x: -525, y:-400)
+        //myDPad.xScale = 0.7
+        //myDPad.yScale = 0.85
+        myCamera.addChild(myDPad)
+        
+        
+        //////////
+        //Position other UI elements
+        myMiniMap.position = CGPoint(x: (-(Int(self.size.width / 2))), y: (-(Int(self.size.height) / 2)))
     
         
         //////////
@@ -106,18 +118,18 @@ class PlayScene: SKScene {
         self.backgroundColor = SKColor(red: 0.1, green: 0.01, blue: 0.01, alpha: 1.0)
         
         
-        
         //////////
         //Button to return to main menu
         let mainMenuButton = GenericRoundButtonWithName("mainMenuButton", text: "Main Menu")
-        mainMenuButton.position = CGPoint(x: 100, y:700)
-        addChild(mainMenuButton)
+        mainMenuButton.position = CGPoint(x: -400, y:325)
+        myCamera.addChild(mainMenuButton)
+   
         
         //////////
         //Button to show mini map
         let miniMapButton = GenericRoundButtonWithName("miniMapButton", text: "Map")
-        miniMapButton.position = CGPoint(x: 100, y:650)
-        addChild(miniMapButton)
+        miniMapButton.position = CGPoint(x: -400, y:275)
+        myCamera.addChild(miniMapButton)
 
         
         /////////
@@ -217,7 +229,9 @@ class PlayScene: SKScene {
     //
     //-------------------------------------------------------------------------------------------//
     func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
+    
         
+/*
         //The following pinches/zooms the entire view, since the gestures are on PlayScene's (SKScene, which is a node) *SKView* (subclasses of UIView):
         //recognizer.view!.transform = CGAffineTransformScale(recognizer.view!.transform, recognizer.scale, recognizer.scale)
         
@@ -231,6 +245,11 @@ class PlayScene: SKScene {
         touchedAnchorPoint = self.convertPointFromView(touchedAnchorPoint)
         
         
+        /*
+        //CGPoint anchorPoint = [recognizer locationInView:recognizer.view];
+        anchorPoint = [self convertPointFromView:anchorPoint];
+        */
+ 
         if (recognizer.state == .Began) {
             
             // No code needed here for zooming...
@@ -238,77 +257,46 @@ class PlayScene: SKScene {
         } else if (recognizer.state == .Changed) {
 
             //////////
-            //Position:
+            //debug:
             print("myDungeonLevel.position.x: ", myDungeonLevel.position.x)
             
             
-            
-            //I tried to do a bunch of shit to make this work better, removing for now
-            /*
-             
-             Note that a lot of people have this issue, since SpriteKit doesn't support pinch/zoom properly on a node (just a scene)
-             http://stackoverflow.com/questions/19922792/center-skspritenode-during-pinch
-             
-            let view2dBounds: CGRect = view2D.calculateAccumulatedFrame()
-            let view2dMidpoint: CGPoint = CGPoint(x: ((view2dBounds.width - view2D.position.x)/2), y: ((view2dBounds.height - view2D.position.y)/2))
-            let view2dMidpointInScene = view2D.convertPoint(view2dMidpoint, fromNode: self)
-            
-            
-            if recognizer.scale > 1 { //zooming out
-                
-                if touchedAnchorPoint.x < view2dMidpointInScene.x {
-                    view2D.position.x += 5 * recognizer.scale
-                } else {
-                    view2D.position.x -= 5 * recognizer.scale
-                }
-                
-                if touchedAnchorPoint.y < view2dMidpointInScene.y {
-                    view2D.position.y += 3 * recognizer.scale
-                } else {
-                    view2D.position.y -= 3 * recognizer.scale
-                }
-                
-            } else { //zooming in
-                
-                if touchedAnchorPoint.x < view2dMidpointInScene.x {
-                    view2D.position.x += 5 * recognizer.scale
-                } else {
-                    view2D.position.x -= 5 * recognizer.scale
-                }
-                
-                if touchedAnchorPoint.y < view2dMidpointInScene.y {
-                    view2D.position.y -= 3 * recognizer.scale
-                } else {
-                    view2D.position.y += 3 * recognizer.scale
-                }
+            //////////////////////////////////////////////////////////////////////////////
+            /* ... A supposedly correct solution in Objective C ...
 
-            }
+             //CGPoint anchorPointInMySkNode = [_mySkNode convertPoint:anchorPoint fromNode:self];
             
-    
-            if recognizer.scale > 1 { //zooming out
-                
-                myDungeonLevel.position.x += recognizer.scale
-                myDungeonLevel.position.y += recognizer.scale
-                
-            } else { //zooming in
-                
-                myDungeonLevel.position.x -= 10 * recognizer.scale
-                myDungeonLevel.position.y -= 10 * recognizer.scale
-                
-            }*/
+            //[_mySkNode setScale:(_mySkNode.xScale * recognizer.scale)];
+            
+            //CGPoint mySkNodeAnchorPointInScene = [self convertPoint:anchorPointInMySkNode fromNode:_mySkNode];
+            //CGPoint translationOfAnchorInScene = CGPointSubtract(anchorPoint, mySkNodeAnchorPointInScene);
+            
+            _mySkNode.position = CGPointAdd(_mySkNode.position, translationOfAnchorInScene);
+            
+            //recognizer.scale = 1.0;
+            */
+            //////////////////////////////////////////////////////////////////////////////
             
             
-            //////////
-            //Scale:
-            print ("recognizer.scale == ", recognizer.scale)
+            let anchorPointInMySkNode = myDungeonLevel.convertPoint(touchedAnchorPoint, fromNode: self)
             
             myDungeonLevel.xScale = (myDungeonLevel.xScale * recognizer.scale)
-            myDungeonLevel.yScale = (myDungeonLevel.yScale * recognizer.scale)
-
-            recognizer.scale = 1.0
             
-            //centerDungeonOnHero(1)
-        
+            //This works except for the Y. As soon as I add that, it kablooies.
+            //myDungeonLevel.yScale = (myDungeonLevel.yScale + recognizer.scale)
+            
+            let mySkNodeAnchorPointInScene = self.convertPoint(anchorPointInMySkNode, fromNode: myDungeonLevel)
+            let translationOfAnchorInScene = touchedAnchorPoint - mySkNodeAnchorPointInScene
+            
+            myDungeonLevel.position = myDungeonLevel.position + translationOfAnchorInScene
+            
+            
+            recognizer.scale = 1.0
+
+    
+            //////////
+            //debug:
+            print ("recognizer.scale == ", recognizer.scale)
 
             
         } else if (recognizer.state == .Ended) {
@@ -317,11 +305,40 @@ class PlayScene: SKScene {
             //centerDungeonOnHero(1)
         }
 
+*/
+        
+        
+        
+        if recognizer.numberOfTouches() == 2 {
+            
+            
+            let locationInView = recognizer.locationInView(recognizer.view)
+            let location = self.convertPointFromView(locationInView)
+            
+            
+            if recognizer.state == .Changed {
+                
+                let deltaScale = (recognizer.scale - 1.0)*2
+                let convertedScale = recognizer.scale - deltaScale
+                let newScale = myCamera.xScale * convertedScale
+                myCamera.setScale(newScale)
+                
+                let locationAfterScale = self.convertPointFromView(locationInView)
+                let locationDelta = location - locationAfterScale
+                let newPoint = myCamera.position + locationDelta
+                myCamera.position = newPoint
+                
+                recognizer.scale = 1.0
+                
+            }
+            
+            
+        }
+
         
 
     }
-    
-    
+
     
     
     //-------------------------------------------------------------------------------------------//
