@@ -30,7 +30,7 @@ struct asciiDungeonObjectArt {
 
 
 let tileSize = (width:32, height:32)
-
+let miniTileSize = (width:3, height: 3)
 
 enum Tile: Int {
     

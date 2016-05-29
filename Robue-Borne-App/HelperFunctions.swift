@@ -28,10 +28,22 @@ import SpriteKit
 //Given a board position convert to CGPoint
 //From me: I probably need some conversions of array coordinates to CGPoint coordinate...
 //-------------------------------------------------------------------------------------------//
-func convertBoardCoordinatetoCGPoint (x: Int, y: Int) -> CGPoint {
+func convertBoardCoordinatetoCGPoint (x: Int, y: Int, mini: Bool = false) -> CGPoint {
     
-    let retX = x * tileSize.width
-    let retY = y * tileSize.height
+    let retX: Int
+    let retY: Int
+    
+    if mini == true {
+        
+        retX = x * miniTileSize.width
+        retY = y * miniTileSize.height
+        
+    } else {
+
+        retX = x * tileSize.width
+        retY = y * tileSize.height
+        
+    }
     
     return CGPoint(x: retX, y: retY)
     

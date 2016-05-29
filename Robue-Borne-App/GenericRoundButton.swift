@@ -12,6 +12,10 @@ import SpriteKit
 
 class GenericRoundButtonWithName: SKNode {
     
+    
+    let button = SKShapeNode()
+    
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -34,7 +38,6 @@ class GenericRoundButtonWithName: SKNode {
         textBounds.size.height += 20
         textBounds.size.width += 15
         
-        let button = SKShapeNode()
         button.path = UIBezierPath(roundedRect: textBounds, cornerRadius: 8).CGPath
         button.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
         button.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
@@ -53,6 +56,16 @@ class GenericRoundButtonWithName: SKNode {
         self.addChild(button)
 
     }
+    
+    //This isn't working
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+
+        button.fillColor = UIColor(red: 1, green: 0.5, blue: 0.4, alpha: 1)
+
+        print("GenericRoundButtonWithName touched!")
+        
+    }
+
     
 
 }
