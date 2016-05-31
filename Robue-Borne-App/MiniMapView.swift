@@ -135,8 +135,8 @@ class MiniMapView: SKNode {
             let height = coordinate2.y - coordinate1.y
             
             let room = SKShapeNode(rectOfSize: CGSize(width: width, height: height))
-            room.fillColor = UIColor(red: 1, green: 1, blue: 0.1, alpha: 0.8)
-            room.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 1, alpha: 0.8)
+            room.fillColor = UIColor(red: 0.3, green: 0.1, blue: 0.5, alpha: 0.8)
+            room.strokeColor = UIColor(red: 0.9, green: 0.2, blue: 0.4, alpha: 0.8)
             room.lineWidth = 1
             room.glowWidth = 1
             room.zPosition = 100
@@ -154,16 +154,16 @@ class MiniMapView: SKNode {
             
             for column in 0..<myDungeonMiniMap.dungeonMap[row].count {
 
-                let point = CGPoint(x: (column*miniTileSize.width+2), y: (row*miniTileSize.height+2))
+                let point = CGPoint(x: (column*miniTileSize.width), y: (row*miniTileSize.height))
                 
                 //Add mini corridors
                 if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.CorridorHorizontal) || (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.CorridorVertical) {
                     
                     let corridorShape = SKShapeNode(rectOfSize: CGSize(width: 3, height: 3))
-                    corridorShape.fillColor = UIColor(red: 0.1, green: 0.5, blue: 0.1, alpha: 0.7)
-                    corridorShape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
-                    corridorShape.lineWidth = 1
-                    corridorShape.glowWidth = 1
+                    corridorShape.fillColor = UIColor(red: 0.5, green: 0.5, blue: 0.1, alpha: 0.7)
+                    //corridorShape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
+                    //corridorShape.lineWidth = 1
+                    //corridorShape.glowWidth = 1
                     corridorShape.zPosition = 100
                     corridorShape.position = point
                     

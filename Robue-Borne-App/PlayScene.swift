@@ -76,6 +76,9 @@ class PlayScene: SKScene {
     //didMoveToView is the first event in the PlayScene after inits
     override func didMoveToView(view: SKView) {
 
+        myLoadingView.showLoadingModal(self)
+
+        
         ////
         //Setup Gestures...
         let gesturePanRecognizer = UIPanGestureRecognizer(target: self, action: #selector(PlayScene.handlePanFrom(_:)))
@@ -134,9 +137,7 @@ class PlayScene: SKScene {
         
         /////////
         //Build dungeon and show loading spinner:
-        myLoadingView.showLoadingModal(self)
         myDungeonLevel.buildDungeonLevel()
-        myLoadingView.hideLoadingModal()
         
         /////////
         //Center the dungeon on the hero, then add the dungeon to the scene!
@@ -144,6 +145,10 @@ class PlayScene: SKScene {
 
         
         addChild(myDungeonLevel)
+        
+        
+        myLoadingView.hideLoadingModal()
+
 
     }
 

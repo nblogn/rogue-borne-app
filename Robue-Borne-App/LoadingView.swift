@@ -28,10 +28,10 @@ class LoadingView: SKNode {
     func buildLoadingModal (parent: SKScene) {
         
         //Set the size of the loading modal
-        let miniMapWidth = Int(parent.size.width / 4)
-        let miniMapHeight = Int(parent.size.height / 4)
-        let miniMapPositionX = Int(parent.size.width / 4)
-        let miniMapPositionY = Int(parent.size.height / 4)
+        let miniMapWidth = Int(parent.size.width / 2)
+        let miniMapHeight = Int(parent.size.height / 2)
+        let miniMapPositionX = -Int(parent.size.width / 4)
+        let miniMapPositionY = -Int(parent.size.height / 4)
         
         loadingModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: miniMapWidth, height: miniMapHeight), cornerRadius: 8).CGPath
         loadingModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
@@ -41,7 +41,7 @@ class LoadingView: SKNode {
         loadingModal.glowWidth = 1
         loadingModal.zPosition = 200
         loadingModal.position = CGPoint(x: miniMapPositionX, y: miniMapPositionY)
-
+    
         self.zPosition = 200
         
         
@@ -49,9 +49,9 @@ class LoadingView: SKNode {
         //////////
         //Set the monster
         let texture = SKTexture(imageNamed: "RB_Monster1")
-        let aMonster = SKSpriteNode(texture: texture, color: SKColor.clearColor(), size: texture.size())
+        let aMonster = SKSpriteNode(texture: texture, color: SKColor.clearColor(), size: CGSize(width: Int(miniMapWidth - 20), height: Int(miniMapHeight-20)))
 
-        aMonster.position = CGPoint(x: 0, y: 0)
+        aMonster.position = CGPoint(x: Int(miniMapWidth/2), y: Int(miniMapHeight/2))
         
         loadingModal.addChild(aMonster)
         
