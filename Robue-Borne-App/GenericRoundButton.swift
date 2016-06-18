@@ -63,7 +63,7 @@ class GenericRoundButtonWithName: SKNode {
     //This isn't working...
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
 
-        button.fillColor = UIColor(red: 1, green: 0.5, blue: 0.4, alpha: 1)
+        //button2.fillColor = UIColor(red: 1, green: 0.5, blue: 0.4, alpha: 1)
 
         print("GenericRoundButtonWithName touched!")
         

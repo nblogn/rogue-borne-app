@@ -14,6 +14,7 @@ class MiniMapView: SKNode {
     
     let miniMapModal = SKShapeNode()
     
+    var miniMapVisible: Bool = false
     
     func buildMiniMapModal (myDungeonMiniMap: DungeonMap, parent: SKScene) {
         

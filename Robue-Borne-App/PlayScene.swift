@@ -128,6 +128,16 @@ class PlayScene: SKScene {
         myCamera.addChild(mainMenuButton)
    
         
+        
+        /////////
+        //Testing SgButton Class
+        let btn31 = SgButton(normalString: "SgButton Test Button", normalStringColor: UIColor.blueColor(), normalFontName: "Arial", normalFontSize: 25, backgroundNormalColor: UIColor.yellowColor(), size: CGSizeMake(200, 40), cornerRadius: 10.0, buttonFunc: tappedButton)
+        btn31.setString(.Highlighted, string: "Being tapped", stringColor: UIColor.redColor(), backgroundColor: UIColor.greenColor())
+        btn31.position = CGPoint(x: -400, y: 200)
+        btn31.tag = 31
+        myCamera.addChild(btn31)
+
+        
         //////////
         //Button to show mini map
         let miniMapButton = GenericRoundButtonWithName("miniMapButton", text: "Map")
@@ -345,6 +355,15 @@ class PlayScene: SKScene {
     }
     
     
+    
+    func tappedButton(button: SgButton) {
+        print("tappedButton tappedButton tag=\(button.tag)")
+
+        myMiniMap.showMiniMapModal(myDungeonLevel.myDungeonMap, parent: self)
+
+        
+    }
+
     
     
     //-------------------------------------------------------------------------------------------//
