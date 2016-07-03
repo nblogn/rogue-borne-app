@@ -47,6 +47,7 @@
 		03C1DEA61C6C420E00CDCF8F /* DungeonMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */; };
 		03C1DEA81C6C467500CDCF8F /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA71C6C467500CDCF8F /* Hero.swift */; };
 		03C64A151CC456AE00DC8968 /* GenericRoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */; };
+		03CF64421D28267E0003D197 /* GenericRoundSpriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CF64411D28267E0003D197 /* GenericRoundSpriteButton.swift */; };
 		03D001BA1C9F843100685F29 /* CorridorVertical.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B71C9F843100685F29 /* CorridorVertical.png */; };
 		03D001BB1C9F843100685F29 /* Door.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B81C9F843100685F29 /* Door.png */; };
 		03D001BC1C9F843100685F29 /* CorridorHorizontal.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B91C9F843100685F29 /* CorridorHorizontal.png */; };
@@ -122,6 +123,7 @@
 		03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = DungeonMap.swift; sourceTree = "<group>"; };
 		03C1DEA71C6C467500CDCF8F /* Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
 		03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericRoundButton.swift; sourceTree = "<group>"; };
+		03CF64411D28267E0003D197 /* GenericRoundSpriteButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericRoundSpriteButton.swift; sourceTree = "<group>"; };
 		03D001B71C9F843100685F29 /* CorridorVertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CorridorVertical.png; sourceTree = "<group>"; };
 		03D001B81C9F843100685F29 /* Door.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Door.png; sourceTree = "<group>"; };
 		03D001B91C9F843100685F29 /* CorridorHorizontal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CorridorHorizontal.png; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				03E3A0D91CAF9B0C0044758D /* Light.swift */,
 				03337F861CB8800200C8CE98 /* FireParticle.sks */,
 				03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */,
+				03CF64411D28267E0003D197 /* GenericRoundSpriteButton.swift */,
 				03A740111D0CA0ED0066A4DB /* SgButton.swift */,
 				03A04D921CDB148B00A9E2E8 /* GenericText.swift */,
 				035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */,
@@ -435,6 +438,7 @@
 				03E3A0DA1CAF9B0C0044758D /* Light.swift in Sources */,
 				033F8D1D1CC4204B009722FF /* testScene.swift in Sources */,
 				03C1DE7A1C6C3C8D00CDCF8F /* GameViewController.swift in Sources */,
+				03CF64421D28267E0003D197 /* GenericRoundSpriteButton.swift in Sources */,
 				03C1DE741C6C3C8D00CDCF8F /* AppDelegate.swift in Sources */,
 				03EE7FDE1C6FA1DC00244144 /* PlayScene.swift in Sources */,
 				036264611CEEC72B0060257D /* MiniMapView.swift in Sources */,

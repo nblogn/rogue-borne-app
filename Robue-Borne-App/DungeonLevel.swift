@@ -18,7 +18,7 @@ class DungeonLevel: SKNode {
     let myDungeonMap = DungeonMap()
     let myHero: Hero
     let aMonster: Monster
-    let myExit: Item
+    let levelExit: Item
     
     
     //Add a light source for the hero...
@@ -39,7 +39,7 @@ class DungeonLevel: SKNode {
         
         self.myHero = Hero()
         self.aMonster = Monster()
-        self.myExit = Item()
+        self.levelExit = Item()
         
         self.initDungeonType = dungeonType
 
@@ -91,7 +91,7 @@ class DungeonLevel: SKNode {
         
         
         //////////
-        //Set the monster
+        //Set the monsters
         aMonster.location.x = myDungeonMap.dungeonRooms[0].location.x1 + 1
         aMonster.location.y = myDungeonMap.dungeonRooms[0].location.y1 + 1
         aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
@@ -112,10 +112,25 @@ class DungeonLevel: SKNode {
         
         /////////
         //Set the Exit
-        myExit.location = getFurthestLocationFromLocation(myHero.getCurrentLocation())
+        levelExit.location = getFurthestLocationFromLocation(myHero.getCurrentLocation())
         
         
     }
+    
+    
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // Initialize monsters
+    //
+    //-------------------------------------------------------------------------------------------//
+    
+    func initMosters () {
+    
+    
+    }
+    
+    
     
     
     //-------------------------------------------------------------------------------------------//

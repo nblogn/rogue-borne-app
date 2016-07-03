@@ -8,10 +8,15 @@
 import SpriteKit
 
 class SgButton: SKSpriteNode {
+    
+    
     enum ButtonState {
         case Normal, Highlighted, Disabled
     }
+   
     
+    
+
     private class Record {
         /* Input image */
         var imageFileName: String?
@@ -198,7 +203,12 @@ class SgButton: SKSpriteNode {
             
             return SKTexture(image: image)
         }
-    }
+    }//private class Record
+    
+    
+    
+    
+    
     
     /*
      * Assign to name for convernient debug / work
@@ -303,6 +313,8 @@ class SgButton: SKSpriteNode {
         records[ .Normal ] = record
         
         _size = size
+        
+        self.zPosition = 101
         
         completeInit()
     }

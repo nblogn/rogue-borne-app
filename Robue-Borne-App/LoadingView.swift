@@ -72,9 +72,9 @@ class LoadingView: SKNode {
         //If there's no parent, add this to parent and build
         if (loadingModal.parent == nil) {
             
-            addChild(loadingModal)
+            self.addChild(loadingModal)
             
-            //If there ARE children in miniMapModal, don't rebuild the map. TODO: Update instead.
+            //If there ARE children in modal, don't rebuild the modal. TODO: Update instead.
             if (loadingModal.children.count == 0) {
                 buildLoadingModal(parent)
             }
@@ -93,7 +93,7 @@ class LoadingView: SKNode {
         
         loadingModal.removeFromParent()
         loadingModal.removeAllChildren()
-        
+        self.removeFromParent()
     }
     
     

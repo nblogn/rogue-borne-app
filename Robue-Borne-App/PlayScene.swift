@@ -76,8 +76,19 @@ class PlayScene: SKScene {
     //didMoveToView is the first event in the PlayScene after inits
     override func didMoveToView(view: SKView) {
 
-        myLoadingView.showLoadingModal(self)
+        //////////
+        //Setup the camera
+        addChild(myCamera)
+        self.camera = myCamera
 
+        
+        //////////
+        //Create a loading animation to display as the dungeon is being built (it can take a few seconds).
+        myCamera.addChild(myLoadingView)
+        myLoadingView.showLoadingModal(self)
+        myLoadingView.position = CGPoint(x: -100, y: -100)
+
+        
         
         ////
         //Setup Gestures...
@@ -96,11 +107,8 @@ class PlayScene: SKScene {
         //Add details window and miniMap, hidden for now
         myCamera.addChild(myDetails)
         myCamera.addChild(myMiniMap)
-        myCamera.addChild(myLoadingView)
-        
-        
-        addChild(myCamera)
-        self.camera = myCamera
+        myMiniMap.position = CGPoint(x: 0, y: 0)
+
         
         //////////
         //Configure and add the d-pad
@@ -111,10 +119,6 @@ class PlayScene: SKScene {
         myCamera.addChild(myDPad)
         
         
-        //////////
-        //Position other UI elements
-        myMiniMap.position = CGPoint(x: 0, y: 0)
-    
         
         //////////
         //Set the background...
@@ -124,30 +128,38 @@ class PlayScene: SKScene {
         //////////
         //Button to return to main menu
         let mainMenuButton = GenericRoundButtonWithName("mainMenuButton", text: "Main Menu")
-        mainMenuButton.position = CGPoint(x: -400, y:325)
+        mainMenuButton.position = CGPoint(x: -400, y:300)
         myCamera.addChild(mainMenuButton)
    
         
         
         /////////
         //Testing SgButton Class
-        let btn31 = SgButton(normalString: "SgButton Test Button", normalStringColor: UIColor.blueColor(), normalFontName: "Arial", normalFontSize: 25, backgroundNormalColor: UIColor.yellowColor(), size: CGSizeMake(200, 40), cornerRadius: 10.0, buttonFunc: tappedButton)
+        let btn31 = SgButton(normalString: "SgButton Test", normalStringColor: UIColor.blueColor(), normalFontName: "Arial", normalFontSize: 25, backgroundNormalColor: UIColor.yellowColor(), size: CGSizeMake(200, 40), cornerRadius: 10.0, buttonFunc: self.tappedButton)
         btn31.setString(.Highlighted, string: "Being tapped", stringColor: UIColor.redColor(), backgroundColor: UIColor.greenColor())
         btn31.position = CGPoint(x: -400, y: 200)
         btn31.tag = 31
         myCamera.addChild(btn31)
+        
+        
+        /////////
+        //Testing new GenericRoundSpriteButton
+        let spriteButton = GenericRoundSpriteButtonWithName("test", text: "sprite btn")
+        spriteButton.position = CGPoint(x: -400, y: 100)
+        myCamera.addChild(spriteButton)
 
         
         //////////
         //Button to show mini map
         let miniMapButton = GenericRoundButtonWithName("miniMapButton", text: "Map")
-        miniMapButton.position = CGPoint(x: -400, y:275)
+        miniMapButton.position = CGPoint(x: -400, y:250)
         myCamera.addChild(miniMapButton)
 
         
         /////////
-        //Build dungeon and show loading spinner:
+        //Build the dungeon
         myDungeonLevel.buildDungeonLevel()
+        
         
         /////////
         //Center the dungeon on the hero, then add the dungeon to the scene!
@@ -157,8 +169,7 @@ class PlayScene: SKScene {
         addChild(myDungeonLevel)
         
         
-        myLoadingView.hideLoadingModal()
-
+        //myLoadingView.hideLoadingModal()
 
     }
 
@@ -330,6 +341,8 @@ class PlayScene: SKScene {
                     //Popup OR CLOSE the minimap
                     myMiniMap.showMiniMapModal(myDungeonLevel.myDungeonMap, parent: self)
                 
+                    //test
+                    //myLoadingView.showLoadingModal(self)
                 
                 
                 case "hero", "monster", "item":
