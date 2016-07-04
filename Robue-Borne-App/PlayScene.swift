@@ -90,6 +90,42 @@ class PlayScene: SKScene {
 
         
         
+        //
+        loadLevelInBackground(){
+            
+            (loadingComplete: Bool) in
+            
+            if loadingComplete == true {
+                self.myLoadingView.hideLoadingModal()
+            }
+            
+        }
+
+    }
+
+
+
+    func loadLevelInBackground (withCompletion: (loadingComplete: Bool) -> ()) {
+        
+        // load resources on other thread
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+            
+            //DO MY BACKGROUND LOADING SHIT HERE
+            self.loadLevel()
+            
+            // callback on main thread
+            dispatch_async(dispatch_get_main_queue(), {
+                // Call the completion handler back on the main queue.
+                withCompletion(loadingComplete: true)
+            });
+        })
+    
+    }
+    
+    
+    func loadLevel () {
+
+        
         ////
         //Setup Gestures...
         let gesturePanRecognizer = UIPanGestureRecognizer(target: self, action: #selector(PlayScene.handlePanFrom(_:)))
@@ -97,18 +133,18 @@ class PlayScene: SKScene {
         
         let gesturePinchRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(PlayScene.handlePinchFrom(_:)))
         self.view!.addGestureRecognizer(gesturePinchRecognizer)
-            
+        
         let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(PlayScene.handleTapFrom(_:)))
         self.view!.addGestureRecognizer(gestureTapRecognizer)
-
         
-
+        
+        
         //////////
         //Add details window and miniMap, hidden for now
         myCamera.addChild(myDetails)
         myCamera.addChild(myMiniMap)
         myMiniMap.position = CGPoint(x: 0, y: 0)
-
+        
         
         //////////
         //Configure and add the d-pad
@@ -130,12 +166,12 @@ class PlayScene: SKScene {
         let mainMenuButton = GenericRoundButtonWithName("mainMenuButton", text: "Main Menu")
         mainMenuButton.position = CGPoint(x: -400, y:300)
         myCamera.addChild(mainMenuButton)
-   
+        
         
         
         /////////
         //Testing SgButton Class
-        let btn31 = SgButton(normalString: "SgButton Test", normalStringColor: UIColor.blueColor(), normalFontName: "Arial", normalFontSize: 25, backgroundNormalColor: UIColor.yellowColor(), size: CGSizeMake(200, 40), cornerRadius: 10.0, buttonFunc: self.tappedButton)
+        let btn31 = SgButton(normalString: "SgButton Test", normalStringColor: UIColor.blueColor(), normalFontName: "Cochin", normalFontSize: 25, backgroundNormalColor: UIColor.yellowColor(), size: CGSizeMake(200, 40), cornerRadius: 10.0, buttonFunc: self.tappedButton)
         btn31.setString(.Highlighted, string: "Being tapped", stringColor: UIColor.redColor(), backgroundColor: UIColor.greenColor())
         btn31.position = CGPoint(x: -400, y: 200)
         btn31.tag = 31
@@ -147,14 +183,14 @@ class PlayScene: SKScene {
         let spriteButton = GenericRoundSpriteButtonWithName("test", text: "sprite btn")
         spriteButton.position = CGPoint(x: -400, y: 100)
         myCamera.addChild(spriteButton)
-
+        
         
         //////////
         //Button to show mini map
         let miniMapButton = GenericRoundButtonWithName("miniMapButton", text: "Map")
         miniMapButton.position = CGPoint(x: -400, y:250)
         myCamera.addChild(miniMapButton)
-
+        
         
         /////////
         //Build the dungeon
@@ -164,15 +200,12 @@ class PlayScene: SKScene {
         /////////
         //Center the dungeon on the hero, then add the dungeon to the scene!
         centerDungeonOnHero(nil)
-
+        
         
         addChild(myDungeonLevel)
-        
-        
-        //myLoadingView.hideLoadingModal()
 
-    }
-
+        
+    }//END loadLevel
     
     
     
