@@ -32,7 +32,7 @@ class PlayScene: SKScene {
     let myDPad: dPad
     let myDetails: CharacterDetailsPopup
     let myMiniMap: MiniMapView
-    let myLoadingView: LoadingView
+    let myLoadingNode: LoadingNode
     
     let myCamera: SKCameraNode
     
@@ -41,6 +41,7 @@ class PlayScene: SKScene {
     //-------------------------------------------------------------------------------------------//
     //
     // INITS and didMoveToView
+    //  Note the loading splash screen as the background sets up the level.
     //
     //-------------------------------------------------------------------------------------------//
 
@@ -59,7 +60,7 @@ class PlayScene: SKScene {
         self.myDPad = dPad()
         self.myDetails = CharacterDetailsPopup()
         self.myDetails.name = "details"
-        self.myLoadingView = LoadingView()
+        self.myLoadingNode = LoadingNode()
         self.myMiniMap = MiniMapView()
         
         self.myCamera = SKCameraNode()
@@ -84,25 +85,24 @@ class PlayScene: SKScene {
         
         //////////
         //Create a loading animation to display as the dungeon is being built (it can take a few seconds).
-        myCamera.addChild(myLoadingView)
-        myLoadingView.showLoadingModal(self)
-        myLoadingView.position = CGPoint(x: -100, y: -100)
+        myCamera.addChild(myLoadingNode)
+        myLoadingNode.showLoadingModal(self)
+        myLoadingNode.position = CGPoint(x: -Int(self.size.width / 2), y: -Int(self.size.height / 2))
 
         
         
-        //
+        //Do what it says
         loadLevelInBackground(){
             
             (loadingComplete: Bool) in
             
             if loadingComplete == true {
-                self.myLoadingView.hideLoadingModal()
+                self.myLoadingNode.hideLoadingModal()
             }
             
         }
 
     }
-
 
 
     func loadLevelInBackground (withCompletion: (loadingComplete: Bool) -> ()) {

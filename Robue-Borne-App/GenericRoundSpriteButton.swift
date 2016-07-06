@@ -24,6 +24,16 @@ import SpriteKit
 class GenericRoundSpriteButtonWithName: SKSpriteNode {
     
     
+    
+    
+    enum ButtonState {
+        case Normal, Highlighted, Disabled
+    }
+    
+    
+    
+    
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -55,32 +65,40 @@ class GenericRoundSpriteButtonWithName: SKSpriteNode {
         let buttonColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
 
         
-        
         super.init(texture:nil, color: buttonColor, size: buttonSize)
 
-        
+        self.name = name
         self.zPosition = 101
-        
         self.addChild(buttonText)
-
         userInteractionEnabled = true
         
     }
     
-    //This isn't working...
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         self.color = UIColor(red: 1, green: 0.5, blue: 0.4, alpha: 1)
         
-        print("GenericRoundSpriteButtonWithName touched!")
+        print("GenericRoundSpriteButtonWithName touched! :)")
         
     }
     
+    
+    //This is working, but oddly. There seems to be some confusion about the diff between ended vs. cancelled. Google it if curious, but otherwise, use both (or, I think you could just call ended from cancelled).
+    //I've noticed that in the emulator, if I long-press I will get touchesEnded, if I quick-press I get touchesCancelled. Note, this works the same with the SgButton class I was testing (and is one of the reasons I was thinking of NOT using that class. Alas.
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         
         self.color = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
         print("GenericRoundSpriteButtonWithName touches ended :(")
 
+    }
+    
+    
+    override func touchesCancelled(touches: Set<UITouch>?, withEvent event: UIEvent?) {
+
+        self.color = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
+        print("GenericRoundSpriteButtonWithName touches cancelled, whoo :|")
+    
     }
     
     

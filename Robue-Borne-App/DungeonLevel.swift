@@ -23,9 +23,11 @@ class DungeonLevel: SKNode {
     
     //Add a light source for the hero...
     var ambientColor:UIColor?
-    var heroTorch = SKLightNode();
-    var dungeonLight = SKLightNode();
+    var heroTorch = SKLightNode()
+    var dungeonLight = SKLightNode()
     
+    //Add room lights
+    var roomLights = [SKLightNode?()]
     
 
     required init?(coder aDecoder: NSCoder) {
@@ -89,6 +91,10 @@ class DungeonLevel: SKNode {
         myHero.addChild(heroTorch)
         
         
+        /////////
+        //Set the room lighting
+        //initLighting()
+        
         
         //////////
         //Set the monsters
@@ -116,6 +122,86 @@ class DungeonLevel: SKNode {
         
         
     }
+    
+    
+    
+    
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // Initialize lighting
+    //
+    //-------------------------------------------------------------------------------------------//
+    
+    func initLighting () {
+
+        var randomColor = UIColor()
+        
+        for drawRoomIterator in 0...(myDungeonMap.dungeonRooms.count - 1) {
+            
+            //Get a random num 1 or 2 or 3 (so, 33% of rooms will have a light)
+            let shouldICreateALightInThisRoom = Int(arc4random_uniform(3))
+            
+            if shouldICreateALightInThisRoom == 1 {
+                
+                //randomColor = UIColor(red: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), green: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), blue: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), alpha: 0.5)
+                
+                let tempLight = SKLightNode()
+                
+                //tempLight.lightColor = randomColor
+                
+                tempLight.lightColor = SKColor.greenColor()
+                
+                tempLight.enabled = true
+                tempLight.categoryBitMask = LightCategory.Hero
+                tempLight.zPosition = 1
+                tempLight.position = CGPoint (x: 0, y: 0)
+                
+                
+                //Add the new light to our lights array
+                roomLights.append(tempLight)
+                
+                //Add the light as a child of level's (self) dungeon map
+                self.myDungeonMap.childNodeWithName(String(drawRoomIterator+1))?.addChild(roomLights[drawRoomIterator+1]!)
+                
+            } else {
+                //Adding this to ensure lights index lines up with rooms index.
+                //Eventually this should maybe be part of that struct
+                roomLights.append(nil)
+            }
+        }
+        
+        
+    }
+
+    
+    
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // Initialize hero
+    //
+    //-------------------------------------------------------------------------------------------//
+
+    func initHero () {
+        
+        
+    }
+
+    
+    
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // Initialize items (...treasue...)
+    //
+    //-------------------------------------------------------------------------------------------//
+
+    func initItems () {
+        
+        
+    }
+
     
     
     
@@ -266,7 +352,7 @@ class DungeonLevel: SKNode {
     func getFurthestLocationFromLocation(sourceLocation: dungeonLocation) -> dungeonLocation {
         
         
-        var furthestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
+        let furthestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
         
         //Implement farthest path algorithm...
         
@@ -278,7 +364,7 @@ class DungeonLevel: SKNode {
     
     func getClosestLocationToLocation(sourceLocation: dungeonLocation) -> dungeonLocation {
         
-        var closestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
+        let closestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
         
         //Implement nearest path algorithm...
         

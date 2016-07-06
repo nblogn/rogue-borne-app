@@ -19,7 +19,7 @@ import Foundation
 import SpriteKit
 
 
-class LoadingView: SKNode {
+class LoadingNode: SKNode {
     
     
     let loadingModal = SKShapeNode()
@@ -28,19 +28,19 @@ class LoadingView: SKNode {
     func buildLoadingModal (parent: SKScene) {
         
         //Set the size of the loading modal
-        let miniMapWidth = Int(parent.size.width / 2)
-        let miniMapHeight = Int(parent.size.height / 2)
-        let miniMapPositionX = -Int(parent.size.width / 4)
-        let miniMapPositionY = -Int(parent.size.height / 4)
+        let loadingModalWidth = Int(parent.size.width)
+        let loadingModalHeight = Int(parent.size.height)
+        let loadingModalPositionX = 0 //-Int(parent.size.width / 4)
+        let loadingModalPositionY = 0 //-Int(parent.size.height / 4)
         
-        loadingModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: miniMapWidth, height: miniMapHeight), cornerRadius: 8).CGPath
+        loadingModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: loadingModalWidth, height: loadingModalHeight), cornerRadius: 8).CGPath
         loadingModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
-        loadingModal.fillColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.7)
-        loadingModal.strokeColor = UIColor(red: 0.9, green: 0.1, blue: 0.1, alpha: 0.5)
+        loadingModal.fillColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
+        loadingModal.strokeColor = UIColor(red: 0.9, green: 0.1, blue: 0.1, alpha: 1)
         loadingModal.lineWidth = 1
         loadingModal.glowWidth = 1
         loadingModal.zPosition = 200
-        loadingModal.position = CGPoint(x: miniMapPositionX, y: miniMapPositionY)
+        loadingModal.position = CGPoint(x: loadingModalPositionX, y: loadingModalPositionY)
     
         self.zPosition = 200
         
@@ -49,9 +49,9 @@ class LoadingView: SKNode {
         //////////
         //Set the monster
         let texture = SKTexture(imageNamed: "RB_Monster1")
-        let aMonster = SKSpriteNode(texture: texture, color: SKColor.clearColor(), size: CGSize(width: Int(miniMapWidth - 20), height: Int(miniMapHeight-20)))
+        let aMonster = SKSpriteNode(texture: texture, color: SKColor.clearColor(), size: CGSize(width: Int(loadingModalWidth - 20), height: Int(loadingModalHeight-20)))
 
-        aMonster.position = CGPoint(x: Int(miniMapWidth/2), y: Int(miniMapHeight/2))
+        aMonster.position = CGPoint(x: Int(loadingModalWidth/2), y: Int(loadingModalHeight/2))
         
         loadingModal.addChild(aMonster)
         
@@ -90,6 +90,8 @@ class LoadingView: SKNode {
     
     
     func hideLoadingModal () {
+        
+        self.runAction(SKAction.fadeOutWithDuration(0.5))
         
         loadingModal.removeFromParent()
         loadingModal.removeAllChildren()

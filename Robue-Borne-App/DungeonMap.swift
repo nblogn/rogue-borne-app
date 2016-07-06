@@ -481,7 +481,7 @@ class DungeonMap: SKNode {
     
     //=====================================================================================================//
     //
-    //Func to define the rooms within the dungeon, when all dungeonRooms are populated
+    //Func to define the rooms within the dungeon, after all dungeonRooms are populated
     //
     //=====================================================================================================//
     private func drawDungeonRooms() -> Void {
@@ -490,12 +490,28 @@ class DungeonMap: SKNode {
         //Iterate through each room...
         for drawRoomIterator in 0...(dungeonRooms.count - 1) {
             
-            var row = 0
+            var row = dungeonRooms[drawRoomIterator].location.y1
             var column = 0
             
-            for row = dungeonRooms[drawRoomIterator].location.y1; ((row <= dungeonRooms[drawRoomIterator].location.y2) && (row < dungeonSizeHeight)); row += 1 {
+            
+            
+            //NOTE: I used to have C Style for loops here, but they're deprecated in SWIFT 3.0.
+            //Leaving this comment in, just in case I screwed up some boundary (-1) use case)
+            //for row = dungeonRooms[drawRoomIterator].location.y1; ((row <= dungeonRooms[drawRoomIterator].location.y2) && (row < dungeonSizeHeight)); row += 1 {
+            
+            //Iterate through each row for this room...
+            while ((row <= dungeonRooms[drawRoomIterator].location.y2) && (row < dungeonSizeHeight)) {
                 
-                for column = dungeonRooms[drawRoomIterator].location.x1; ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)); column += 1 {
+                column = dungeonRooms[drawRoomIterator].location.x1
+            
+                
+                
+                //DEPRECATED
+                //for column = dungeonRooms[drawRoomIterator].location.x1; ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)); column += 1 {
+                
+                //Iterate through each column, of this row, of this room...
+                while ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)) {
+                    
                     
                     //Check to see if we are drawing walls or floor...
                     if ((row == dungeonRooms[drawRoomIterator].location.y1) || (row == dungeonRooms[drawRoomIterator].location.y2) || (column == dungeonRooms[drawRoomIterator].location.x1) || (column == dungeonRooms[drawRoomIterator].location.x2)) {
@@ -504,8 +520,11 @@ class DungeonMap: SKNode {
                         dungeonMap[row][column] = TileClass(tileToCreate: Tile.Ground)
                     }
                     
+                    column += 1
                 }
+            
                 
+                row += 1
             }
             
         }
@@ -569,7 +588,7 @@ class DungeonMap: SKNode {
     
     
     //=====================================================================================================//
-    //Functions to connect an array of DungeonRoom struct
+    //Functions to connect an array of DungeonRoom struct with corridors
     //Given an array of rooms, this will draw corridors between them, and add them as connections
     //=====================================================================================================//
     private func connectDungeonRooms() -> Void {
@@ -721,6 +740,7 @@ class DungeonMap: SKNode {
         
     }
     
+    
     //Finds closest room to given roomId, can filter by how many connections that room has...
     private func findClosestRoomToRoomId(room:Int, targetRoomConnections:Int = 0) -> Int? {
         
@@ -789,7 +809,7 @@ class DungeonMap: SKNode {
     private func drawDungeonSpriteNodes(){
         
         ////
-        //Draw the rooms first
+        //Draw the rooms first...
         for roomIterator in 0...dungeonRooms.count-1 {
             
             let coordinate1 = convertBoardCoordinatetoCGPoint(dungeonRooms[roomIterator].location.x1, y: dungeonRooms[roomIterator].location.y1)
@@ -805,6 +825,7 @@ class DungeonMap: SKNode {
             room.size = CGSize(width: width, height: height)
             room.zPosition = 1
             room.shadowedBitMask = LightCategory.Hero
+            room.name = String(roomIterator)
             
             let imageNumber = String(1+arc4random_uniform(UInt32(9)))
             let imageName = "cb" + imageNumber + "_n"
