@@ -47,6 +47,7 @@
 		03C1DEA61C6C420E00CDCF8F /* DungeonMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */; };
 		03C1DEA81C6C467500CDCF8F /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA71C6C467500CDCF8F /* Hero.swift */; };
 		03C64A151CC456AE00DC8968 /* GenericRoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */; };
+		03C7B7611D2E1588002981D6 /* FeatureList-TODO.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B7601D2E1588002981D6 /* FeatureList-TODO.rtf */; };
 		03CF64421D28267E0003D197 /* GenericRoundSpriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CF64411D28267E0003D197 /* GenericRoundSpriteButton.swift */; };
 		03D001BA1C9F843100685F29 /* CorridorVertical.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B71C9F843100685F29 /* CorridorVertical.png */; };
 		03D001BB1C9F843100685F29 /* Door.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B81C9F843100685F29 /* Door.png */; };
@@ -123,6 +124,7 @@
 		03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = DungeonMap.swift; sourceTree = "<group>"; };
 		03C1DEA71C6C467500CDCF8F /* Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
 		03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericRoundButton.swift; sourceTree = "<group>"; };
+		03C7B7601D2E1588002981D6 /* FeatureList-TODO.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "FeatureList-TODO.rtf"; sourceTree = "<group>"; };
 		03CF64411D28267E0003D197 /* GenericRoundSpriteButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericRoundSpriteButton.swift; sourceTree = "<group>"; };
 		03D001B71C9F843100685F29 /* CorridorVertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CorridorVertical.png; sourceTree = "<group>"; };
 		03D001B81C9F843100685F29 /* Door.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Door.png; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 		03C1DE721C6C3C8D00CDCF8F /* Robue-Borne-App */ = {
 			isa = PBXGroup;
 			children = (
+				03C7B7601D2E1588002981D6 /* FeatureList-TODO.rtf */,
 				03C1DE731C6C3C8D00CDCF8F /* AppDelegate.swift */,
 				03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */,
 				0333EC381CCBD44700BB0522 /* DungeonLevel.swift */,
@@ -388,6 +391,7 @@
 				035A6F3B1CB385BF005B04FD /* bricksNormal.jpg in Resources */,
 				035C2F551CB4B59D0087651F /* cb5_n.png in Resources */,
 				035C2F561CB4B59D0087651F /* cb6_n.png in Resources */,
+				03C7B7611D2E1588002981D6 /* FeatureList-TODO.rtf in Resources */,
 				03C1DE761C6C3C8D00CDCF8F /* StartScene.sks in Resources */,
 				03C1DE821C6C3C8D00CDCF8F /* LaunchScreen.storyboard in Resources */,
 				0394FFFE1C702FCB00654A19 /* RB_Floor_Grey_2x.png in Resources */,

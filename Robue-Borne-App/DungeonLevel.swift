@@ -24,7 +24,6 @@ class DungeonLevel: SKNode {
     //Add a light source for the hero...
     var ambientColor:UIColor?
     var heroTorch = SKLightNode()
-    var dungeonLight = SKLightNode()
     
     //Add room lights
     var roomLights = [SKLightNode?()]
@@ -79,14 +78,14 @@ class DungeonLevel: SKNode {
         
         //////////
         //Set the hero's light:
-        //heroTorch.position = CGPointMake(0,0)
-        //Kind of prefer it with this off, but leaving it on to see monsters:
-        //heroTorch.ambientColor = UIColor.whiteColor()
+        //Note that ambient/falloff have issues in spritekit:
+        //http://stackoverflow.com/questions/29828324/spritekit-sklightnode-falloff-property-has-no-effect
+        //heroTorch.ambientColor = UIColor.redColor()
         //heroTorch.falloff = 1
         heroTorch.lightColor = UIColor.redColor()
         heroTorch.enabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
-        heroTorch.zPosition = 51
+        heroTorch.zPosition = 52
         heroTorch.position = CGPoint (x: 0, y: 0)
         myHero.addChild(heroTorch)
         
@@ -140,29 +139,31 @@ class DungeonLevel: SKNode {
         for drawRoomIterator in 0...(myDungeonMap.dungeonRooms.count - 1) {
             
             //Get a random num 1 or 2 or 3 (so, 33% of rooms will have a light)
-            let shouldICreateALightInThisRoom = Int(arc4random_uniform(3))
+            let shouldICreateALightInThisRoom = Int(arc4random_uniform(UInt32(myDungeonMap.dungeonRooms.count/2)))
             
             if shouldICreateALightInThisRoom == 1 {
                 
-                //randomColor = UIColor(red: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), green: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), blue: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), alpha: 0.5)
+                randomColor = UIColor(red: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), green: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), blue: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), alpha: 1)
                 
                 let tempLight = SKLightNode()
                 
-                //tempLight.lightColor = randomColor
+                tempLight.lightColor = randomColor
                 
-                tempLight.lightColor = SKColor.greenColor()
-                
+                //tempLight.lightColor = SKColor.greenColor()
+                tempLight.ambientColor = UIColor.blackColor()
+                tempLight.falloff = 1
                 tempLight.enabled = true
                 tempLight.categoryBitMask = LightCategory.Hero
-                tempLight.zPosition = 1
+                tempLight.zPosition = 51
                 tempLight.position = CGPoint (x: 0, y: 0)
                 
                 
                 //Add the new light to our lights array
-                roomLights.append(tempLight)
+                roomLights.append(nil)
+                roomLights[drawRoomIterator] = tempLight
                 
                 //Add the light as a child of level's (self) dungeon map
-                self.myDungeonMap.childNodeWithName(String(drawRoomIterator+1))?.addChild(roomLights[drawRoomIterator+1]!)
+                self.myDungeonMap.childNodeWithName(String(drawRoomIterator))?.addChild(roomLights[drawRoomIterator]!)
                 
             } else {
                 //Adding this to ensure lights index lines up with rooms index.
@@ -171,6 +172,21 @@ class DungeonLevel: SKNode {
             }
         }
         
+        /*
+        let tempLight = SKLightNode()
+        
+        //tempLight.lightColor = randomColor
+        
+        tempLight.lightColor = SKColor.greenColor()
+        tempLight.ambientColor = UIColor.blackColor()
+        tempLight.falloff = 3
+        tempLight.enabled = true
+        tempLight.categoryBitMask = LightCategory.Hero
+        tempLight.zPosition = 51
+        tempLight.position = CGPoint (x: 0, y: 0)
+        
+        self.myDungeonMap.childNodeWithName("2")?.addChild(tempLight)
+        */
         
     }
 
