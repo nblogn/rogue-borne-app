@@ -87,12 +87,16 @@ class DungeonLevel: SKNode {
         heroTorch.categoryBitMask = LightCategory.Hero
         heroTorch.zPosition = 52
         heroTorch.position = CGPoint (x: 0, y: 0)
+        
+        //NOTE: THIS IS IMPORTANT; shadowColor drastically changes shit.
+        heroTorch.shadowColor = UIColor.blackColor()
+        
         myHero.addChild(heroTorch)
         
         
         /////////
         //Set the room lighting
-        //initLighting()
+        initLighting()
         
         
         //////////
@@ -133,7 +137,11 @@ class DungeonLevel: SKNode {
     //-------------------------------------------------------------------------------------------//
     
     func initLighting () {
-
+        
+        //https://www.reddit.com/r/spritekit/comments/31vrmy/light_effect/
+        
+        
+/*
         var randomColor = UIColor()
         
         for drawRoomIterator in 0...(myDungeonMap.dungeonRooms.count - 1) {
@@ -187,6 +195,15 @@ class DungeonLevel: SKNode {
         
         self.myDungeonMap.childNodeWithName("2")?.addChild(tempLight)
         */
+*/
+        
+        let tempLight = SKLightNode()
+        tempLight.position = CGPoint (x: 0, y: 0)
+        tempLight.falloff = 1.0
+        tempLight.lightColor = SKColor(hue: 0.62 , saturation: 0.89, brightness: 1.0, alpha: 0.4)
+        tempLight.shadowColor = SKColor.blackColor().colorWithAlphaComponent(0.4)
+        self.myDungeonMap.childNodeWithName("2")?.addChild(tempLight)
+
         
     }
 
@@ -370,7 +387,7 @@ class DungeonLevel: SKNode {
         
         let furthestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
         
-        //Implement farthest path algorithm...
+        //Implement farthest (or furthest) path algorithm...
         
         return furthestLocation
     }
