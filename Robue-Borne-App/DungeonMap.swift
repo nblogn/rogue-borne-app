@@ -38,6 +38,7 @@ class DungeonMap: SKNode {
         var roomId: Int
         var location: DungeonRoomLocation
         var connectedRooms: [DungeonRoom]?
+        var type: String?
     }
 
     //The key components of our dungeon...
@@ -45,26 +46,6 @@ class DungeonMap: SKNode {
     var dungeonRooms: [DungeonRoom]
     
     
-    
-    /*
-    I think these should be in the Dungeon class, since they're in the dungeon.
-    I'm thinking something needs to keep track of where all the objects are.
-    Example of why this would be helpful...
-
-    func getObjectsInLineOfSight (myLocation: dungeonLocation) -> [objects] {
-
-    }
-
-    That said, I'm not totally sure about this.
-
-    var heros: [Hero]
-    var monsters: [Monster]
-    var items: [Item]
-
-    On second thought, I think maybe there should be a "level" class which includes all of this? 
-    Or maybe each instance of the dungeon class is a level? Ugh. No idea.
-     
-    */
     
     
     func getTileByLocation (X: Int, Y: Int) -> TileClass {
@@ -97,7 +78,7 @@ class DungeonMap: SKNode {
         self.cellSizeHeight = 40
         self.numberOfRooms = 20
         
-        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
+        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, type: nil)]
         
         /*self.heros = [Hero()]
         self.monsters = [Monster()]
@@ -120,7 +101,7 @@ class DungeonMap: SKNode {
         self.cellSizeWidth = cellSizeWidth
         self.numberOfRooms = numberOfRooms
         
-        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil)]
+        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, type: nil)]
 
         /*self.heros = [Hero()]
         self.monsters = [Monster()]
@@ -299,7 +280,7 @@ class DungeonMap: SKNode {
         
         //Let's make a room, for now it's taking up the whole dungeon
         //TODO: Make extensible so this can be a single room within a larger dungeon
-        dungeonRooms.append(DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: dungeonSizeWidth, y2: dungeonSizeHeight), connectedRooms: nil))
+        dungeonRooms.append(DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: dungeonSizeWidth, y2: dungeonSizeHeight), connectedRooms: nil, type: nil))
         
         for row in 0 ..< dungeonMap.count {
             for column in 0 ..< dungeonMap[row].count {
@@ -423,7 +404,7 @@ class DungeonMap: SKNode {
                 
                 //create the new room...
                 if createdRooms > 0 {
-                    dungeonRooms.append(DungeonRoom.init(roomId: createdRooms, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil))
+                    dungeonRooms.append(DungeonRoom.init(roomId: createdRooms, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, type: nil))
                 }
                 
                 dungeonRooms[createdRooms].location.x1 = minX + randomWidthOffset
@@ -824,11 +805,14 @@ class DungeonMap: SKNode {
             room.lightingBitMask = LightCategory.Hero
             room.size = CGSize(width: width, height: height)
             room.zPosition = 1
-            room.shadowedBitMask = LightCategory.Hero
+            //room.shadowedBitMask = LightCategory.Hero
             room.name = String(roomIterator)
             
-            let imageNumber = String(1+arc4random_uniform(UInt32(9)))
+            //Pic one of the seven random circuit-board images
+            let imageNumber = String(1+arc4random_uniform(UInt32(6)))
             let imageName = "cb" + imageNumber + "_n"
+            
+            dungeonRooms[roomIterator].type = imageName
             
             room.texture = SKTexture(imageNamed: imageName)
             room.normalTexture = SKTexture(imageNamed: imageName)
@@ -861,16 +845,16 @@ class DungeonMap: SKNode {
             
             for column in 0..<dungeonMap[row].count {
                 
-                //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system,
-                //y values increase as you move up the screen and decrease as you move down.
+                //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system, Y values increase as you move up the screen and decrease as you move down.
                 let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
                 dungeonMap[row][column].position = point
-                dungeonMap[row][column].lightingBitMask = LightCategory.Hero
+                //dungeonMap[row][column].lightingBitMask = LightCategory.Hero
                 dungeonMap[row][column].zPosition = 2
                 
                 //Make walls and "nothing" cast shadows
                 if (dungeonMap[row][column].tileType == Tile.Wall) || (dungeonMap[row][column].tileType == Tile.Nothing) {
                     dungeonMap[row][column].shadowCastBitMask = LightCategory.Hero
+                    dungeonMap[row][column].lightingBitMask = LightCategory.Hero
                 }
                 
                 //Let's not add the "nothing" tiles, they hit the CPU way too much...

@@ -20,7 +20,7 @@ class CharacterDetailsPopup: SKNode {
     // DETAILS -- Draw/hide the details modal popup window
     //
     //-------------------------------------------------------------------------------------------//
-    func buildDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene) {
+    func buildDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene, dungeonLevel: DungeonLevel) {
                 
         detailsModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 700, height: 650), cornerRadius: 8).CGPath
         detailsModal.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
@@ -48,10 +48,29 @@ class CharacterDetailsPopup: SKNode {
             let temp = nodeToDetail as! Hero
             let stats: String = temp.getStats()
             
+            let location: dungeonLocation = temp.getCurrentLocation()
+            
             let memText = GenericText.init(name: "statsText", text: stats)
             memText.position = CGPoint(x: 150, y: 450)
             
+            
+            
+            
+            let roomInfoText = dungeonLevel.getRoomDetailsForLocation(location)?.type
+            
+            let dungeonRoomText: GenericText
+            
+            if roomInfoText != nil {
+                dungeonRoomText = GenericText.init(name: "hi", text: roomInfoText!)
+            } else {
+                dungeonRoomText = GenericText.init(name: "hi", text: "Not in a room!")
+            }
+            
+            dungeonRoomText.position = CGPoint(x: 150, y:400)
+            
+            
             detailsModal.addChild(memText)
+            detailsModal.addChild(dungeonRoomText)
             
             print(temp.hitPoints)
 
@@ -65,14 +84,14 @@ class CharacterDetailsPopup: SKNode {
     
     
     //Show the model, build if needed...
-    func showDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene) {
+    func showDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene, dungeonLevel: DungeonLevel) {
         
         //If there's no parent, add this to parent (note, it's already added in PlayScene)
         if (detailsModal.parent == nil) {
             self.addChild(detailsModal)
             
             if (detailsModal.children.count == 0) {
-                buildDetailsModalForNode(nodeToDetail, parent: parent)
+                buildDetailsModalForNode(nodeToDetail, parent: parent, dungeonLevel: dungeonLevel)
             }
         } else { //toggle OFF
             hideDetailsModal()

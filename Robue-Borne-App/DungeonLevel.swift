@@ -20,10 +20,12 @@ class DungeonLevel: SKNode {
     let aMonster: Monster
     let levelExit: Item
     
+    //Add a background
+    let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "gold-heatsink"), color: SKColor.clearColor(), size: SKTexture(imageNamed: "gold-heatsink").size())
     
     //Add a light source for the hero...
-    var ambientColor:UIColor?
     var heroTorch = SKLightNode()
+    
     
     //Add room lights
     var roomLights = [SKLightNode?()]
@@ -43,7 +45,6 @@ class DungeonLevel: SKNode {
         self.levelExit = Item()
         
         self.initDungeonType = dungeonType
-
         
         super.init()
         
@@ -65,6 +66,15 @@ class DungeonLevel: SKNode {
         default:myDungeonMap.createDungeonUsingCellMethod()
         }
         
+        //////////
+        //Set the background
+        dungeonBackground.position = CGPoint(x: ((myDungeonMap.dungeonSizeHeight*tileSize.width*2)/4), y: ((myDungeonMap.dungeonSizeHeight*tileSize.height*2)/4))
+        dungeonBackground.zPosition = -1
+        //Make the background twice as big as the dungeon map...
+        dungeonBackground.size = CGSize(width: myDungeonMap.dungeonSizeHeight*tileSize.width*2, height: myDungeonMap.dungeonSizeHeight*tileSize.height*2)
+        self.addChild(dungeonBackground)
+        
+        
         
         //////////
         //Set the hero
@@ -80,23 +90,23 @@ class DungeonLevel: SKNode {
         //Set the hero's light:
         //Note that ambient/falloff have issues in spritekit:
         //http://stackoverflow.com/questions/29828324/spritekit-sklightnode-falloff-property-has-no-effect
-        //heroTorch.ambientColor = UIColor.redColor()
-        //heroTorch.falloff = 1
         heroTorch.lightColor = UIColor.redColor()
         heroTorch.enabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
         heroTorch.zPosition = 52
         heroTorch.position = CGPoint (x: 0, y: 0)
         
-        //NOTE: THIS IS IMPORTANT; shadowColor drastically changes shit.
-        heroTorch.shadowColor = UIColor.blackColor()
+        //NOTE: THESE ARE IMPORTANT; shadowColor drastically changes shit.
+        //heroTorch.ambientColor = UIColor.redColor()
+        heroTorch.falloff = 1
+        heroTorch.shadowColor = SKColor.blackColor().colorWithAlphaComponent(0.8)
         
         myHero.addChild(heroTorch)
         
         
         /////////
         //Set the room lighting
-        initLighting()
+        //initLighting()
         
         
         //////////
@@ -141,28 +151,29 @@ class DungeonLevel: SKNode {
         //https://www.reddit.com/r/spritekit/comments/31vrmy/light_effect/
         
         
-/*
         var randomColor = UIColor()
         
         for drawRoomIterator in 0...(myDungeonMap.dungeonRooms.count - 1) {
             
             //Get a random num 1 or 2 or 3 (so, 33% of rooms will have a light)
-            let shouldICreateALightInThisRoom = Int(arc4random_uniform(UInt32(myDungeonMap.dungeonRooms.count/2)))
+            let shouldICreateALightInThisRoom = 1
+            //Int(arc4random_uniform(UInt32(myDungeonMap.dungeonRooms.count/2)))
             
             if shouldICreateALightInThisRoom == 1 {
                 
-                randomColor = UIColor(red: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), green: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), blue: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), alpha: 1)
+                randomColor = UIColor(red: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), green: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), blue: CGFloat(Float(arc4random()) / Float(UINT32_MAX)), alpha: 0.5)
                 
                 let tempLight = SKLightNode()
                 
                 tempLight.lightColor = randomColor
                 
                 //tempLight.lightColor = SKColor.greenColor()
-                tempLight.ambientColor = UIColor.blackColor()
+                //tempLight.ambientColor = UIColor.blackColor()
                 tempLight.falloff = 1
+                tempLight.shadowColor = UIColor.blackColor()
                 tempLight.enabled = true
                 tempLight.categoryBitMask = LightCategory.Hero
-                tempLight.zPosition = 51
+                tempLight.zPosition = 11
                 tempLight.position = CGPoint (x: 0, y: 0)
                 
                 
@@ -171,7 +182,9 @@ class DungeonLevel: SKNode {
                 roomLights[drawRoomIterator] = tempLight
                 
                 //Add the light as a child of level's (self) dungeon map
-                self.myDungeonMap.childNodeWithName(String(drawRoomIterator))?.addChild(roomLights[drawRoomIterator]!)
+                //self.myDungeonMap.childNodeWithName(String(drawRoomIterator))?.addChild(roomLights[drawRoomIterator]!)
+                
+                //NOT WORKING!!!! TODO: ADD TO A NODE IN A RANDOM PART OF THE APPROPRIATE ROOM.
                 
             } else {
                 //Adding this to ensure lights index lines up with rooms index.
@@ -179,6 +192,8 @@ class DungeonLevel: SKNode {
                 roomLights.append(nil)
             }
         }
+ 
+ 
         
         /*
         let tempLight = SKLightNode()
@@ -195,15 +210,15 @@ class DungeonLevel: SKNode {
         
         self.myDungeonMap.childNodeWithName("2")?.addChild(tempLight)
         */
-*/
-        
+
+        /*
         let tempLight = SKLightNode()
         tempLight.position = CGPoint (x: 0, y: 0)
         tempLight.falloff = 1.0
         tempLight.lightColor = SKColor(hue: 0.62 , saturation: 0.89, brightness: 1.0, alpha: 0.4)
         tempLight.shadowColor = SKColor.blackColor().colorWithAlphaComponent(0.4)
         self.myDungeonMap.childNodeWithName("2")?.addChild(tempLight)
-
+        */
         
     }
 
@@ -263,16 +278,19 @@ class DungeonLevel: SKNode {
         switch myDungeonMap.dungeonMap[myHero.location.y + y][myHero.location.x + x].tileType {
             
         case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+
+            //Figure out new hero location/position
             myHero.location.x = myHero.location.x + x
             myHero.location.y = myHero.location.y + y
-            
             let xyPointDiff = convertBoardCoordinatetoCGPoint(myHero.location.x, y:myHero.location.y)
             
-            //let sequence = SKAction.sequence([SKAction.rotateByAngle(degToRad(-4.0), duration: 0.1),
-            //    SKAction.rotateByAngle(0.0, duration: 0.1),
-            //    SKAction.rotateByAngle(degToRad(4.0), duration: 0.1),
-            //    SKAction.moveTo(xyPointDiff, duration: 0.2)])
+            //Move the background for parallax effect:
+            let newBackgroundX = dungeonBackground.position.x - (CGFloat(tileSize.width) * CGFloat(x)*0.5)
+            let newBackgroundY = dungeonBackground.position.y - (CGFloat(tileSize.height) * CGFloat(y)*0.35)
+            let newDungeonBackgroundPosition = CGPoint(x: newBackgroundX, y: newBackgroundY)
             
+            //Run the actions; do I need to group these to do in parallel???
+            dungeonBackground.runAction(SKAction.moveTo(newDungeonBackgroundPosition, duration: 0.1))
             myHero.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
             
         default: break
@@ -364,6 +382,31 @@ class DungeonLevel: SKNode {
         aMonster.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
         
     }//moveMonster()
+    
+    
+    
+    
+    //=====================================================================================================//
+    // Return Room information -- doing this for debugging, but may be useful later
+    //
+    //=====================================================================================================//
+
+    func getRoomDetailsForLocation (location: dungeonLocation) -> DungeonMap.DungeonRoom? {
+        
+        var tempRoom: DungeonMap.DungeonRoom? = nil
+        
+        for roomIterator in 0...myDungeonMap.dungeonRooms.count-1 {
+
+            if (location.x > myDungeonMap.dungeonRooms[roomIterator].location.x1) && (location.x < myDungeonMap.dungeonRooms[roomIterator].location.x2) && (location.y > myDungeonMap.dungeonRooms[roomIterator].location.y1) && (location.y < myDungeonMap.dungeonRooms[roomIterator].location.y2) {
+                
+                tempRoom = myDungeonMap.dungeonRooms[roomIterator]
+                
+            }
+            
+        }
+        
+        return tempRoom
+    }
     
     
     

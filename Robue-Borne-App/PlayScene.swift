@@ -158,8 +158,8 @@ class PlayScene: SKScene {
         
         //////////
         //Set the background...
-        self.backgroundColor = SKColor(red: 0.1, green: 0.01, blue: 0.01, alpha: 1.0)
-        
+        self.backgroundColor = SKColor(red: 0.3, green: 0.03, blue: 0.01, alpha: 0.5)
+        self.zPosition = -2
         
         //////////
         //Button to return to main menu
@@ -169,7 +169,7 @@ class PlayScene: SKScene {
         
         
         
-        /////////
+        //////////
         //Testing SgButton Class
         let btn31 = SgButton(normalString: "SgButton Test", normalStringColor: UIColor.blueColor(), normalFontName: "Cochin", normalFontSize: 25, backgroundNormalColor: UIColor.yellowColor(), size: CGSizeMake(200, 40), cornerRadius: 10.0, buttonFunc: self.tappedButton)
         btn31.setString(.Highlighted, string: "Being tapped", stringColor: UIColor.redColor(), backgroundColor: UIColor.greenColor())
@@ -180,7 +180,7 @@ class PlayScene: SKScene {
         
         /////////
         //Testing new GenericRoundSpriteButton
-        let spriteButton = GenericRoundSpriteButtonWithName("test", text: "sprite btn")
+        let spriteButton = GenericRoundSpriteButtonWithName("torch", text: "Torch")
         spriteButton.position = CGPoint(x: -400, y: 100)
         myCamera.addChild(spriteButton)
         
@@ -380,7 +380,7 @@ class PlayScene: SKScene {
                 
                 case "hero", "monster", "item":
                     //popup a screen to show the details for the character, monster, or item attributes
-                    myDetails.showDetailsModalForNode(touchedNode, parent: self)
+                    myDetails.showDetailsModalForNode(touchedNode, parent: self, dungeonLevel: myDungeonLevel)
                 
                 
                 case "dungeon", "tile", "wall", "ground":
@@ -389,6 +389,12 @@ class PlayScene: SKScene {
                     myDetails.hideDetailsModal()
                     myMiniMap.hideMiniMapModal()
                 
+                case "torch":
+                    if myDungeonLevel.heroTorch.enabled == false {
+                        myDungeonLevel.heroTorch.enabled = true
+                    } else {
+                        myDungeonLevel.heroTorch.enabled = false
+                    }
                 
                 default:
                     //Remove modals
@@ -455,8 +461,8 @@ class PlayScene: SKScene {
         myCamera.position = centeredNodePositionInScene
         
         if (scale == nil) {
-            myDungeonLevel.xScale = 0.5
-            myDungeonLevel.yScale = 0.5
+            myDungeonLevel.xScale = 0.3
+            myDungeonLevel.yScale = 0.3
         }
         
     }
