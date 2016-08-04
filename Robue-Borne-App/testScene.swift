@@ -12,11 +12,11 @@ import SpriteKit
 class TestScene: SKScene {
     
    
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         self.backgroundColor = SKColor(red:0.39, green:0.36, blue:0.15, alpha:1)
         
         // SPRITE
-        let sprite = SKSpriteNode(color: SKColor.redColor(), size: CGSize(width: 100, height: 100))
+        let sprite = SKSpriteNode(color: SKColor.red(), size: CGSize(width: 100, height: 100))
         sprite.position = CGPoint(x: self.frame.width / 2.0, y: self.frame.height / 2.0)
         sprite.lightingBitMask = 1
         sprite.shadowCastBitMask = 1
@@ -38,7 +38,7 @@ class TestScene: SKScene {
         //Set the hero
         myHero.location.x = 10
         myHero.location.y = 10
-        myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
+        myHero.position = convertBoardCoordinatetoCGPoint(x: myHero.location.x, y: myHero.location.y)
         //myHero.anchorPoint = CGPoint(x:0, y:0)
         myHero.zPosition = 5
         addChild(myHero)
@@ -51,8 +51,8 @@ class TestScene: SKScene {
         //NOTE: My floors are currently only normal maps, so ambient doesn't work
         //heroTorch.ambientColor = UIColor.whiteColor()
         //heroTorch.falloff = 1
-        heroTorch.lightColor = UIColor.redColor()
-        heroTorch.enabled = true
+        heroTorch.lightColor = UIColor.red()
+        heroTorch.isEnabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
         heroTorch.zPosition = 51
         heroTorch.position = CGPoint (x: 0, y: 0)
@@ -64,7 +64,7 @@ class TestScene: SKScene {
         //Set the monster
         aMonster.location.x = 5
         aMonster.location.y = 10
-        aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
+        aMonster.position = convertBoardCoordinatetoCGPoint(x: aMonster.location.x, y: aMonster.location.y)
         //aMonster.anchorPoint = CGPoint(x:0, y:0)
         aMonster.zPosition = 5
         
@@ -77,12 +77,12 @@ class TestScene: SKScene {
     
     
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         /* Called when a touch begins */
         
         
         for touch in touches {
-            let location = touch.locationInNode(self)
+            let location = touch.location(in: self)
             
             let sprite = SKSpriteNode(imageNamed:"Spaceship")
             
@@ -90,9 +90,9 @@ class TestScene: SKScene {
             sprite.yScale = 0.5
             sprite.position = location
             
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
+            let action = SKAction.rotate(byAngle: CGFloat(M_PI), duration:1)
             
-            sprite.runAction(SKAction.repeatActionForever(action))
+            sprite.run(SKAction.repeatForever(action))
             
             self.addChild(sprite)
         }
@@ -103,7 +103,7 @@ class TestScene: SKScene {
         
     }
     
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
     }
 }

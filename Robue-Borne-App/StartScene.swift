@@ -10,7 +10,7 @@ import SpriteKit
 
 class StartScene: SKScene {
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         
         self.backgroundColor = SKColor(red: 0.13, green: 0.1, blue: 0.15, alpha: 0.9)
         
@@ -18,52 +18,52 @@ class StartScene: SKScene {
         let myTitle = SKLabelNode(fontNamed:"Chalkduster")
         myTitle.text = "Mimeophobia"
         myTitle.fontSize = 45
-        myTitle.fontColor = SKColor.redColor()
-        myTitle.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)+200)
+        myTitle.fontColor = SKColor.red()
+        myTitle.position = CGPoint(x:self.frame.midX, y:self.frame.midY+200)
         self.addChild(myTitle)
         
         let mySubTitle = SKLabelNode(fontNamed: "cochin")
         mySubTitle.text = "...Or How I Learned To Love My Doppleganger"
         mySubTitle.fontSize = 20
-        mySubTitle.fontColor = SKColor.redColor()
-        mySubTitle.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)+150)
+        mySubTitle.fontColor = SKColor.red()
+        mySubTitle.position = CGPoint(x:self.frame.midX, y:self.frame.midY+150)
         self.addChild(mySubTitle)
 
         
         let createCellMapButton = GenericRoundButtonWithName("cellMapButton", text: "Create a Cell Map")
-        createCellMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-40)
+        createCellMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-40)
         self.addChild(createCellMapButton)
         
         
         let createCellAutoMapButton = GenericRoundButtonWithName("cellAutoMapButton", text: "Create a Cellular Automata Map")
-        createCellAutoMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-110)
+        createCellAutoMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-110)
         self.addChild(createCellAutoMapButton)
         
 
         let createBigBangMapButton = GenericRoundButtonWithName("bigBangMapButton", text: "Create a Best Fit, left to Right Map")
-        createBigBangMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-180)
+        createBigBangMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-180)
         self.addChild(createBigBangMapButton)
         
         
         let testSceneMapButton = GenericRoundButtonWithName("testScenePlayground", text: "Test Shit Goes Here")
-        testSceneMapButton.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame)-250)
+        testSceneMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-250)
         self.addChild(testSceneMapButton)
 
     }
     
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         /*
         let myLoadingView = LoadingView()
         myLoadingView.showLoadingModal(self)
         */
         
-        let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+        let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
 
         let touch = touches 
-        let location = touch.first!.locationInNode(self)
-        let node = self.nodeAtPoint(location)
+        let location = touch.first!.location(in: self)
+        let node = self.atPoint(location)
         
         // If touchToCreateCellMap button is touched, start transition to second scene
         if (node.name == "cellMapButton") {
@@ -90,7 +90,7 @@ class StartScene: SKScene {
     }
     
    
-    override func update(currentTime: CFTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         /* Called before each frame is rendered */
     }
 }

@@ -33,7 +33,7 @@ class GenericText: SKLabelNode {
         let genericText = SKLabelNode(fontNamed:"Cochin")
         genericText.text = text
         genericText.fontSize = 20
-        genericText.fontColor = SKColor.whiteColor()
+        genericText.fontColor = SKColor.white()
         genericText.zPosition = 101
         genericText.name = name
         

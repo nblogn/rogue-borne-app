@@ -21,14 +21,14 @@ class DungeonLevel: SKNode {
     let levelExit: Item
     
     //Add a background
-    let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "gold-heatsink"), color: SKColor.clearColor(), size: SKTexture(imageNamed: "gold-heatsink").size())
+    let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "gold-heatsink"), color: SKColor.clear(), size: SKTexture(imageNamed: "gold-heatsink").size())
     
     //Add a light source for the hero...
     var heroTorch = SKLightNode()
     
     
     //Add room lights
-    var roomLights = [SKLightNode?()]
+    var roomLights = [SKLightNode()]
     
 
     required init?(coder aDecoder: NSCoder) {
@@ -80,7 +80,7 @@ class DungeonLevel: SKNode {
         //Set the hero
         myHero.location.x = myDungeonMap.dungeonRooms[myDungeonMap.dungeonRooms.count - 1].location.x1+1
         myHero.location.y = myDungeonMap.dungeonRooms[myDungeonMap.dungeonRooms.count - 1].location.y1+1
-        myHero.position = convertBoardCoordinatetoCGPoint(myHero.location.x, y: myHero.location.y)
+        myHero.position = convertBoardCoordinatetoCGPoint(x: myHero.location.x, y: myHero.location.y)
         //myHero.anchorPoint = CGPoint(x:0, y:0)
         myHero.zPosition = 5
         self.addChild(myHero)
@@ -90,8 +90,8 @@ class DungeonLevel: SKNode {
         //Set the hero's light:
         //Note that ambient/falloff have issues in spritekit:
         //http://stackoverflow.com/questions/29828324/spritekit-sklightnode-falloff-property-has-no-effect
-        heroTorch.lightColor = UIColor.redColor()
-        heroTorch.enabled = true
+        heroTorch.lightColor = UIColor.red()
+        heroTorch.isEnabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
         heroTorch.zPosition = 52
         heroTorch.position = CGPoint (x: 0, y: 0)
@@ -99,7 +99,7 @@ class DungeonLevel: SKNode {
         //NOTE: THESE ARE IMPORTANT; shadowColor drastically changes shit.
         //heroTorch.ambientColor = UIColor.redColor()
         heroTorch.falloff = 1
-        heroTorch.shadowColor = SKColor.blackColor().colorWithAlphaComponent(0.8)
+        heroTorch.shadowColor = SKColor.black().withAlphaComponent(0.8)
         
         myHero.addChild(heroTorch)
         
@@ -113,7 +113,7 @@ class DungeonLevel: SKNode {
         //Set the monsters
         aMonster.location.x = myDungeonMap.dungeonRooms[0].location.x1 + 1
         aMonster.location.y = myDungeonMap.dungeonRooms[0].location.y1 + 1
-        aMonster.position = convertBoardCoordinatetoCGPoint(aMonster.location.x, y: aMonster.location.y)
+        aMonster.position = convertBoardCoordinatetoCGPoint(x: aMonster.location.x, y: aMonster.location.y)
         //aMonster.anchorPoint = CGPoint(x:0, y:0)
         aMonster.zPosition = 5
         
@@ -170,15 +170,15 @@ class DungeonLevel: SKNode {
                 //tempLight.lightColor = SKColor.greenColor()
                 //tempLight.ambientColor = UIColor.blackColor()
                 tempLight.falloff = 1
-                tempLight.shadowColor = UIColor.blackColor()
-                tempLight.enabled = true
+                tempLight.shadowColor = UIColor.black()
+                tempLight.isEnabled = true
                 tempLight.categoryBitMask = LightCategory.Hero
                 tempLight.zPosition = 11
                 tempLight.position = CGPoint (x: 0, y: 0)
                 
                 
                 //Add the new light to our lights array
-                roomLights.append(nil)
+                //roomLights.append(nil)
                 roomLights[drawRoomIterator] = tempLight
                 
                 //Add the light as a child of level's (self) dungeon map
@@ -189,7 +189,7 @@ class DungeonLevel: SKNode {
             } else {
                 //Adding this to ensure lights index lines up with rooms index.
                 //Eventually this should maybe be part of that struct
-                roomLights.append(nil)
+                //roomLights.append(nil)
             }
         }
  
@@ -277,21 +277,21 @@ class DungeonLevel: SKNode {
         
         switch myDungeonMap.dungeonMap[myHero.location.y + y][myHero.location.x + x].tileType {
             
-        case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+        case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
 
             //Figure out new hero location/position
             myHero.location.x = myHero.location.x + x
             myHero.location.y = myHero.location.y + y
-            let xyPointDiff = convertBoardCoordinatetoCGPoint(myHero.location.x, y:myHero.location.y)
+            let xyPointDiff = convertBoardCoordinatetoCGPoint(x: myHero.location.x, y:myHero.location.y)
             
             //Move the background for parallax effect:
-            let newBackgroundX = dungeonBackground.position.x - (CGFloat(tileSize.width) * CGFloat(x)*0.5)
-            let newBackgroundY = dungeonBackground.position.y - (CGFloat(tileSize.height) * CGFloat(y)*0.35)
+            let newBackgroundX = dungeonBackground.position.x + (CGFloat(tileSize.width) * CGFloat(x)*0.5)
+            let newBackgroundY = dungeonBackground.position.y + (CGFloat(tileSize.height) * CGFloat(y)*0.35)
             let newDungeonBackgroundPosition = CGPoint(x: newBackgroundX, y: newBackgroundY)
             
             //Run the actions; do I need to group these to do in parallel???
-            dungeonBackground.runAction(SKAction.moveTo(newDungeonBackgroundPosition, duration: 0.1))
-            myHero.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
+            dungeonBackground.run(SKAction.move(to: newDungeonBackgroundPosition, duration: 0.1))
+            myHero.run(SKAction.move(to: xyPointDiff, duration: 0.1))
             
         default: break
         }
@@ -323,7 +323,7 @@ class DungeonLevel: SKNode {
                 
                 switch myDungeonMap.dungeonMap[aMonster.getCurrentLocation().y-1][aMonster.getCurrentLocation().x].tileType  {
                     
-                case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
                     aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y-1)
                     hasMoved = true
                 default:
@@ -335,7 +335,7 @@ class DungeonLevel: SKNode {
                 
                 switch myDungeonMap.dungeonMap[aMonster.getCurrentLocation().y+1][aMonster.getCurrentLocation().x].tileType {
                     
-                case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
                     aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y+1)
                     hasMoved = true
                 default:
@@ -348,7 +348,7 @@ class DungeonLevel: SKNode {
                 
                 switch myDungeonMap.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x-1].tileType {
                     
-                case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
                     aMonster.setCurrentLocation(aMonster.getCurrentLocation().x-1, Y: aMonster.getCurrentLocation().y)
                     hasMoved = true
                 default:
@@ -361,7 +361,7 @@ class DungeonLevel: SKNode {
                 
                 switch myDungeonMap.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x+1].tileType {
                     
-                case .Door, .CorridorHorizontal, .CorridorVertical, .Grass, .Ground:
+                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
                     aMonster.setCurrentLocation(aMonster.getCurrentLocation().x+1, Y: aMonster.getCurrentLocation().y)
                     hasMoved = true
                 default:
@@ -377,9 +377,9 @@ class DungeonLevel: SKNode {
             numTries += 1
         }
         
-        let xyPointDiff = convertBoardCoordinatetoCGPoint(aMonster.location.x, y:aMonster.location.y)
+        let xyPointDiff = convertBoardCoordinatetoCGPoint(x: aMonster.location.x, y:aMonster.location.y)
         
-        aMonster.runAction(SKAction.moveTo(xyPointDiff, duration: 0.1))
+        aMonster.run(SKAction.move(to: xyPointDiff, duration: 0.1))
         
     }//moveMonster()
     
@@ -391,7 +391,7 @@ class DungeonLevel: SKNode {
     //
     //=====================================================================================================//
 
-    func getRoomDetailsForLocation (location: dungeonLocation) -> DungeonMap.DungeonRoom? {
+    func getRoomDetailsForLocation (_ location: dungeonLocation) -> DungeonMap.DungeonRoom? {
         
         var tempRoom: DungeonMap.DungeonRoom? = nil
         
@@ -425,7 +425,7 @@ class DungeonLevel: SKNode {
     
     
     //Set a farthest (furthest?) path location away from the given (hero's) starting point
-    func getFurthestLocationFromLocation(sourceLocation: dungeonLocation) -> dungeonLocation {
+    func getFurthestLocationFromLocation(_ sourceLocation: dungeonLocation) -> dungeonLocation {
         
         
         let furthestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
@@ -438,7 +438,7 @@ class DungeonLevel: SKNode {
     
     
     
-    func getClosestLocationToLocation(sourceLocation: dungeonLocation) -> dungeonLocation {
+    func getClosestLocationToLocation(_ sourceLocation: dungeonLocation) -> dungeonLocation {
         
         let closestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
         

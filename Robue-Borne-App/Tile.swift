@@ -34,48 +34,48 @@ let miniTileSize = (width:3, height: 3)
 
 enum Tile: Int {
     
-    case Ground
-    case Wall
-    case Nothing
-    case Grass
-    case CorridorVertical
-    case CorridorHorizontal
-    case Door
+    case ground
+    case wall
+    case nothing
+    case grass
+    case corridorVertical
+    case corridorHorizontal
+    case door
     
     var description:String {
         switch self {
-        case Ground:
+        case ground:
             return "Ground"
-        case Wall:
+        case wall:
             return "Wall"
-        case Nothing:
+        case nothing:
             return "Nothing"
-        case Grass:
+        case grass:
             return "RB_Grass_2x"
-        case CorridorVertical:
+        case corridorVertical:
             return "CorridorVertical"
-        case CorridorHorizontal:
+        case corridorHorizontal:
             return "CorridorHorizontal"
-        case Door:
+        case door:
             return "Door"
         }
     }
     
     var image:String {
         switch self {
-        case Ground:
+        case ground:
             return "RB_Floor_Green_2x"
-        case Wall:
+        case wall:
             return "RB_Wall_2x"
-        case Nothing:
+        case nothing:
             return "RB_Floor_Grey_2x"
-        case Grass:
+        case grass:
             return "RB_Grass_2x"
-        case CorridorVertical:
+        case corridorVertical:
             return "CorridorVertical"
-        case CorridorHorizontal:
+        case corridorHorizontal:
             return "CorridorHorizontal"
-        case Door:
+        case door:
             return "Door"
         }
     }
@@ -97,12 +97,12 @@ class TileClass: SKSpriteNode {
     
     init () {
         
-        self.tileType = Tile.Nothing
+        self.tileType = Tile.nothing
         self.passable = false
         self.discovered = false
         
         let texture = SKTexture(imageNamed: self.tileType.image)
-        super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
+        super.init(texture: texture, color: SKColor.clear(), size: texture.size())
         
     }
     
@@ -111,26 +111,26 @@ class TileClass: SKSpriteNode {
         self.tileType = tileToCreate
         
         switch self.tileType {
-            case Tile.Ground:
+            case Tile.ground:
                 self.passable = true
-            case Tile.Wall:
+            case Tile.wall:
                 self.passable = false
-            case Tile.Nothing:
+            case Tile.nothing:
                 self.passable = false
-            case Tile.Grass:
+            case Tile.grass:
                 self.passable = true
-            case Tile.CorridorVertical:
+            case Tile.corridorVertical:
                 self.passable = true
-            case Tile.CorridorHorizontal:
+            case Tile.corridorHorizontal:
                 self.passable = true
-            case Tile.Door:
+            case Tile.door:
                 self.passable = true
             }
         
         self.discovered = false
 
         let texture = SKTexture(imageNamed: self.tileType.image)
-        super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
+        super.init(texture: texture, color: SKColor.clear(), size: texture.size())
 
     }
 }

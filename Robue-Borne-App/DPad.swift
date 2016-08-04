@@ -62,7 +62,7 @@ class dPad: SKNode {
         //self.addChild(RB_Cntrl_DownLeft)
         //self.addChild(RB_Cntrl_DownRight)
         
-        self.userInteractionEnabled = true
+        self.isUserInteractionEnabled = true
         self.name = "dPad"
         
         

@@ -75,7 +75,7 @@ class PlayScene: SKScene {
     
     
     //didMoveToView is the first event in the PlayScene after inits
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
 
         //////////
         //Setup the camera
@@ -108,13 +108,13 @@ class PlayScene: SKScene {
     func loadLevelInBackground (withCompletion: (loadingComplete: Bool) -> ()) {
         
         // load resources on other thread
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosUserInitiated).async(execute: {
             
             //DO MY BACKGROUND LOADING SHIT HERE
             self.loadLevel()
             
             // callback on main thread
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 // Call the completion handler back on the main queue.
                 withCompletion(loadingComplete: true)
             });
@@ -171,8 +171,8 @@ class PlayScene: SKScene {
         
         //////////
         //Testing SgButton Class
-        let btn31 = SgButton(normalString: "SgButton Test", normalStringColor: UIColor.blueColor(), normalFontName: "Cochin", normalFontSize: 25, backgroundNormalColor: UIColor.yellowColor(), size: CGSizeMake(200, 40), cornerRadius: 10.0, buttonFunc: self.tappedButton)
-        btn31.setString(.Highlighted, string: "Being tapped", stringColor: UIColor.redColor(), backgroundColor: UIColor.greenColor())
+        let btn31 = SgButton(normalString: "SgButton Test", normalFontName: "Cochin", normalFontSize: 25, normalStringColor: UIColor.blue(), backgroundNormalColor: UIColor.yellow(), size: CGSize(width: 200, height: 40), cornerRadius: 10.0, buttonFunc: self.tappedButton)
+        btn31.setString(.highlighted, string: "Being tapped", stringColor: UIColor.red(), backgroundColor: UIColor.green())
         btn31.position = CGPoint(x: -400, y: 200)
         btn31.tag = 31
         myCamera.addChild(btn31)
@@ -217,32 +217,32 @@ class PlayScene: SKScene {
     //-------------------------------------------------------------------------------------------//
     
     //Callback handler for Pan gestureRecognizer
-    func handlePanFrom(recognizer: UIPanGestureRecognizer) {
+    func handlePanFrom(_ recognizer: UIPanGestureRecognizer) {
 
         let selectedNode = myDungeonLevel
         
         
-        if recognizer.state == .Began {
-            var touchLocation = recognizer.locationInView(recognizer.view)
-            touchLocation = self.convertPointFromView(touchLocation)
+        if recognizer.state == .began {
+            var touchLocation = recognizer.location(in: recognizer.view)
+            touchLocation = self.convertPoint(fromView: touchLocation)
             
             
-        } else if recognizer.state == .Changed {
-            var translation = recognizer.translationInView(recognizer.view!)
+        } else if recognizer.state == .changed {
+            var translation = recognizer.translation(in: recognizer.view!)
             translation = CGPoint(x: translation.x, y: -translation.y)
             
             let position = selectedNode.position
             myDungeonLevel.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
             
-            recognizer.setTranslation(CGPointZero, inView: recognizer.view)
+            recognizer.setTranslation(CGPoint.zero, in: recognizer.view)
             
             print("view2D.position on pan == ", myDungeonLevel.position)
             
-        } else if recognizer.state == .Ended {
+        } else if recognizer.state == .ended {
             
             //This "flings" the node on an "end" of a pan
             let scrollDuration = 0.2
-            let velocity = recognizer.velocityInView(recognizer.view)
+            let velocity = recognizer.velocity(in: recognizer.view)
             let pos = selectedNode.position
             
             // This just multiplies your velocity with the scroll duration.
@@ -252,15 +252,15 @@ class PlayScene: SKScene {
             //newPos = self.boundLayerPos(newPos)
             selectedNode.removeAllActions()
             
-            let moveTo = SKAction.moveTo(newPos, duration: scrollDuration)
-            moveTo.timingMode = .EaseOut
-            selectedNode.runAction(moveTo)
+            let moveTo = SKAction.move(to: newPos, duration: scrollDuration)
+            moveTo.timingMode = .easeOut
+            selectedNode.run(moveTo)
         }
     }
     
     
     //used for making sure you don’t scroll the layer beyond the bounds of the background
-    func boundLayerPos(aNewPosition: CGPoint) -> CGPoint {
+    func boundLayerPos(_ aNewPosition: CGPoint) -> CGPoint {
         let winSize = self.size
         var retval = aNewPosition
         retval.x = CGFloat(min(retval.x, 0))
@@ -273,7 +273,7 @@ class PlayScene: SKScene {
     
 
     //Used to wiggle the hero as he walks
-    func degToRad(degree: Double) -> CGFloat {
+    func degToRad(_ degree: Double) -> CGFloat {
         return CGFloat(Double(degree) / 180.0 * M_PI)
     }
     
@@ -287,24 +287,24 @@ class PlayScene: SKScene {
     // ZOOMING the entire dungeon
     //
     //-------------------------------------------------------------------------------------------//
-    func handlePinchFrom (recognizer: UIPinchGestureRecognizer) {
+    func handlePinchFrom (_ recognizer: UIPinchGestureRecognizer) {
     
         
         if recognizer.numberOfTouches() == 2 {
             
             
-            let locationInView = recognizer.locationInView(recognizer.view)
-            let location = self.convertPointFromView(locationInView)
+            let locationInView = recognizer.location(in: recognizer.view)
+            let location = self.convertPoint(fromView: locationInView)
             
             
-            if recognizer.state == .Changed {
+            if recognizer.state == .changed {
                 
                 let deltaScale = (recognizer.scale - 1.0)*2
                 let convertedScale = recognizer.scale - deltaScale
                 let newScale = myCamera.xScale * convertedScale
                 myCamera.setScale(newScale)
                 
-                let locationAfterScale = self.convertPointFromView(locationInView)
+                let locationAfterScale = self.convertPoint(fromView: locationInView)
                 let locationDelta = location - locationAfterScale
                 let newPoint = myCamera.position + locationDelta
                 myCamera.position = newPoint
@@ -327,12 +327,12 @@ class PlayScene: SKScene {
     // TAPPING, including d-pad and hero movement
     //
     //-------------------------------------------------------------------------------------------//
-    func handleTapFrom (recognizer: UITapGestureRecognizer) {
+    func handleTapFrom (_ recognizer: UITapGestureRecognizer) {
 
         //Find which node was touched...
-        var touchLocation = recognizer.locationInView(recognizer.view)
-        touchLocation = self.convertPointFromView(touchLocation)
-        let touchedNode = self.nodeAtPoint(touchLocation)
+        var touchLocation = recognizer.location(in: recognizer.view)
+        touchLocation = self.convertPoint(fromView: touchLocation)
+        let touchedNode = self.atPoint(touchLocation)
 
         
         //D-Pad code goes here...
@@ -340,20 +340,20 @@ class PlayScene: SKScene {
             
             switch touchedNode.name! {
                 case "RB_Cntrl_Up":
-                    myDungeonLevel.moveHero(0, y: 1)
+                    myDungeonLevel.moveHero(x: 0, y: 1)
                     myDungeonLevel.moveMonster()
                 
                 case "RB_Cntrl_Down":
-                    myDungeonLevel.moveHero(0, y: -1)
+                    myDungeonLevel.moveHero(x: 0, y: -1)
                     myDungeonLevel.moveMonster()
                 
                 case "RB_Cntrl_Right":
-                    myDungeonLevel.moveHero(1, y: 0)
+                    myDungeonLevel.moveHero(x: 1, y: 0)
                     myDungeonLevel.moveMonster()
 
                 
                 case "RB_Cntrl_Left":
-                    myDungeonLevel.moveHero(-1, y: 0)
+                    myDungeonLevel.moveHero(x: -1, y: 0)
                     myDungeonLevel.moveMonster()
 
                 
@@ -365,7 +365,7 @@ class PlayScene: SKScene {
                 
                 case "mainMenuButton":
                     //Go back to the StartScene if Main Menu is pressed
-                    let reveal = SKTransition.flipHorizontalWithDuration(0.5)
+                    let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
                     let startScene = StartScene(size: self.size)
                     self.view?.presentScene(startScene, transition: reveal)
                 
@@ -390,10 +390,10 @@ class PlayScene: SKScene {
                     myMiniMap.hideMiniMapModal()
                 
                 case "torch":
-                    if myDungeonLevel.heroTorch.enabled == false {
-                        myDungeonLevel.heroTorch.enabled = true
+                    if myDungeonLevel.heroTorch.isEnabled == false {
+                        myDungeonLevel.heroTorch.isEnabled = true
                     } else {
-                        myDungeonLevel.heroTorch.enabled = false
+                        myDungeonLevel.heroTorch.isEnabled = false
                     }
                 
                 default:
@@ -408,7 +408,7 @@ class PlayScene: SKScene {
     
     
     
-    func tappedButton(button: SgButton) {
+    func tappedButton(_ button: SgButton) {
         print("tappedButton tappedButton tag=\(button.tag)")
 
         myMiniMap.showMiniMapModal(myDungeonLevel.myDungeonMap, parent: self)
@@ -439,7 +439,7 @@ class PlayScene: SKScene {
         myDungeonLevel.yScale = CGFloat(yScale)
         myDungeonLevel.xScale = CGFloat(xScale)
         
-        myDungeonLevel.position = CGPointZero
+        myDungeonLevel.position = CGPoint.zero
         
     }
     
@@ -454,9 +454,9 @@ class PlayScene: SKScene {
     //
     //-------------------------------------------------------------------------------------------//
     
-    func centerDungeonOnHero(scale: Float?) {
+    func centerDungeonOnHero(_ scale: Float?) {
         
-        let centeredNodePositionInScene = myDungeonLevel.convertPoint(myDungeonLevel.myHero.position, toNode: self)
+        let centeredNodePositionInScene = myDungeonLevel.convert(myDungeonLevel.myHero.position, to: self)
         
         myCamera.position = centeredNodePositionInScene
         
@@ -468,11 +468,11 @@ class PlayScene: SKScene {
     }
     
     
-    override func update(currentTime: CFTimeInterval)
+    override func update(_ currentTime: TimeInterval)
     {
         /* Called before each frame is rendered */
         
-        let centeredNodePositionInScene = myDungeonLevel.convertPoint(myDungeonLevel.myHero.position, toNode: self)
+        let centeredNodePositionInScene = myDungeonLevel.convert(myDungeonLevel.myHero.position, to: self)
 
         myCamera.position = centeredNodePositionInScene
         

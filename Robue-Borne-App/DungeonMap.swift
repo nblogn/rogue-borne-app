@@ -191,7 +191,7 @@ class DungeonMap: SKNode {
         ////
         
         //Temp dungeon to be returned
-        var generatedDungeon = [[TileClass]](count: dungeonSizeHeight, repeatedValue:[TileClass](count:dungeonSizeWidth, repeatedValue: TileClass(tileToCreate: Tile.Nothing)))
+        var generatedDungeon = [[TileClass]](repeating: [TileClass](repeating: TileClass(tileToCreate: Tile.nothing), count: dungeonSizeWidth), count: dungeonSizeHeight)
         
         //Reset the loopers
         numberOfHeightCellsIterator = 0
@@ -227,14 +227,14 @@ class DungeonMap: SKNode {
                     
                     //if top or bottom of room, fill with all walls, else, floor
                     if (rowIterator == 0) || (rowIterator == roomHeight-1) {
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.Wall)
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.wall)
                     }
                     else if (columnIterator == 0) || (columnIterator == roomWidth-1) {
                         //This is for the vertical walls, if I want different icons
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.Wall)
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.wall)
                     }
                     else {
-                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.Ground)
+                        generatedDungeon[roomY1+rowIterator][roomX1+columnIterator] = TileClass(tileToCreate: Tile.ground)
                     }
                     columnIterator += 1
                     
@@ -288,7 +288,7 @@ class DungeonMap: SKNode {
                 randWalls = Int(arc4random_uniform(UInt32(100)))
                 
                 if randWalls > 55 {
-                    dungeonMap[row][column] = TileClass(tileToCreate: Tile.Wall)
+                    dungeonMap[row][column] = TileClass(tileToCreate: Tile.wall)
                 }
             }
         }
@@ -300,9 +300,9 @@ class DungeonMap: SKNode {
                 for column2 in 0 ..< dungeonMap[row2].count {
                     
                     if howManyWallsAreAroundMe(x:column2,y:row2) > 5 {
-                        dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.Wall)
+                        dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.wall)
                     } else if howManyWallsAreAroundMe(x:column2,y:row2) < 3 {
-                        dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.Ground)
+                        dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.ground)
                     }
                     
                 }
@@ -433,7 +433,7 @@ class DungeonMap: SKNode {
     //=====================================================================================================//
     //Func to check if dungeonRooms collide
     //=====================================================================================================//
-    private func doRoomsCollide(x1 x1: Int, y1: Int, x2: Int, y2: Int) -> Bool {
+    private func doRoomsCollide(x1: Int, y1: Int, x2: Int, y2: Int) -> Bool {
         
         var wellDoThey: Bool = false
         
@@ -496,9 +496,9 @@ class DungeonMap: SKNode {
                     
                     //Check to see if we are drawing walls or floor...
                     if ((row == dungeonRooms[drawRoomIterator].location.y1) || (row == dungeonRooms[drawRoomIterator].location.y2) || (column == dungeonRooms[drawRoomIterator].location.x1) || (column == dungeonRooms[drawRoomIterator].location.x2)) {
-                        dungeonMap[row][column] = TileClass(tileToCreate: Tile.Wall)
+                        dungeonMap[row][column] = TileClass(tileToCreate: Tile.wall)
                     } else {
-                        dungeonMap[row][column] = TileClass(tileToCreate: Tile.Ground)
+                        dungeonMap[row][column] = TileClass(tileToCreate: Tile.ground)
                     }
                     
                     column += 1
@@ -519,7 +519,7 @@ class DungeonMap: SKNode {
     //I'm sure there's probably a much more elegant way to do this. Hrm.
     //
     //=====================================================================================================//
-    private func howManyWallsAreAroundMe(x x:Int, y:Int, tileType: Tile = Tile.Wall) -> Int {
+    private func howManyWallsAreAroundMe(x:Int, y:Int, tileType: Tile = Tile.wall) -> Int {
     
         var walls = 0
         
@@ -623,30 +623,30 @@ class DungeonMap: SKNode {
                     
                     //Change the current tile...
                     switch dungeonMap[yDigger][xDigger].tileType {
-                        case Tile.Wall:
+                        case Tile.wall:
                             do {
                                 
-                                dungeonMap[yDigger][xDigger] = TileClass (tileToCreate: Tile.Door)
+                                dungeonMap[yDigger][xDigger] = TileClass (tileToCreate: Tile.door)
 
                                 //TODO: Add checks for multiple doors in a row
-                                if (dungeonMap[yDigger-1][xDigger].tileType == Tile.Wall) || (dungeonMap[yDigger+1][xDigger].tileType == Tile.Wall) {
+                                if (dungeonMap[yDigger-1][xDigger].tileType == Tile.wall) || (dungeonMap[yDigger+1][xDigger].tileType == Tile.wall) {
                                     
                                     doorCreatedInVerticalWall = true
                                     
-                                } else if (dungeonMap[yDigger][xDigger+1].tileType == Tile.Door) || (dungeonMap[yDigger][xDigger-1].tileType == Tile.Door) {
+                                } else if (dungeonMap[yDigger][xDigger+1].tileType == Tile.door) || (dungeonMap[yDigger][xDigger-1].tileType == Tile.door) {
                                     
                                     doorCreatedInHorizontalWall = true
                                     
                                 }
                                 
                             }
-                        case Tile.Ground:
+                        case Tile.ground:
                             do {
                                 //nothing, move along
                             }
-                        case Tile.Nothing:
+                        case Tile.nothing:
                             do {
-                                dungeonMap[yDigger][xDigger] = TileClass (tileToCreate: Tile.CorridorHorizontal)
+                                dungeonMap[yDigger][xDigger] = TileClass (tileToCreate: Tile.corridorHorizontal)
                             }
                         default: break
                     }
@@ -723,7 +723,7 @@ class DungeonMap: SKNode {
     
     
     //Finds closest room to given roomId, can filter by how many connections that room has...
-    private func findClosestRoomToRoomId(room:Int, targetRoomConnections:Int = 0) -> Int? {
+    private func findClosestRoomToRoomId(_ room:Int, targetRoomConnections:Int = 0) -> Int? {
         
         let roomMidpointX = Int((dungeonRooms[room].location.x1 + dungeonRooms[room].location.x2)/2)
         let roomMidpointY = Int((dungeonRooms[room].location.y1 + dungeonRooms[room].location.y2)/2)
@@ -793,8 +793,8 @@ class DungeonMap: SKNode {
         //Draw the rooms first...
         for roomIterator in 0...dungeonRooms.count-1 {
             
-            let coordinate1 = convertBoardCoordinatetoCGPoint(dungeonRooms[roomIterator].location.x1, y: dungeonRooms[roomIterator].location.y1)
-            let coordinate2 = convertBoardCoordinatetoCGPoint(dungeonRooms[roomIterator].location.x2, y: dungeonRooms[roomIterator].location.y2)
+            let coordinate1 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1, y: dungeonRooms[roomIterator].location.y1)
+            let coordinate2 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x2, y: dungeonRooms[roomIterator].location.y2)
             let width = coordinate2.x - coordinate1.x
             let height = coordinate2.y - coordinate1.y
             
@@ -852,13 +852,13 @@ class DungeonMap: SKNode {
                 dungeonMap[row][column].zPosition = 2
                 
                 //Make walls and "nothing" cast shadows
-                if (dungeonMap[row][column].tileType == Tile.Wall) || (dungeonMap[row][column].tileType == Tile.Nothing) {
+                if (dungeonMap[row][column].tileType == Tile.wall) || (dungeonMap[row][column].tileType == Tile.nothing) {
                     dungeonMap[row][column].shadowCastBitMask = LightCategory.Hero
                     dungeonMap[row][column].lightingBitMask = LightCategory.Hero
                 }
                 
                 //Let's not add the "nothing" tiles, they hit the CPU way too much...
-                if (dungeonMap[row][column].tileType != Tile.Nothing) && (dungeonMap[row][column].tileType != Tile.Ground) {
+                if (dungeonMap[row][column].tileType != Tile.nothing) && (dungeonMap[row][column].tileType != Tile.ground) {
                     
                     dungeonMap[row][column].removeFromParent()
                     self.addChild(dungeonMap[row][column])
@@ -885,11 +885,11 @@ class DungeonMap: SKNode {
                 
                 if (column == 0){
                     
-                    dungeonMap.append([TileClass(tileToCreate: Tile.Nothing)])
+                    dungeonMap.append([TileClass(tileToCreate: Tile.nothing)])
                     
                 } else {
                 
-                    dungeonMap[row].append(TileClass(tileToCreate: Tile.Nothing))
+                    dungeonMap[row].append(TileClass(tileToCreate: Tile.nothing))
                 
                 }
             }

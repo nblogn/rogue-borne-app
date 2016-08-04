@@ -25,7 +25,7 @@ class MiniMapView: SKNode {
         let miniMapPositionX = Int(parent.size.width / 2) - miniMapWidth - 30
         let miniMapPositionY = Int(parent.size.height / 2) - miniMapHeight - 30
         
-        miniMapModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: miniMapWidth, height: miniMapHeight), cornerRadius: 8).CGPath
+        miniMapModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: miniMapWidth, height: miniMapHeight), cornerRadius: 8).cgPath
         miniMapModal.fillColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.7)
         miniMapModal.strokeColor = UIColor(red: 0.9, green: 0.1, blue: 0.1, alpha: 0.5)
         miniMapModal.lineWidth = 1
@@ -43,7 +43,7 @@ class MiniMapView: SKNode {
                 
                 
                 //Let's skip the "nothing" tiles
-                if (myDungeonMiniMap.dungeonMap[row][column].tileType != Tile.Nothing) {
+                if (myDungeonMiniMap.dungeonMap[row][column].tileType != Tile.nothing) {
                     
                     
                     //Calculate the current position
@@ -53,9 +53,9 @@ class MiniMapView: SKNode {
                     
                     
                     //Add mini walls
-                    if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.Wall) || (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.Nothing) {
+                    if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.wall) || (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.nothing) {
                         
-                        let wallShape = SKShapeNode(rectOfSize: CGSize(width: 3, height: 3))
+                        let wallShape = SKShapeNode(rectOf: CGSize(width: 3, height: 3))
                         wallShape.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
                         wallShape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
                         wallShape.lineWidth = 1
@@ -69,9 +69,9 @@ class MiniMapView: SKNode {
                     
                     
                     //Add mini corridors
-                    if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.CorridorHorizontal) || (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.CorridorVertical) {
+                    if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.corridorHorizontal) || (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.corridorVertical) {
                         
-                        let corridorShape = SKShapeNode(rectOfSize: CGSize(width: 3, height: 3))
+                        let corridorShape = SKShapeNode(rectOf: CGSize(width: 3, height: 3))
                         corridorShape.fillColor = UIColor(red: 0.1, green: 0.5, blue: 0.1, alpha: 0.7)
                         corridorShape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
                         corridorShape.lineWidth = 1
@@ -84,9 +84,9 @@ class MiniMapView: SKNode {
                     
                     
                     //Add mini floors
-                    if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.Ground) {
+                    if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.ground) {
                         
-                        let groundShape = SKShapeNode(rectOfSize: CGSize(width: 3, height: 3))
+                        let groundShape = SKShapeNode(rectOf: CGSize(width: 3, height: 3))
                         groundShape.fillColor = UIColor(red: 0.1, green: 0.5, blue: 0.1, alpha: 0.7)
                         groundShape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
                         groundShape.lineWidth = 1
@@ -106,7 +106,7 @@ class MiniMapView: SKNode {
 
     
     
-    func buildMiniMapModalMinimalTiles (myDungeonMiniMap: DungeonMap, parent: SKScene) {
+    func buildMiniMapModalMinimalTiles (_ myDungeonMiniMap: DungeonMap, parent: SKScene) {
         
         //Set the size of the miniMap
         let miniMapWidth = miniTileSize.width * myDungeonMiniMap.dungeonSizeWidth + 5
@@ -114,7 +114,7 @@ class MiniMapView: SKNode {
         let miniMapPositionX = Int(parent.size.width / 2) - miniMapWidth - 30
         let miniMapPositionY = Int(parent.size.height / 2) - miniMapHeight - 30
         
-        miniMapModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: miniMapWidth, height: miniMapHeight), cornerRadius: 8).CGPath
+        miniMapModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: miniMapWidth, height: miniMapHeight), cornerRadius: 8).cgPath
         miniMapModal.fillColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0.7)
         miniMapModal.strokeColor = UIColor(red: 0.9, green: 0.1, blue: 0.1, alpha: 0.5)
         miniMapModal.lineWidth = 1
@@ -128,14 +128,14 @@ class MiniMapView: SKNode {
         //Build rooms as single rect nodes
         for roomIterator in 0...myDungeonMiniMap.dungeonRooms.count-1 {
             
-            let coordinate1 = convertBoardCoordinatetoCGPoint(myDungeonMiniMap.dungeonRooms[roomIterator].location.x1, y: myDungeonMiniMap.dungeonRooms[roomIterator].location.y1, mini:true)
+            let coordinate1 = convertBoardCoordinatetoCGPoint(x: myDungeonMiniMap.dungeonRooms[roomIterator].location.x1, y: myDungeonMiniMap.dungeonRooms[roomIterator].location.y1, mini:true)
             
-            let coordinate2 = convertBoardCoordinatetoCGPoint(myDungeonMiniMap.dungeonRooms[roomIterator].location.x2, y: myDungeonMiniMap.dungeonRooms[roomIterator].location.y2, mini: true)
+            let coordinate2 = convertBoardCoordinatetoCGPoint(x: myDungeonMiniMap.dungeonRooms[roomIterator].location.x2, y: myDungeonMiniMap.dungeonRooms[roomIterator].location.y2, mini: true)
             
             let width = coordinate2.x - coordinate1.x
             let height = coordinate2.y - coordinate1.y
             
-            let room = SKShapeNode(rectOfSize: CGSize(width: width, height: height))
+            let room = SKShapeNode(rectOf: CGSize(width: width, height: height))
             room.fillColor = UIColor(red: 0.3, green: 0.1, blue: 0.5, alpha: 0.8)
             room.strokeColor = UIColor(red: 0.9, green: 0.2, blue: 0.4, alpha: 0.8)
             room.lineWidth = 1
@@ -158,9 +158,9 @@ class MiniMapView: SKNode {
                 let point = CGPoint(x: (column*miniTileSize.width), y: (row*miniTileSize.height))
                 
                 //Add mini corridors
-                if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.CorridorHorizontal) || (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.CorridorVertical) {
+                if (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.corridorHorizontal) || (myDungeonMiniMap.dungeonMap[row][column].tileType == Tile.corridorVertical) {
                     
-                    let corridorShape = SKShapeNode(rectOfSize: CGSize(width: 3, height: 3))
+                    let corridorShape = SKShapeNode(rectOf: CGSize(width: 3, height: 3))
                     corridorShape.fillColor = UIColor(red: 0.5, green: 0.5, blue: 0.1, alpha: 0.7)
                     //corridorShape.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
                     //corridorShape.lineWidth = 1
@@ -180,7 +180,7 @@ class MiniMapView: SKNode {
     }
     
     
-    func covertDungeonCoordinateToMiniMap (coordinate: CGPoint) {
+    func covertDungeonCoordinateToMiniMap (_ coordinate: CGPoint) {
         
         
         
@@ -189,7 +189,7 @@ class MiniMapView: SKNode {
     
     
     
-    func updateMiniMapModal (myDungeonMiniMap: DungeonMap, parent: SKScene) {
+    func updateMiniMapModal (_ myDungeonMiniMap: DungeonMap, parent: SKScene) {
         
         //iterate and find diffs, then move the diff
         
@@ -199,7 +199,7 @@ class MiniMapView: SKNode {
     
     
     //I'm doing too much code copying here from the DungeonMap class, but oh well...
-    func showMiniMapModal (myDungeonMiniMap: DungeonMap, parent: SKScene) {
+    func showMiniMapModal (_ myDungeonMiniMap: DungeonMap, parent: SKScene) {
         
         //If there's no parent, add this to parent and build
         if (miniMapModal.parent == nil) {

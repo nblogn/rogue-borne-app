@@ -33,8 +33,8 @@ class LoadingNode: SKNode {
         let loadingModalPositionX = 0 //-Int(parent.size.width / 4)
         let loadingModalPositionY = 0 //-Int(parent.size.height / 4)
         
-        loadingModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: loadingModalWidth, height: loadingModalHeight), cornerRadius: 8).CGPath
-        loadingModal.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
+        loadingModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: loadingModalWidth, height: loadingModalHeight), cornerRadius: 8).cgPath
+        loadingModal.position = CGPoint(x: frame.midX, y: frame.midY)
         loadingModal.fillColor = UIColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 1)
         loadingModal.strokeColor = UIColor(red: 0.9, green: 0.1, blue: 0.1, alpha: 1)
         loadingModal.lineWidth = 1
@@ -49,7 +49,7 @@ class LoadingNode: SKNode {
         //////////
         //Set the monster
         let texture = SKTexture(imageNamed: "RB_Monster1")
-        let aMonster = SKSpriteNode(texture: texture, color: SKColor.clearColor(), size: CGSize(width: Int(loadingModalWidth - 20), height: Int(loadingModalHeight-20)))
+        let aMonster = SKSpriteNode(texture: texture, color: SKColor.clear(), size: CGSize(width: Int(loadingModalWidth - 20), height: Int(loadingModalHeight-20)))
 
         aMonster.position = CGPoint(x: Int(loadingModalWidth/2), y: Int(loadingModalHeight/2))
         
@@ -67,7 +67,7 @@ class LoadingNode: SKNode {
 
     
     
-    func showLoadingModal (parent: SKScene) {
+    func showLoadingModal (_ parent: SKScene) {
         
         //If there's no parent, add this to parent and build
         if (loadingModal.parent == nil) {
@@ -76,7 +76,7 @@ class LoadingNode: SKNode {
             
             //If there ARE children in modal, don't rebuild the modal. TODO: Update instead.
             if (loadingModal.children.count == 0) {
-                buildLoadingModal(parent)
+                buildLoadingModal(parent: parent)
             }
             
             
@@ -91,7 +91,7 @@ class LoadingNode: SKNode {
     
     func hideLoadingModal () {
         
-        self.runAction(SKAction.fadeOutWithDuration(0.5))
+        self.run(SKAction.fadeOut(withDuration: 0.5))
         
         loadingModal.removeFromParent()
         loadingModal.removeAllChildren()

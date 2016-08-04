@@ -34,7 +34,7 @@ class Hero: SKSpriteNode, basicCharacterAbilities {
         self.location = dungeonLocation.init(x: 10, y: 10)
 
         let texture = SKTexture(imageNamed: "RB_Hero")
-        super.init(texture: texture, color: SKColor.clearColor(), size: texture.size())
+        super.init(texture: texture, color: SKColor.clear(), size: texture.size())
 
         self.name = "hero"
         self.zPosition = 50

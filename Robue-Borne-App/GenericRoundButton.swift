@@ -30,7 +30,7 @@ class GenericRoundButtonWithName: SKNode {
         let buttonText = SKLabelNode(fontNamed:"Cochin")
         buttonText.text = text
         buttonText.fontSize = 28
-        buttonText.fontColor = SKColor.whiteColor()
+        buttonText.fontColor = SKColor.white()
         buttonText.zPosition = 101
         buttonText.name = name
         
@@ -39,8 +39,8 @@ class GenericRoundButtonWithName: SKNode {
         textBounds.size.width += 15
         
         
-        button.path = UIBezierPath(roundedRect: textBounds, cornerRadius: 8).CGPath
-        button.position = CGPoint(x: CGRectGetMidX(frame), y: CGRectGetMidY(frame))
+        button.path = UIBezierPath(roundedRect: textBounds, cornerRadius: 8).cgPath
+        button.position = CGPoint(x: frame.midX, y: frame.midY)
         button.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
         button.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
         button.lineWidth = 2
@@ -52,7 +52,7 @@ class GenericRoundButtonWithName: SKNode {
         self.addChild(buttonText)
 
         //Crazy shit to center the text within the button...
-        buttonText.position = CGPoint(x:(CGRectGetMidX(button.frame)), y:(CGRectGetMidY(button.frame) - (buttonText.fontSize/2) + 1))
+        buttonText.position = CGPoint(x:(button.frame.midX), y:(button.frame.midY - (buttonText.fontSize/2) + 1))
         
         self.addChild(button)
 

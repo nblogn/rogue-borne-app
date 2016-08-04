@@ -20,9 +20,9 @@ class CharacterDetailsPopup: SKNode {
     // DETAILS -- Draw/hide the details modal popup window
     //
     //-------------------------------------------------------------------------------------------//
-    func buildDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene, dungeonLevel: DungeonLevel) {
+    func buildDetailsModalForNode (_ nodeToDetail: SKNode, parent: SKScene, dungeonLevel: DungeonLevel) {
                 
-        detailsModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 700, height: 650), cornerRadius: 8).CGPath
+        detailsModal.path = UIBezierPath(roundedRect: CGRect(x: 0, y: 0, width: 700, height: 650), cornerRadius: 8).cgPath
         detailsModal.fillColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
         detailsModal.strokeColor = UIColor(red: 0.4, green: 0.2, blue: 0.1, alpha: 0.7)
         detailsModal.lineWidth = 10
@@ -38,7 +38,7 @@ class CharacterDetailsPopup: SKNode {
         detailsModal.addChild(exitButton)
         
 
-        if nodeToDetail.isKindOfClass(Hero) {
+        if nodeToDetail.isKind(of: Hero.self) {
             
             
             print("touchedNode is a Hero")
@@ -76,7 +76,7 @@ class CharacterDetailsPopup: SKNode {
 
         
         
-        } else if nodeToDetail.isKindOfClass(Monster) {
+        } else if nodeToDetail.isKind(of: Monster.self) {
             
         }
         
@@ -84,7 +84,7 @@ class CharacterDetailsPopup: SKNode {
     
     
     //Show the model, build if needed...
-    func showDetailsModalForNode (nodeToDetail: SKNode, parent: SKScene, dungeonLevel: DungeonLevel) {
+    func showDetailsModalForNode (_ nodeToDetail: SKNode, parent: SKScene, dungeonLevel: DungeonLevel) {
         
         //If there's no parent, add this to parent (note, it's already added in PlayScene)
         if (detailsModal.parent == nil) {
