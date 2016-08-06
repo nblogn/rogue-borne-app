@@ -30,7 +30,7 @@ class GenericRoundButtonWithName: SKNode {
         let buttonText = SKLabelNode(fontNamed:"Cochin")
         buttonText.text = text
         buttonText.fontSize = 28
-        buttonText.fontColor = SKColor.white()
+        buttonText.fontColor = SKColor.white
         buttonText.zPosition = 101
         buttonText.name = name
         

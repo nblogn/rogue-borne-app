@@ -24,7 +24,7 @@ class Item: SKSpriteNode {
         self.location = dungeonLocation.init(x: 15, y: 15)
         
         let texture = SKTexture(imageNamed: "RB_Item")
-        super.init(texture: texture, color: SKColor.clear(), size: texture.size())
+        super.init(texture: texture, color: SKColor.clear, size: texture.size())
         
         self.name = "item"
         self.zPosition = 50

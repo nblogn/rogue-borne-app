@@ -102,7 +102,7 @@ class TileClass: SKSpriteNode {
         self.discovered = false
         
         let texture = SKTexture(imageNamed: self.tileType.image)
-        super.init(texture: texture, color: SKColor.clear(), size: texture.size())
+        super.init(texture: texture, color: SKColor.clear, size: texture.size())
         
     }
     
@@ -130,7 +130,7 @@ class TileClass: SKSpriteNode {
         self.discovered = false
 
         let texture = SKTexture(imageNamed: self.tileType.image)
-        super.init(texture: texture, color: SKColor.clear(), size: texture.size())
+        super.init(texture: texture, color: SKColor.clear, size: texture.size())
 
     }
 }

@@ -16,7 +16,7 @@ class TestScene: SKScene {
         self.backgroundColor = SKColor(red:0.39, green:0.36, blue:0.15, alpha:1)
         
         // SPRITE
-        let sprite = SKSpriteNode(color: SKColor.red(), size: CGSize(width: 100, height: 100))
+        let sprite = SKSpriteNode(color: SKColor.red, size: CGSize(width: 100, height: 100))
         sprite.position = CGPoint(x: self.frame.width / 2.0, y: self.frame.height / 2.0)
         sprite.lightingBitMask = 1
         sprite.shadowCastBitMask = 1
@@ -51,7 +51,7 @@ class TestScene: SKScene {
         //NOTE: My floors are currently only normal maps, so ambient doesn't work
         //heroTorch.ambientColor = UIColor.whiteColor()
         //heroTorch.falloff = 1
-        heroTorch.lightColor = UIColor.red()
+        heroTorch.lightColor = UIColor.red
         heroTorch.isEnabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
         heroTorch.zPosition = 51

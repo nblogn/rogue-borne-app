@@ -108,7 +108,7 @@ class PlayScene: SKScene {
     func loadLevelInBackground (withCompletion: (loadingComplete: Bool) -> ()) {
         
         // load resources on other thread
-        DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosUserInitiated).async(execute: {
+        DispatchQueue.main.async {
             
             //DO MY BACKGROUND LOADING SHIT HERE
             self.loadLevel()
@@ -118,7 +118,7 @@ class PlayScene: SKScene {
                 // Call the completion handler back on the main queue.
                 withCompletion(loadingComplete: true)
             });
-        })
+        }
     
     }
     
@@ -171,8 +171,8 @@ class PlayScene: SKScene {
         
         //////////
         //Testing SgButton Class
-        let btn31 = SgButton(normalString: "SgButton Test", normalFontName: "Cochin", normalFontSize: 25, normalStringColor: UIColor.blue(), backgroundNormalColor: UIColor.yellow(), size: CGSize(width: 200, height: 40), cornerRadius: 10.0, buttonFunc: self.tappedButton)
-        btn31.setString(.highlighted, string: "Being tapped", stringColor: UIColor.red(), backgroundColor: UIColor.green())
+        let btn31 = SgButton(normalString: "SgButton Test", normalFontName: "Cochin", normalFontSize: 25, normalStringColor: UIColor.blue, backgroundNormalColor: UIColor.yellow, size: CGSize(width: 200, height: 40), cornerRadius: 10.0, buttonFunc: self.tappedButton)
+        btn31.setString(.highlighted, string: "Being tapped", stringColor: UIColor.red, backgroundColor: UIColor.green)
         btn31.position = CGPoint(x: -400, y: 200)
         btn31.tag = 31
         myCamera.addChild(btn31)
@@ -290,7 +290,7 @@ class PlayScene: SKScene {
     func handlePinchFrom (_ recognizer: UIPinchGestureRecognizer) {
     
         
-        if recognizer.numberOfTouches() == 2 {
+        if recognizer.numberOfTouches == 2 {
             
             
             let locationInView = recognizer.location(in: recognizer.view)

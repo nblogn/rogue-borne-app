@@ -74,7 +74,7 @@ class SgButton: SKSpriteNode {
             let rect = CGRect(x: 0, y: 0, width: sz.width, height: sz.height)
             let view = SKView(frame:rect)
             let scene = SKScene(size: sz)
-            view.backgroundColor = UIColor.clear()
+            view.backgroundColor = UIColor.clear
             
             /*
              * WARNING: Limited technique. When converting a texture into image, all transparent points will be lost
@@ -82,7 +82,7 @@ class SgButton: SKSpriteNode {
              * back into transparent later. Thus texture for background button (only in case using with string) should
              * not have black points to avoid that limit
              */
-            scene.backgroundColor = UIColor.black()    // -> color will be converted into transparent
+            scene.backgroundColor = UIColor.black    // -> color will be converted into transparent
             let sprite  = SKSpriteNode(texture: tex)
             sprite.position = CGPoint(x: view.frame.midX, y: view.frame.midY)
             
@@ -121,7 +121,7 @@ class SgButton: SKSpriteNode {
         func generateTexture() -> Bool {
             
             if string != nil {
-                let color = stringColor == nil ? UIColor.black() : stringColor!
+                let color = stringColor == nil ? UIColor.black : stringColor!
                 textAttributes = [
                     NSForegroundColorAttributeName: color,
                     NSFontAttributeName: getFont()
@@ -137,7 +137,7 @@ class SgButton: SKSpriteNode {
                     image = UIImage(named: imageFileName!)
                 } else {
                     let sz: CGSize = buttonSize != nil ? buttonSize! : stringSz!
-                    let color: UIColor = backgroundColor ?? UIColor.white()
+                    let color: UIColor = backgroundColor ?? UIColor.white
                     image = getImageWithColor(color, size: sz, cornerRadius: cornerRadius)
                 }
                 
@@ -187,7 +187,7 @@ class SgButton: SKSpriteNode {
             if image != nil {
                 image!.draw(at: CGPoint.zero)
             } else {
-                let color = backgroundColor ?? UIColor.white()
+                let color = backgroundColor ?? UIColor.white
                 color.setFill()
                 ctx?.fill(CGRect(x: 0, y: 0, width: sz.width, height: sz.height));
             }
@@ -246,7 +246,7 @@ class SgButton: SKSpriteNode {
         
         self.buttonFunc = buttonFunc
         
-        super.init(texture: record.generatedImageTexture, color: UIColor.clear(), size: record.generatedImageTexture!.size())
+        super.init(texture: record.generatedImageTexture, color: UIColor.clear, size: record.generatedImageTexture!.size())
         
         records[ .normal ] = record
         
@@ -274,7 +274,7 @@ class SgButton: SKSpriteNode {
         
         self.buttonFunc = buttonFunc
         
-        super.init(texture: record.generatedImageTexture, color: UIColor.clear(), size: record.generatedImageTexture!.size())
+        super.init(texture: record.generatedImageTexture, color: UIColor.clear, size: record.generatedImageTexture!.size())
         
         records[ .normal ] = record
         
@@ -308,7 +308,7 @@ class SgButton: SKSpriteNode {
         
         self.buttonFunc = buttonFunc
         
-        super.init(texture: record.generatedImageTexture, color: UIColor.clear(), size: record.generatedImageTexture!.size())
+        super.init(texture: record.generatedImageTexture, color: UIColor.clear, size: record.generatedImageTexture!.size())
         
         records[ .normal ] = record
         

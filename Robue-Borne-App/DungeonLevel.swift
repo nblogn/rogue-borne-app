@@ -21,7 +21,7 @@ class DungeonLevel: SKNode {
     let levelExit: Item
     
     //Add a background
-    let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "gold-heatsink"), color: SKColor.clear(), size: SKTexture(imageNamed: "gold-heatsink").size())
+    let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "gold-heatsink"), color: SKColor.clear, size: SKTexture(imageNamed: "gold-heatsink").size())
     
     //Add a light source for the hero...
     var heroTorch = SKLightNode()
@@ -90,7 +90,7 @@ class DungeonLevel: SKNode {
         //Set the hero's light:
         //Note that ambient/falloff have issues in spritekit:
         //http://stackoverflow.com/questions/29828324/spritekit-sklightnode-falloff-property-has-no-effect
-        heroTorch.lightColor = UIColor.red()
+        heroTorch.lightColor = UIColor.red
         heroTorch.isEnabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
         heroTorch.zPosition = 52
@@ -99,7 +99,7 @@ class DungeonLevel: SKNode {
         //NOTE: THESE ARE IMPORTANT; shadowColor drastically changes shit.
         //heroTorch.ambientColor = UIColor.redColor()
         heroTorch.falloff = 1
-        heroTorch.shadowColor = SKColor.black().withAlphaComponent(0.8)
+        heroTorch.shadowColor = SKColor.black.withAlphaComponent(0.8)
         
         myHero.addChild(heroTorch)
         
@@ -109,24 +109,9 @@ class DungeonLevel: SKNode {
         //initLighting()
         
         
-        //////////
-        //Set the monsters
-        aMonster.location.x = myDungeonMap.dungeonRooms[0].location.x1 + 1
-        aMonster.location.y = myDungeonMap.dungeonRooms[0].location.y1 + 1
-        aMonster.position = convertBoardCoordinatetoCGPoint(x: aMonster.location.x, y: aMonster.location.y)
-        //aMonster.anchorPoint = CGPoint(x:0, y:0)
-        aMonster.zPosition = 5
-        
-        //Added a shadow to the monster
-        aMonster.shadowCastBitMask = LightCategory.Hero
-        aMonster.lightingBitMask = LightCategory.Hero
-        self.addChild(aMonster)
-        
-        //Light the monster on fire
-        if let particles = SKEmitterNode(fileNamed: "FireParticle.sks") {
-            //particles.position = player.position
-            aMonster.addChild(particles)
-        }
+        /////////
+        //Create and position the monsters
+        self.initMosters()
         
         
         /////////
@@ -170,7 +155,7 @@ class DungeonLevel: SKNode {
                 //tempLight.lightColor = SKColor.greenColor()
                 //tempLight.ambientColor = UIColor.blackColor()
                 tempLight.falloff = 1
-                tempLight.shadowColor = UIColor.black()
+                tempLight.shadowColor = UIColor.black
                 tempLight.isEnabled = true
                 tempLight.categoryBitMask = LightCategory.Hero
                 tempLight.zPosition = 11
@@ -261,7 +246,56 @@ class DungeonLevel: SKNode {
     
     func initMosters () {
     
-    
+        // ADD ONE MONSTER IN EVERY ROOM
+        for roomIterator in 0...myDungeonMap.dungeonRooms.count-1 {
+            
+            //New Monster location
+            let _monsterX: Int
+            let _monsterY: Int
+            
+            
+            
+            //Find a random coordinate within the room
+            //myDungeonMap.dungeonRooms[roomIterator].location.x1 = _monsterX
+            
+            
+            
+            //Set a somewhat random HP value on the MONSTER
+            
+            
+            //Give monster some random look (here? Somewhere else?)
+            
+            
+            //Add the MONSTER
+            
+            
+            
+        }
+
+        
+        
+        
+        
+        //////////
+        //Set the SINGLE monsters
+        aMonster.location.x = myDungeonMap.dungeonRooms[0].location.x1 + 1
+        aMonster.location.y = myDungeonMap.dungeonRooms[0].location.y1 + 1
+        aMonster.position = convertBoardCoordinatetoCGPoint(x: aMonster.location.x, y: aMonster.location.y)
+        //aMonster.anchorPoint = CGPoint(x:0, y:0)
+        aMonster.zPosition = 5
+        
+        //Added a shadow to the monster
+        aMonster.shadowCastBitMask = LightCategory.Hero
+        aMonster.lightingBitMask = LightCategory.Hero
+        self.addChild(aMonster)
+        
+        //Light the monster on fire
+        if let particles = SKEmitterNode(fileNamed: "FireParticle.sks") {
+            //particles.position = player.position
+            aMonster.addChild(particles)
+        }
+
+        
     }
     
     

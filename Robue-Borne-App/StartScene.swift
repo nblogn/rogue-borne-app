@@ -18,14 +18,14 @@ class StartScene: SKScene {
         let myTitle = SKLabelNode(fontNamed:"Chalkduster")
         myTitle.text = "Mimeophobia"
         myTitle.fontSize = 45
-        myTitle.fontColor = SKColor.red()
+        myTitle.fontColor = SKColor.red
         myTitle.position = CGPoint(x:self.frame.midX, y:self.frame.midY+200)
         self.addChild(myTitle)
         
         let mySubTitle = SKLabelNode(fontNamed: "cochin")
         mySubTitle.text = "...Or How I Learned To Love My Doppleganger"
         mySubTitle.fontSize = 20
-        mySubTitle.fontColor = SKColor.red()
+        mySubTitle.fontColor = SKColor.red
         mySubTitle.position = CGPoint(x:self.frame.midX, y:self.frame.midY+150)
         self.addChild(mySubTitle)
 
