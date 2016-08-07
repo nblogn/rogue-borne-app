@@ -38,7 +38,7 @@ class DungeonMap: SKNode {
         var roomId: Int
         var location: DungeonRoomLocation
         var connectedRooms: [DungeonRoom]?
-        var type: String?
+        var roomType: String?
     }
 
     //The key components of our dungeon...
@@ -78,7 +78,7 @@ class DungeonMap: SKNode {
         self.cellSizeHeight = 40
         self.numberOfRooms = 20
         
-        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, type: nil)]
+        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, roomType: nil)]
         
         /*self.heros = [Hero()]
         self.monsters = [Monster()]
@@ -101,7 +101,7 @@ class DungeonMap: SKNode {
         self.cellSizeWidth = cellSizeWidth
         self.numberOfRooms = numberOfRooms
         
-        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, type: nil)]
+        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, roomType: nil)]
 
         /*self.heros = [Hero()]
         self.monsters = [Monster()]
@@ -280,7 +280,7 @@ class DungeonMap: SKNode {
         
         //Let's make a room, for now it's taking up the whole dungeon
         //TODO: Make extensible so this can be a single room within a larger dungeon
-        dungeonRooms.append(DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: dungeonSizeWidth, y2: dungeonSizeHeight), connectedRooms: nil, type: nil))
+        dungeonRooms.append(DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: dungeonSizeWidth, y2: dungeonSizeHeight), connectedRooms: nil, roomType: nil))
         
         for row in 0 ..< dungeonMap.count {
             for column in 0 ..< dungeonMap[row].count {
@@ -404,7 +404,7 @@ class DungeonMap: SKNode {
                 
                 //create the new room...
                 if createdRooms > 0 {
-                    dungeonRooms.append(DungeonRoom.init(roomId: createdRooms, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, type: nil))
+                    dungeonRooms.append(DungeonRoom.init(roomId: createdRooms, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, roomType: nil))
                 }
                 
                 dungeonRooms[createdRooms].location.x1 = minX + randomWidthOffset
@@ -812,17 +812,87 @@ class DungeonMap: SKNode {
             let imageNumber = String(1+arc4random_uniform(UInt32(6)))
             let imageName = "cb" + imageNumber + "_n"
             
-            dungeonRooms[roomIterator].type = imageName
+            dungeonRooms[roomIterator].roomType = imageName
             
             room.texture = SKTexture(imageNamed: imageName)
             room.normalTexture = SKTexture(imageNamed: imageName)
             
             //Add the room to the dungeon:
             addChild(room)
+
+            
+            
+            
+            /////////////////////
+            //Create room walls//
+            /////////////////////
+            
+            
+            //Get coordinates for the top and bottom walls.
+            let wallCoordinate1 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1-1, y: dungeonRooms[roomIterator].location.y2)
+            
+            let wallCoordinate2 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x2+1, y: dungeonRooms[roomIterator].location.y2+1)
+ 
+            let topBottomWallWidth = wallCoordinate2.x - wallCoordinate1.x
+            
+            //Create the top wall:
+            let topRoomWall = SKSpriteNode(color: SKColor.green, size: CGSize(width: topBottomWallWidth, height: CGFloat(Float(tileSize.height))))
+            topRoomWall.position = wallCoordinate1
+            topRoomWall.anchorPoint = CGPoint(x:0, y:0)
+            topRoomWall.zPosition = 10
+            topRoomWall.lightingBitMask = LightCategory.Hero
+            topRoomWall.shadowCastBitMask = LightCategory.Hero
+            topRoomWall.name = "topRoomWall_" + String(roomIterator)
+            
+            //The bottom room wall is exactly like the top, but positioned on the bottom:
+            let bottomRoomWall = SKSpriteNode(color: SKColor.green, size: CGSize(width: topBottomWallWidth, height: CGFloat(Float(tileSize.height))))
+            bottomRoomWall.position = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1-1, y: dungeonRooms[roomIterator].location.y1-1)
+            bottomRoomWall.name = "bottomRoomWall_" + String(roomIterator)
+            bottomRoomWall.anchorPoint = CGPoint(x:0, y:0)
+            bottomRoomWall.zPosition = 10
+            bottomRoomWall.lightingBitMask = LightCategory.Hero
+            bottomRoomWall.shadowCastBitMask = LightCategory.Hero
+
+            
+            
+            //Create Left and Right wall coordinates:
+            let sideWallCoordinate1 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1-1, y: dungeonRooms[roomIterator].location.y1-1)
+            
+            let sideWallCoordinate2 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1, y: dungeonRooms[roomIterator].location.y2+1)
+            
+            let sideWallHeight = sideWallCoordinate2.y - sideWallCoordinate1.y
+            
+            //Create the left room wall
+            let leftRoomWall = SKSpriteNode(color: SKColor.green, size: CGSize(width: CGFloat(Float(tileSize.width)), height: sideWallHeight))
+            leftRoomWall.position = sideWallCoordinate1
+            leftRoomWall.name = "leftSideRoomWall_" + String(roomIterator)
+            leftRoomWall.anchorPoint = CGPoint(x:0, y:0)
+            leftRoomWall.zPosition = 10
+            leftRoomWall.lightingBitMask = LightCategory.Hero
+            leftRoomWall.shadowCastBitMask = LightCategory.Hero
+
+            
+            //Create the right room wall
+            let rightRoomWall = SKSpriteNode(color: SKColor.green, size: CGSize(width: CGFloat(Float(tileSize.width)), height: sideWallHeight))
+            rightRoomWall.position = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x2, y: dungeonRooms[roomIterator].location.y1-1)
+            rightRoomWall.name = "rightSideRoomWall_" + String(roomIterator)
+            rightRoomWall.anchorPoint = CGPoint(x:0, y:0)
+            rightRoomWall.zPosition = 10
+            rightRoomWall.lightingBitMask = LightCategory.Hero
+            rightRoomWall.shadowCastBitMask = LightCategory.Hero
+
+            
+            
+            //Add all the wall nodes:
+            addChild(topRoomWall)
+            addChild(bottomRoomWall)
+            addChild(leftRoomWall)
+            addChild(rightRoomWall)
             
         }
         
         
+        //::::::::TODO::::::::::
         ////
         //Draw hallways using paths:
         /*
@@ -832,7 +902,14 @@ class DungeonMap: SKNode {
         yourline.path = pathToDraw;
         [yourline setStrokeColor:[SKColor redColor]];
         [self addChild:yourline];
+        
+         
+         Good example:
+         SKTexture* tex = [SKTexture textureWithRect:CGRectMake(0,0,5,5) inTexture:[SKTexture textureWithImageNamed:@"tile.png"]];
+ 
+         //::::::::END TODO::::::::::
         */
+        
         
         
         //////////

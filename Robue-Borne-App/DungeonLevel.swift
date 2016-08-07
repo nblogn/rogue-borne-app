@@ -251,7 +251,7 @@ class DungeonLevel: SKNode {
             
             //New Monster location
             let _monsterX: Int
-            let _monsterY: Int
+            let _: Int
             
             
             

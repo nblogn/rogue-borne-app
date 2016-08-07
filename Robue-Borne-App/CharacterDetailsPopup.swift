@@ -56,7 +56,7 @@ class CharacterDetailsPopup: SKNode {
             
             
             
-            let roomInfoText = dungeonLevel.getRoomDetailsForLocation(location)?.type
+            let roomInfoText = dungeonLevel.getRoomDetailsForLocation(location)?.roomType
             
             let dungeonRoomText: GenericText
             

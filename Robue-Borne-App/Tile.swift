@@ -28,8 +28,8 @@ struct asciiDungeonObjectArt {
 }
 */
 
-
-let tileSize = (width:32, height:32)
+//Need to fix this.
+let tileSize = (width:1024, height:1024)
 let miniTileSize = (width:3, height: 3)
 
 enum Tile: Int {
@@ -44,38 +44,38 @@ enum Tile: Int {
     
     var description:String {
         switch self {
-        case ground:
+        case .ground:
             return "Ground"
-        case wall:
+        case .wall:
             return "Wall"
-        case nothing:
+        case .nothing:
             return "Nothing"
-        case grass:
+        case .grass:
             return "RB_Grass_2x"
-        case corridorVertical:
+        case .corridorVertical:
             return "CorridorVertical"
-        case corridorHorizontal:
+        case .corridorHorizontal:
             return "CorridorHorizontal"
-        case door:
+        case .door:
             return "Door"
         }
     }
     
     var image:String {
         switch self {
-        case ground:
+        case .ground:
             return "RB_Floor_Green_2x"
-        case wall:
+        case .wall:
             return "RB_Wall_2x"
-        case nothing:
+        case .nothing:
             return "RB_Floor_Grey_2x"
-        case grass:
+        case .grass:
             return "RB_Grass_2x"
-        case corridorVertical:
+        case .corridorVertical:
             return "CorridorVertical"
-        case corridorHorizontal:
+        case .corridorHorizontal:
             return "CorridorHorizontal"
-        case door:
+        case .door:
             return "Door"
         }
     }

@@ -19,6 +19,11 @@ In Progress:\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}It has several issues at the moment.\
 {\listtext	\uc0\u8259 	}Need to figure out how to make things dark when torch is turned off.\
+\pard\tx220\tx720\tx1120\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls1\ilvl0\cf0 {\listtext	\'95	}Make the borders of rooms single sknode walls instead of tiles (helps with shadows, performance, and ultimately graphics). -- Josh\
+{\listtext	\'95	}Need updated artwork with larger base tile size (I used to use 32x32, but this looks shitty zoomed in and perf seems fine with larger tiles, so going to go to something BIG, using 1024x1024 right now, so zooming is very detailed. This may be too big from a perf perspective).\
+\pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
+\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}Get normalMap working on Hero\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \
@@ -26,14 +31,15 @@ Bugs:\
 \pard\tx560\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls2\ilvl0\cf0 {\listtext	\'95	}Panning doesn't work now, due to auto-recenter on each frame; app should allow a pan, and then recenter only when the hero is next moved.\
+\ls2\ilvl0\cf0 {\listtext	\'95	}Need to fix the loading screen (XCode 8 beta changed some threading shit).\
+{\listtext	\'95	}Panning doesn't work now, due to auto-recenter on each frame; app should allow a pan, and then recenter only when the hero is next moved.\
 {\listtext	\'95	}Fix other map types:\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls2\ilvl1\cf0 {\listtext	\uc0\u8259 	}The only map type that really works is Best Fit, left to Right. \
 {\listtext	\uc0\u8259 	}Cellular automata:\
 \pard\tx1660\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li2160\fi-2160\pardirnatural\partightenfactor0
 \ls2\ilvl2\cf0 {\listtext	\uc0\u8259 	} crashes when the monster or hero moves off the grid. \
-{\listtext	\uc0\u8259 	}Does not implement the mini-map\
+{\listtext	\uc0\u8259 	}Does not implement the mini-map.\
 {\listtext	\uc0\u8259 	}Probably other things don't work right.\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls2\ilvl1\cf0 {\listtext	\uc0\u8259 	}Cell-based is totally wonked (that might be OK, always envisioned this as the tool to implement types within a broader level).\
@@ -49,6 +55,7 @@ Ready to go smaller items:\
 {\listtext	\'95	}Place monsters in random spots around the level\
 {\listtext	\'95	}Fix/update other map types (cell, cellular automata), needs to also work with new lighting, random monsters, exits, etc.\
 {\listtext	\'95	}Collision detection (monster/hero) opens battle scene modal\
+{\listtext	\'95	}Make the hallways single "paths" instead of a lot of individual tiles/nodes\
 \pard\tx560\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \
