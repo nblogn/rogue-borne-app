@@ -789,9 +789,13 @@ class DungeonMap: SKNode {
     //Draws the dungeon using the array of dungeon tiles within the myDungeon object
     private func drawDungeonSpriteNodes(){
         
-        ////
-        //Draw the rooms first...
+        //Iterate through each room to draw the room and the walls
         for roomIterator in 0...dungeonRooms.count-1 {
+            
+            
+            ////////////////////////
+            //Draw the rooms first//
+            ////////////////////////
             
             let coordinate1 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1, y: dungeonRooms[roomIterator].location.y1)
             let coordinate2 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x2, y: dungeonRooms[roomIterator].location.y2)
@@ -812,6 +816,7 @@ class DungeonMap: SKNode {
             let imageNumber = String(1+arc4random_uniform(UInt32(6)))
             let imageName = "cb" + imageNumber + "_n"
             
+            //Give the room a "Type" for debugging, showing this in the char details model right now
             dungeonRooms[roomIterator].roomType = imageName
             
             room.texture = SKTexture(imageNamed: imageName)
@@ -823,11 +828,14 @@ class DungeonMap: SKNode {
             
             
             
-            /////////////////////
-            //Create room walls//
-            /////////////////////
+            ///////////////////////
+            //Draw the room walls//
+            ///////////////////////
+            
+            let halfTile = CGFloat(tileSize.width/2)
             
             
+            /////////////////////
             //Get coordinates for the top and bottom walls.
             let wallCoordinate1 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1-1, y: dungeonRooms[roomIterator].location.y2)
             
@@ -835,26 +843,35 @@ class DungeonMap: SKNode {
  
             let topBottomWallWidth = wallCoordinate2.x - wallCoordinate1.x
             
+            
+            //////////////////////
             //Create the top wall:
             let topRoomWall = SKSpriteNode(color: SKColor.green, size: CGSize(width: topBottomWallWidth, height: CGFloat(Float(tileSize.height))))
-            topRoomWall.position = wallCoordinate1
+            //Note: due to math, I need to bring in the walls by half a tile size.
+            topRoomWall.position = CGPoint(x: wallCoordinate1.x, y: (wallCoordinate1.y-halfTile))
             topRoomWall.anchorPoint = CGPoint(x:0, y:0)
-            topRoomWall.zPosition = 10
+            topRoomWall.zPosition = 2
             topRoomWall.lightingBitMask = LightCategory.Hero
             topRoomWall.shadowCastBitMask = LightCategory.Hero
             topRoomWall.name = "topRoomWall_" + String(roomIterator)
             
+            
+            /////////////////////
             //The bottom room wall is exactly like the top, but positioned on the bottom:
             let bottomRoomWall = SKSpriteNode(color: SKColor.green, size: CGSize(width: topBottomWallWidth, height: CGFloat(Float(tileSize.height))))
-            bottomRoomWall.position = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1-1, y: dungeonRooms[roomIterator].location.y1-1)
+            
+            //Again, due to math, need to bump the position up by half a tile...
+            let bottomTempPosition = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1-1, y: dungeonRooms[roomIterator].location.y1-1)
+            bottomRoomWall.position = CGPoint(x: bottomTempPosition.x, y:bottomTempPosition.y+halfTile)
+            
             bottomRoomWall.name = "bottomRoomWall_" + String(roomIterator)
             bottomRoomWall.anchorPoint = CGPoint(x:0, y:0)
-            bottomRoomWall.zPosition = 10
+            bottomRoomWall.zPosition = 2
             bottomRoomWall.lightingBitMask = LightCategory.Hero
             bottomRoomWall.shadowCastBitMask = LightCategory.Hero
 
             
-            
+            /////////////////////
             //Create Left and Right wall coordinates:
             let sideWallCoordinate1 = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x1-1, y: dungeonRooms[roomIterator].location.y1-1)
             
@@ -862,22 +879,25 @@ class DungeonMap: SKNode {
             
             let sideWallHeight = sideWallCoordinate2.y - sideWallCoordinate1.y
             
+            /////////////////////
             //Create the left room wall
             let leftRoomWall = SKSpriteNode(color: SKColor.green, size: CGSize(width: CGFloat(Float(tileSize.width)), height: sideWallHeight))
-            leftRoomWall.position = sideWallCoordinate1
+            leftRoomWall.position = CGPoint(x: sideWallCoordinate1.x+halfTile, y: sideWallCoordinate1.y)
             leftRoomWall.name = "leftSideRoomWall_" + String(roomIterator)
             leftRoomWall.anchorPoint = CGPoint(x:0, y:0)
-            leftRoomWall.zPosition = 10
+            leftRoomWall.zPosition = 2
             leftRoomWall.lightingBitMask = LightCategory.Hero
             leftRoomWall.shadowCastBitMask = LightCategory.Hero
 
-            
+            /////////////////////
             //Create the right room wall
             let rightRoomWall = SKSpriteNode(color: SKColor.green, size: CGSize(width: CGFloat(Float(tileSize.width)), height: sideWallHeight))
-            rightRoomWall.position = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x2, y: dungeonRooms[roomIterator].location.y1-1)
+            
+            let rightWallTempPosition = convertBoardCoordinatetoCGPoint(x: dungeonRooms[roomIterator].location.x2, y: dungeonRooms[roomIterator].location.y1-1)
+            rightRoomWall.position = CGPoint(x: rightWallTempPosition.x-halfTile, y: rightWallTempPosition.y)
             rightRoomWall.name = "rightSideRoomWall_" + String(roomIterator)
             rightRoomWall.anchorPoint = CGPoint(x:0, y:0)
-            rightRoomWall.zPosition = 10
+            rightRoomWall.zPosition = 2
             rightRoomWall.lightingBitMask = LightCategory.Hero
             rightRoomWall.shadowCastBitMask = LightCategory.Hero
 
@@ -892,31 +912,11 @@ class DungeonMap: SKNode {
         }
         
         
-        //::::::::TODO::::::::::
-        ////
-        //Draw hallways using paths:
-        /*
-        CGMutablePathRef pathToDraw = CGPathCreateMutable();
-        CGPathMoveToPoint(pathToDraw, NULL, 100.0, 100.0);
-        CGPathAddLineToPoint(pathToDraw, NULL, 50.0, 50.0);
-        yourline.path = pathToDraw;
-        [yourline setStrokeColor:[SKColor redColor]];
-        [self addChild:yourline];
-        
-         
-         Good example:
-         SKTexture* tex = [SKTexture textureWithRect:CGRectMake(0,0,5,5) inTexture:[SKTexture textureWithImageNamed:@"tile.png"]];
- 
-         //::::::::END TODO::::::::::
-        */
-        
-        
-        
-        //////////
-        //Draw hallways -- Loop through all tiles, draw other shit (hallways, doors, etc.)
-        
-        // TODO: Currently drawing walls as tiles, should move this to be drawn with the rooms for lighting
-        // Note this spritekit bug: http://stackoverflow.com/questions/28662600/sklightnode-cast-shadow-issue
+
+        ////////////////////
+        //Draw hallways -- 
+        //Loop through all tiles, draw other shit (hallways, doors, etc.)
+        ////////////////////
         
         for row in 0..<dungeonMap.count {
             
@@ -925,17 +925,12 @@ class DungeonMap: SKNode {
                 //Stack each tileSprite in a grid, left to right, then top to bottom. Note: in the SpriteKit coordinate system, Y values increase as you move up the screen and decrease as you move down.
                 let point = CGPoint(x: (column*tileSize.width), y: (row*tileSize.height))
                 dungeonMap[row][column].position = point
-                //dungeonMap[row][column].lightingBitMask = LightCategory.Hero
-                dungeonMap[row][column].zPosition = 2
+                dungeonMap[row][column].lightingBitMask = LightCategory.Hero
+                dungeonMap[row][column].zPosition = 3
                 
-                //Make walls and "nothing" cast shadows
-                if (dungeonMap[row][column].tileType == Tile.wall) || (dungeonMap[row][column].tileType == Tile.nothing) {
-                    dungeonMap[row][column].shadowCastBitMask = LightCategory.Hero
-                    dungeonMap[row][column].lightingBitMask = LightCategory.Hero
-                }
                 
-                //Let's not add the "nothing" tiles, they hit the CPU way too much...
-                if (dungeonMap[row][column].tileType != Tile.nothing) && (dungeonMap[row][column].tileType != Tile.ground) {
+                //Let's not add the "nothing" tiles or "wall" tiles, they hit the CPU way too much...
+                if (dungeonMap[row][column].tileType != Tile.nothing) && (dungeonMap[row][column].tileType != Tile.ground) && (dungeonMap[row][column].tileType != Tile.wall) {
                     
                     dungeonMap[row][column].removeFromParent()
                     self.addChild(dungeonMap[row][column])
@@ -945,6 +940,32 @@ class DungeonMap: SKNode {
             }
             
         }
+        
+        
+        //::::::::TODO::::::::::
+        ////
+        //Draw hallways using paths:
+        /*
+         CGMutablePathRef pathToDraw = CGPathCreateMutable();
+         CGPathMoveToPoint(pathToDraw, NULL, 100.0, 100.0);
+         CGPathAddLineToPoint(pathToDraw, NULL, 50.0, 50.0);
+         yourline.path = pathToDraw;
+         [yourline setStrokeColor:[SKColor redColor]];
+         [self addChild:yourline];
+         
+         
+         Good example:
+         SKTexture* tex = [SKTexture textureWithRect:CGRectMake(0,0,5,5) inTexture:[SKTexture textureWithImageNamed:@"tile.png"]];
+         
+         // Note this spritekit bug: http://stackoverflow.com/questions/28662600/sklightnode-cast-shadow-issue
+         
+         //::::::::END TODO::::::::::
+         */
+        
+        
+        
+        
+        
         
     }
     

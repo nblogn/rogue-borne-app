@@ -23,6 +23,9 @@ class DungeonLevel: SKNode {
     //Add a background
     let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "gold-heatsink"), color: SKColor.clear, size: SKTexture(imageNamed: "gold-heatsink").size())
     
+    //let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "#imageLiteral(resourceName: "gold-heatsink")"), normalMap: SKTexture(imageNamed: "#imageLiteral(resourceName: "gold-heatsink-n")"))
+    
+    
     //Add a light source for the hero...
     var heroTorch = SKLightNode()
     
@@ -66,12 +69,16 @@ class DungeonLevel: SKNode {
         default:myDungeonMap.createDungeonUsingCellMethod()
         }
         
+        
         //////////
         //Set the background
         dungeonBackground.position = CGPoint(x: ((myDungeonMap.dungeonSizeHeight*tileSize.width*2)/4), y: ((myDungeonMap.dungeonSizeHeight*tileSize.height*2)/4))
         dungeonBackground.zPosition = -1
         //Make the background twice as big as the dungeon map...
         dungeonBackground.size = CGSize(width: myDungeonMap.dungeonSizeHeight*tileSize.width*2, height: myDungeonMap.dungeonSizeHeight*tileSize.height*2)
+        let dbn = SKTexture(imageNamed: "gold-heatsink-n")
+        dungeonBackground.normalTexture = dbn
+        dungeonBackground.lightingBitMask = LightCategory.Hero
         self.addChild(dungeonBackground)
         
         
@@ -81,7 +88,6 @@ class DungeonLevel: SKNode {
         myHero.location.x = myDungeonMap.dungeonRooms[myDungeonMap.dungeonRooms.count - 1].location.x1+1
         myHero.location.y = myDungeonMap.dungeonRooms[myDungeonMap.dungeonRooms.count - 1].location.y1+1
         myHero.position = convertBoardCoordinatetoCGPoint(x: myHero.location.x, y: myHero.location.y)
-        //myHero.anchorPoint = CGPoint(x:0, y:0)
         myHero.zPosition = 5
         self.addChild(myHero)
         
@@ -90,7 +96,7 @@ class DungeonLevel: SKNode {
         //Set the hero's light:
         //Note that ambient/falloff have issues in spritekit:
         //http://stackoverflow.com/questions/29828324/spritekit-sklightnode-falloff-property-has-no-effect
-        heroTorch.lightColor = UIColor.red
+        heroTorch.lightColor = SKColor(red: 1.0, green: 0.3, blue: 0.5, alpha: 0.5)
         heroTorch.isEnabled = true
         heroTorch.categoryBitMask = LightCategory.Hero
         heroTorch.zPosition = 52
@@ -99,7 +105,7 @@ class DungeonLevel: SKNode {
         //NOTE: THESE ARE IMPORTANT; shadowColor drastically changes shit.
         //heroTorch.ambientColor = UIColor.redColor()
         heroTorch.falloff = 1
-        heroTorch.shadowColor = SKColor.black.withAlphaComponent(0.8)
+        heroTorch.shadowColor = SKColor.black.withAlphaComponent(1.0)
         
         myHero.addChild(heroTorch)
         

@@ -5,6 +5,10 @@
 //  Copyright (c) 2015 TonyPham. All rights reserved.
 //
 
+//NOT USING THIS, it's a reference
+
+/*
+
 import SpriteKit
 
 class SgButton: SKSpriteNode {
@@ -456,3 +460,5 @@ class SgButton: SKSpriteNode {
     }
     
 }
+ 
+*/

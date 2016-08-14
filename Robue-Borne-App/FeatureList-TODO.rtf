@@ -19,15 +19,15 @@ In Progress:\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
 \ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}It has several issues at the moment.\
 {\listtext	\uc0\u8259 	}Need to figure out how to make things dark when torch is turned off.\
+{\listtext	\uc0\u8259 	}Do I need an ambient light?\
 \pard\tx220\tx720\tx1120\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls1\ilvl0\cf0 {\listtext	\'95	}Make the borders of rooms single sknode walls instead of tiles (helps with shadows, performance, and ultimately graphics). -- Josh\
-{\listtext	\'95	}Need updated artwork with larger base tile size (I used to use 32x32, but this looks shitty zoomed in and perf seems fine with larger tiles, so going to go to something BIG, using 1024x1024 right now, so zooming is very detailed. This may be too big from a perf perspective).\
+\ls1\ilvl0\cf0 {\listtext	\'95	}Need updated artwork with larger base tile size (I used to use 32x32, but this looks shitty zoomed in and perf seems fine with larger tiles, so going to go to something BIG, using 1024x1024 right now, so zooming is very detailed. This may be too big from a perf perspective).\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
-\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}Get normalMap working on Hero\
+\ls1\ilvl1\cf0 {\listtext	\uc0\u8259 	}Get normalMap working on Hero, probably don't need this, but\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \
-Bugs:\
+Bugs/Refactors:\
 \pard\tx560\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
@@ -42,18 +42,20 @@ Bugs:\
 {\listtext	\uc0\u8259 	}Does not implement the mini-map.\
 {\listtext	\uc0\u8259 	}Probably other things don't work right.\
 \pard\tx940\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li1440\fi-1440\pardirnatural\partightenfactor0
-\ls2\ilvl1\cf0 {\listtext	\uc0\u8259 	}Cell-based is totally wonked (that might be OK, always envisioned this as the tool to implement types within a broader level).\
+\ls2\ilvl1\cf0 {\listtext	\uc0\u8259 	}Cell-based is totally wonked (that might be OK, I always envisioned this as the tool to implement types within a broader level).\
+\pard\tx220\tx720\tx1120\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
+\ls2\ilvl0\cf0 {\listtext	\'95	}Separate the map and miniMap views from their data.\
+{\listtext	\'95	}Update miniMap to easily show items, and update as hero moves.\
+{\listtext	\'95	}Buttons on StartScene don't show an un-press.\
 \pard\tx560\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
-Ready to go smaller items:\
+Ready to go medium-sized items:\
 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls3\ilvl0\cf0 {\listtext	\'95	}Update buttons to be new buttons with button presses -- Josh\
-{\listtext	\'95	}Pathfinding: need to know where to place the exit (really far away from the hero's starting point) -- Jason\
+\ls3\ilvl0\cf0 {\listtext	\'95	}Pathfinding: need to know where to place the exit (really far away from the hero's starting point) -- Jason\
 {\listtext	\'95	}Place monsters in random spots around the level\
-{\listtext	\'95	}Fix/update other map types (cell, cellular automata), needs to also work with new lighting, random monsters, exits, etc.\
 {\listtext	\'95	}Collision detection (monster/hero) opens battle scene modal\
 {\listtext	\'95	}Make the hallways single "paths" instead of a lot of individual tiles/nodes\
 \pard\tx560\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
@@ -62,9 +64,8 @@ Ready to go smaller items:\
 Next big features:\
 \
 \pard\tx220\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
-\ls4\ilvl0\cf0 {\listtext	\'95	}Create random types of \
-{\listtext	\'95	}Character and Monster attributes\
-{\listtext	\'95	}Create items\
+\ls4\ilvl0\cf0 {\listtext	\'95	}Character and Monster attributes\
+{\listtext	\'95	}Create radnom items\
 {\listtext	\'95	}Battle system\
 \pard\tx560\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 \cf0 \
@@ -88,4 +89,6 @@ Complete:\
 \ls6\ilvl1\cf0 {\listtext	\uc0\u8259 	}Figured this out, anything over a certain size doesn't load in SpriteKit (somewhere are 4kx4k)\
 \pard\tx220\tx720\tx1120\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\li720\fi-720\pardirnatural\partightenfactor0
 \ls6\ilvl0\cf0 {\listtext	\'95	}Added parallax background\
+{\listtext	\'95	}Update buttons to be new buttons with button presses -- Josh\
+{\listtext	\'95	}Make the borders of rooms single sknode walls instead of tiles (helps with shadows, performance, and ultimately graphics). -- Josh\
 }

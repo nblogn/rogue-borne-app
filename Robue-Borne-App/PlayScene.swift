@@ -153,43 +153,31 @@ class PlayScene: SKScene {
         //myDPad.xScale = 0.7
         //myDPad.yScale = 0.85
         myCamera.addChild(myDPad)
-        
-        
+
         
         //////////
         //Set the background...
         self.backgroundColor = SKColor(red: 0.3, green: 0.03, blue: 0.01, alpha: 0.5)
         self.zPosition = -2
         
+        
         //////////
         //Button to return to main menu
-        let mainMenuButton = GenericRoundButtonWithName("mainMenuButton", text: "Main Menu")
-        mainMenuButton.position = CGPoint(x: -400, y:300)
+        let mainMenuButton = GenericRoundSpriteButtonWithName("mainMenuButton", text: "Main Menu")
+        mainMenuButton.position = CGPoint(x: -400, y:350)
         myCamera.addChild(mainMenuButton)
-        
-        
-        
-        //////////
-        //Testing SgButton Class
-        let btn31 = SgButton(normalString: "SgButton Test", normalFontName: "Cochin", normalFontSize: 25, normalStringColor: UIColor.blue, backgroundNormalColor: UIColor.yellow, size: CGSize(width: 200, height: 40), cornerRadius: 10.0, buttonFunc: self.tappedButton)
-        btn31.setString(.highlighted, string: "Being tapped", stringColor: UIColor.red, backgroundColor: UIColor.green)
-        btn31.position = CGPoint(x: -400, y: 200)
-        btn31.tag = 31
-        myCamera.addChild(btn31)
-        
-        
-        /////////
-        //Testing new GenericRoundSpriteButton
-        let spriteButton = GenericRoundSpriteButtonWithName("torch", text: "Torch")
-        spriteButton.position = CGPoint(x: -400, y: 100)
-        myCamera.addChild(spriteButton)
-        
-        
+
         //////////
         //Button to show mini map
-        let miniMapButton = GenericRoundButtonWithName("miniMapButton", text: "Map")
-        miniMapButton.position = CGPoint(x: -400, y:250)
+        let miniMapButton = GenericRoundSpriteButtonWithName("miniMapButton", text: "Map")
+        miniMapButton.position = CGPoint(x: -400, y:275)
         myCamera.addChild(miniMapButton)
+
+        /////////
+        //Torch GenericRoundSpriteButton
+        let spriteButton = GenericRoundSpriteButtonWithName("torch", text: "Torch")
+        spriteButton.position = CGPoint(x: -400, y: 200)
+        myCamera.addChild(spriteButton)
         
         
         /////////
@@ -351,17 +339,14 @@ class PlayScene: SKScene {
                     myDungeonLevel.moveHero(x: 1, y: 0)
                     myDungeonLevel.moveMonster()
 
-                
                 case "RB_Cntrl_Left":
                     myDungeonLevel.moveHero(x: -1, y: 0)
                     myDungeonLevel.moveMonster()
-
                 
                 case "RB_Cntrl_Middle":
                     //rest and move monsters
                     //Temp...
                     scaleDungeonLevelToFitIntoPlayScene()
-                
                 
                 case "mainMenuButton":
                     //Go back to the StartScene if Main Menu is pressed
@@ -369,19 +354,13 @@ class PlayScene: SKScene {
                     let startScene = StartScene(size: self.size)
                     self.view?.presentScene(startScene, transition: reveal)
                 
-                
                 case "miniMapButton":
                     //Popup OR CLOSE the minimap
-                    myMiniMap.showMiniMapModal(myDungeonLevel.myDungeonMap, parent: self)
-                
-                    //test
-                    //myLoadingView.showLoadingModal(self)
-                
+                    myMiniMap.showMiniMapModal(myDungeonMiniMap: myDungeonLevel, parent: self)
                 
                 case "hero", "monster", "item":
                     //popup a screen to show the details for the character, monster, or item attributes
                     myDetails.showDetailsModalForNode(touchedNode, parent: self, dungeonLevel: myDungeonLevel)
-                
                 
                 case "dungeon", "tile", "wall", "ground":
                     //Remove modals
@@ -408,14 +387,6 @@ class PlayScene: SKScene {
     
     
     
-    func tappedButton(_ button: SgButton) {
-        print("tappedButton tappedButton tag=\(button.tag)")
-
-        myMiniMap.showMiniMapModal(myDungeonLevel.myDungeonMap, parent: self)
-
-        
-    }
-
     
     
     //-------------------------------------------------------------------------------------------//

@@ -28,9 +28,15 @@ struct asciiDungeonObjectArt {
 }
 */
 
-//Need to fix this.
-let tileSize = (width:1024, height:1024)
+
+
+//Set the tile size
+//NOTE: Lots of the logic in the code changes based on this value!
+let tileSize = (width:500, height:500)
+let cgTileSize = CGSize(width: 500, height: 500)
 let miniTileSize = (width:3, height: 3)
+
+
 
 enum Tile: Int {
     
@@ -53,9 +59,9 @@ enum Tile: Int {
         case .grass:
             return "RB_Grass_2x"
         case .corridorVertical:
-            return "CorridorVertical"
+            return "corridorVertical"
         case .corridorHorizontal:
-            return "CorridorHorizontal"
+            return "corridorHorizontal"
         case .door:
             return "Door"
         }
@@ -72,9 +78,9 @@ enum Tile: Int {
         case .grass:
             return "RB_Grass_2x"
         case .corridorVertical:
-            return "CorridorVertical"
+            return "bricksNormal"
         case .corridorHorizontal:
-            return "CorridorHorizontal"
+            return "bricksNormal"
         case .door:
             return "Door"
         }
@@ -95,6 +101,7 @@ class TileClass: SKSpriteNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //Init a default "nothing" tile
     init () {
         
         self.tileType = Tile.nothing
@@ -106,6 +113,7 @@ class TileClass: SKSpriteNode {
         
     }
     
+    //Init a given tile type
     init (tileToCreate:Tile) {
         
         self.tileType = tileToCreate
@@ -131,6 +139,13 @@ class TileClass: SKSpriteNode {
 
         let texture = SKTexture(imageNamed: self.tileType.image)
         super.init(texture: texture, color: SKColor.clear, size: texture.size())
+        
+        self.size = cgTileSize
+        
+        //Add normalMap for the corridors (bricks)
+        if (self.tileType == .corridorVertical) || (self.tileType == .corridorHorizontal) {
+            self.normalTexture = texture
+        }
 
     }
 }

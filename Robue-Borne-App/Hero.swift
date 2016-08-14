@@ -36,12 +36,13 @@ class Hero: SKSpriteNode, basicCharacterAbilities {
         let heroTexture = SKTexture(imageNamed: "Jaia_bw_head")
         let heroTexture_n = SKTexture(imageNamed: "Jaia_bw_n.png")
 
-        super.init(texture: heroTexture, color: SKColor.clear, size: heroTexture.size())
+        super.init(texture: heroTexture, color: SKColor.clear, size: cgTileSize)
 
+        print(heroTexture.size())
+        
         //super.init(texture: heroTexture, normalMap: heroTexture_n)
 
         self.normalTexture = heroTexture_n
-
         self.name = "hero"
         self.zPosition = 50
 

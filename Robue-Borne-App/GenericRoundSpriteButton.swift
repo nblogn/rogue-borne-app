@@ -31,9 +31,6 @@ class GenericRoundSpriteButtonWithName: SKSpriteNode {
     }
     
     
-    
-    
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -41,36 +38,33 @@ class GenericRoundSpriteButtonWithName: SKSpriteNode {
     
     init(_ name: String, text: String) {
         
-        
-        
         //////////
-        //Button text
+        //Create button text
         let buttonText = SKLabelNode(fontNamed:"Cochin")
         buttonText.text = text
         buttonText.fontSize = 28
         buttonText.fontColor = SKColor.white
         buttonText.zPosition = 100
         buttonText.name = name
-
+        
         var textBounds = buttonText.calculateAccumulatedFrame()
         textBounds.size.height += 20
         textBounds.size.width += 15
-
+        
         let buttonSize = CGSize(width: textBounds.width, height: textBounds.height)
+        
+        //Init super class
+        let buttonColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
+        super.init(texture:nil, color: buttonColor, size: buttonSize)
 
+        //Set self properties
+        self.name = name
+        self.zPosition = 101
+        self.isUserInteractionEnabled = true
         
         //Crazy shit to center the text within the button...
         buttonText.position = CGPoint(x: 0, y: -(buttonText.fontSize/2))
-        
-        let buttonColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
-
-        
-        super.init(texture:nil, color: buttonColor, size: buttonSize)
-
-        self.name = name
-        self.zPosition = 101
         self.addChild(buttonText)
-        isUserInteractionEnabled = true
         
     }
     
