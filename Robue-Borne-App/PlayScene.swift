@@ -218,7 +218,7 @@ class PlayScene: SKScene {
             
         } else if recognizer.state == .changed {
             var translation = recognizer.translation(in: recognizer.view!)
-            translation = CGPoint(x: translation.x, y: -translation.y)
+            translation = CGPoint(x: (translation.x * myCamera.xScale), y: (-translation.y * myCamera.yScale))
             
             let position = selectedNode.position
             myCamera.position = CGPoint(x: position.x - translation.x, y: position.y - translation.y)
@@ -404,14 +404,13 @@ class PlayScene: SKScene {
     // SCALE and FIT the view into the screen space -- myDungeonLevel
     //
     //-------------------------------------------------------------------------------------------//
-    
     func scaleDungeonLevelToFitIntoPlayScene () {
         
         //Scale the view to ensure all tiles will fit within the view...
         print("PlayScene.size == ", self.size)
         
-        let yScale = Float(self.size.height) * (Float(myDungeonLevel.myDungeonMap.dungeonSizeHeight) * Float(tileSize.height))
-        let xScale = Float(self.size.width) * (Float(myDungeonLevel.myDungeonMap.dungeonSizeWidth) * Float(tileSize.width))
+        let yScale = (Float(myDungeonLevel.myDungeonMap.dungeonSizeHeight) * Float(tileSize.height)) / Float(self.size.height)
+        let xScale = (Float(myDungeonLevel.myDungeonMap.dungeonSizeWidth) * Float(tileSize.width)) / Float(self.size.width)
         
         print("myDungeonLevel.xScale == ", xScale)
         print("myDungeonLevel.yScale == ", yScale)
@@ -434,7 +433,6 @@ class PlayScene: SKScene {
     // TODO: Animate the re-positioning of the map, pass an argument for scaling or not
     //
     //-------------------------------------------------------------------------------------------//
-    
     func centerDungeonOnHero(_ scale: Float?) {
         
         let centeredNodePositionInScene = myDungeonLevel.convert(myDungeonLevel.myHero.position, to: self)
