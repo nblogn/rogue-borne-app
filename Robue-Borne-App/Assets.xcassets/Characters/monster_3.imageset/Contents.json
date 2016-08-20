@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "monster_3.jpg",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Grey_Warrior.png",
       "scale" : "2x"
     },
     {

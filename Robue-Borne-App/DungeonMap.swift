@@ -46,8 +46,7 @@ class DungeonMap: SKNode {
     var dungeonRooms: [DungeonRoom]
     
     
-    
-    
+    //Helper func, not sure if I'm actually using this...
     func getTileByLocation (X: Int, Y: Int) -> TileClass {
         return self.dungeonMap[X][Y]
     }
@@ -80,9 +79,6 @@ class DungeonMap: SKNode {
         
         self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, roomType: nil)]
         
-        /*self.heros = [Hero()]
-        self.monsters = [Monster()]
-        self.items = [Item()]*/
         
         super.init()
         
@@ -101,11 +97,8 @@ class DungeonMap: SKNode {
         self.cellSizeWidth = cellSizeWidth
         self.numberOfRooms = numberOfRooms
         
-        self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, roomType: nil)]
-
-        /*self.heros = [Hero()]
-        self.monsters = [Monster()]
-        self.items = [Item()]*/
+        //self.dungeonRooms = [DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: 0, y2: 0), connectedRooms: nil, roomType: nil)]
+        self.dungeonRooms = []
         
         super.init()
         
@@ -280,7 +273,7 @@ class DungeonMap: SKNode {
         
         //Let's make a room, for now it's taking up the whole dungeon
         //TODO: Make extensible so this can be a single room within a larger dungeon
-        dungeonRooms.append(DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: dungeonSizeWidth, y2: dungeonSizeHeight), connectedRooms: nil, roomType: nil))
+        dungeonRooms[0] = DungeonRoom.init(roomId: 0, location: DungeonRoomLocation.init(x1: 0, y1: 0, x2: dungeonSizeWidth, y2: dungeonSizeHeight), connectedRooms: nil, roomType: nil)
         
         for row in 0 ..< dungeonMap.count {
             for column in 0 ..< dungeonMap[row].count {
@@ -288,7 +281,7 @@ class DungeonMap: SKNode {
                 randWalls = Int(arc4random_uniform(UInt32(100)))
                 
                 if randWalls > 55 {
-                    dungeonMap[row][column] = TileClass(tileToCreate: Tile.wall)
+                    dungeonMap[row][column] = TileClass(tileToCreate: Tile.fan)
                 }
             }
         }
@@ -299,9 +292,9 @@ class DungeonMap: SKNode {
             for row2 in 0 ..< dungeonMap.count {
                 for column2 in 0 ..< dungeonMap[row2].count {
                     
-                    if howManyWallsAreAroundMe(x:column2,y:row2) > 5 {
-                        dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.wall)
-                    } else if howManyWallsAreAroundMe(x:column2,y:row2) < 3 {
+                    if howManyWallsAreAroundMe(x:column2, y:row2, tileType: Tile.fan) > 5 {
+                        dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.fan)
+                    } else if howManyWallsAreAroundMe(x:column2, y:row2, tileType: Tile.fan) < 3 {
                         dungeonMap[row2][column2] = TileClass(tileToCreate: Tile.ground)
                     }
                     
@@ -309,6 +302,18 @@ class DungeonMap: SKNode {
             }
         }
         
+        
+        //Maybe able to call this instead:     private func createDungeonRoomsInDungeonMap() -> Void
+        //Add a border of walls to the room
+        for row in 0 ..< dungeonMap.count {
+            dungeonMap[row][0] = TileClass(tileToCreate: Tile.wall)
+            dungeonMap[row][dungeonSizeWidth-1] = TileClass(tileToCreate: Tile.wall)
+        }
+        for column in 0 ..< dungeonMap[0].count {
+            dungeonMap[0][column] = TileClass(tileToCreate: Tile.wall)
+            dungeonMap[dungeonSizeHeight-1][column] = TileClass(tileToCreate: Tile.wall)
+        }
+
         drawDungeonSpriteNodes()
         
     }
@@ -422,7 +427,7 @@ class DungeonMap: SKNode {
 
         }
         
-        drawDungeonRooms()
+        createDungeonRoomsInDungeonMap()
         connectDungeonRooms()
         drawDungeonSpriteNodes()
         
@@ -465,7 +470,7 @@ class DungeonMap: SKNode {
     //Func to define the rooms within the dungeon, after all dungeonRooms are populated
     //
     //=====================================================================================================//
-    private func drawDungeonRooms() -> Void {
+    private func createDungeonRoomsInDungeonMap() -> Void {
         
         
         //Iterate through each room...
@@ -475,21 +480,11 @@ class DungeonMap: SKNode {
             var column = 0
             
             
-            
-            //NOTE: I used to have C Style for loops here, but they're deprecated in SWIFT 3.0.
-            //Leaving this comment in, just in case I screwed up some boundary (-1) use case)
-            //for row = dungeonRooms[drawRoomIterator].location.y1; ((row <= dungeonRooms[drawRoomIterator].location.y2) && (row < dungeonSizeHeight)); row += 1 {
-            
             //Iterate through each row for this room...
             while ((row <= dungeonRooms[drawRoomIterator].location.y2) && (row < dungeonSizeHeight)) {
                 
                 column = dungeonRooms[drawRoomIterator].location.x1
             
-                
-                
-                //DEPRECATED
-                //for column = dungeonRooms[drawRoomIterator].location.x1; ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)); column += 1 {
-                
                 //Iterate through each column, of this row, of this room...
                 while ((column <= dungeonRooms[drawRoomIterator].location.x2) && (column < dungeonSizeWidth)) {
                     
@@ -731,7 +726,7 @@ class DungeonMap: SKNode {
         var targetRoomMidpointX: Int
         var targetRoomMidpointY: Int
         var minDistance: Float?
-        var compDistance: Float?
+        var compDistance: Float
         var aSquared: Float
         var bSquared: Float
         
@@ -754,9 +749,9 @@ class DungeonMap: SKNode {
                     minDistance = compDistance
                     closestRoom = roomIterator
                     
-                } else if compDistance < minDistance {
+                } else if compDistance < minDistance! {
                     
-                    minDistance = compDistance!
+                    minDistance = compDistance
                     closestRoom = roomIterator
                     
                 }
@@ -914,7 +909,7 @@ class DungeonMap: SKNode {
         
 
         ////////////////////
-        //Draw hallways -- 
+        //Draw hallways and obstacles (fan) --
         //Loop through all tiles, draw other shit (hallways, doors, etc.)
         ////////////////////
         
@@ -929,7 +924,7 @@ class DungeonMap: SKNode {
                 dungeonMap[row][column].zPosition = 3
                 
                 
-                //Let's not add the "nothing" tiles or "wall" tiles, they hit the CPU way too much...
+                //Let's not add the "nothing" tiles or "wall" tiles, they hit the CPU too much...
                 if (dungeonMap[row][column].tileType != Tile.nothing) && (dungeonMap[row][column].tileType != Tile.ground) && (dungeonMap[row][column].tileType != Tile.wall) {
                     
                     dungeonMap[row][column].removeFromParent()

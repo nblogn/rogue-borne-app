@@ -18,6 +18,7 @@ class DungeonLevel: SKNode {
     let myDungeonMap = DungeonMap()
     let myHero: Hero
     let aMonster: Monster
+    var monsters: [Monster]
     let levelExit: Item
     
     //Add a background
@@ -48,6 +49,8 @@ class DungeonLevel: SKNode {
         self.levelExit = Item()
         
         self.initDungeonType = dungeonType
+        
+        self.monsters = [Monster()]
         
         super.init()
         
@@ -85,41 +88,20 @@ class DungeonLevel: SKNode {
         
         //////////
         //Set the hero
-        myHero.location.x = myDungeonMap.dungeonRooms[myDungeonMap.dungeonRooms.count - 1].location.x1+1
-        myHero.location.y = myDungeonMap.dungeonRooms[myDungeonMap.dungeonRooms.count - 1].location.y1+1
-        myHero.position = convertBoardCoordinatetoCGPoint(x: myHero.location.x, y: myHero.location.y)
-        myHero.zPosition = 5
-        self.addChild(myHero)
+        self.initHero()
         
+
+        /////////
+        //Create and position the monsters
+        self.initMosters()
         
-        //////////
-        //Set the hero's light:
-        //Note that ambient/falloff have issues in spritekit:
-        //http://stackoverflow.com/questions/29828324/spritekit-sklightnode-falloff-property-has-no-effect
-        heroTorch.lightColor = SKColor(red: 1.0, green: 0.3, blue: 0.5, alpha: 0.5)
-        heroTorch.isEnabled = true
-        heroTorch.categoryBitMask = LightCategory.Hero
-        heroTorch.zPosition = 52
-        heroTorch.position = CGPoint (x: 0, y: 0)
-        
-        //NOTE: THESE ARE IMPORTANT; shadowColor drastically changes shit.
-        //heroTorch.ambientColor = UIColor.redColor()
-        heroTorch.falloff = 1
-        heroTorch.shadowColor = SKColor.black.withAlphaComponent(1.0)
-        
-        myHero.addChild(heroTorch)
         
         
         /////////
         //Set the room lighting
         //initLighting()
         
-        
-        /////////
-        //Create and position the monsters
-        self.initMosters()
-        
-        
+
         /////////
         //Set the Exit
         levelExit.location = getFurthestLocationFromLocation(myHero.getCurrentLocation())
@@ -224,6 +206,29 @@ class DungeonLevel: SKNode {
 
     func initHero () {
         
+        myHero.location.x = myDungeonMap.dungeonRooms[myDungeonMap.dungeonRooms.count - 1].location.x1+1
+        myHero.location.y = myDungeonMap.dungeonRooms[myDungeonMap.dungeonRooms.count - 1].location.y1+1
+        myHero.position = convertBoardCoordinatetoCGPoint(x: myHero.location.x, y: myHero.location.y)
+        myHero.zPosition = 5
+        self.addChild(myHero)
+        
+        
+        //////////
+        //Set the hero's light:
+        //Note that ambient/falloff have issues in spritekit:
+        //http://stackoverflow.com/questions/29828324/spritekit-sklightnode-falloff-property-has-no-effect
+        heroTorch.lightColor = SKColor(red: 1.0, green: 0.3, blue: 0.5, alpha: 0.5)
+        heroTorch.isEnabled = true
+        heroTorch.categoryBitMask = LightCategory.Hero
+        heroTorch.zPosition = 52
+        heroTorch.position = CGPoint (x: 0, y: 0)
+        
+        //NOTE: THESE ARE IMPORTANT; shadowColor drastically changes shit.
+        //heroTorch.ambientColor = UIColor.redColor()
+        heroTorch.falloff = 1
+        heroTorch.shadowColor = SKColor.black.withAlphaComponent(1.0)
+        
+        myHero.addChild(heroTorch)
         
     }
 
@@ -255,26 +260,36 @@ class DungeonLevel: SKNode {
         // ADD ONE MONSTER IN EVERY ROOM
         for roomIterator in 0...myDungeonMap.dungeonRooms.count-1 {
             
-            //New Monster location
-            let _monsterX: Int
-            let _: Int
-            
-            
+            monsters.insert(Monster.init(), at: roomIterator)
             
             //Find a random coordinate within the room
-            //myDungeonMap.dungeonRooms[roomIterator].location.x1 = _monsterX
+            let roomWidth = myDungeonMap.dungeonRooms[roomIterator].location.x2 - myDungeonMap.dungeonRooms[roomIterator].location.x1 - 2
+            let randXPosition = Int(arc4random_uniform(UInt32(roomWidth))) + myDungeonMap.dungeonRooms[roomIterator].location.x1 + 1
             
+            let roomHeight = myDungeonMap.dungeonRooms[roomIterator].location.y2 - myDungeonMap.dungeonRooms[roomIterator].location.y1 - 2
+            let randYPosition = Int(arc4random_uniform(UInt32(roomHeight))) + myDungeonMap.dungeonRooms[roomIterator].location.y1 + 1
+            
+            monsters[roomIterator].location.x = randXPosition
+            monsters[roomIterator].location.y = randYPosition
+
+            monsters[roomIterator].position = convertBoardCoordinatetoCGPoint(x: randXPosition, y: randYPosition)
             
             
             //Set a somewhat random HP value on the MONSTER
+            monsters[roomIterator].hp = 100
             
+            
+            //Pick one of the six random monster images.
+            //Eventually, this should be picking one of the random monster types (sub-classes or protocols)
+            let randMonster = Int(arc4random_uniform(6)) + 1
+
             
             //Give monster some random look (here? Somewhere else?)
-            
+            monsters[roomIterator].texture = SKTexture(imageNamed: "monster_" + String(randMonster))
+            monsters[roomIterator].size = SKTexture(imageNamed: "monster_" + String(randMonster)).size()
             
             //Add the MONSTER
-            
-            
+            self.addChild(monsters[roomIterator])
             
         }
 

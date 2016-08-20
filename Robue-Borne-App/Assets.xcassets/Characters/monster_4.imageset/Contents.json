@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "monster_4.jpg",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "RB_Dude_2x.png",
       "scale" : "2x"
     },
     {

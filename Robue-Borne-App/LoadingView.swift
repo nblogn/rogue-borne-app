@@ -48,7 +48,7 @@ class LoadingNode: SKNode {
         
         //////////
         //Set the monster
-        let texture = SKTexture(imageNamed: "RB_Monster1")
+        let texture = SKTexture(imageNamed: "monster_5")
         let aMonster = SKSpriteNode(texture: texture, color: SKColor.clear, size: CGSize(width: Int(loadingModalWidth - 20), height: Int(loadingModalHeight-20)))
 
         aMonster.position = CGPoint(x: Int(loadingModalWidth/2), y: Int(loadingModalHeight/2))

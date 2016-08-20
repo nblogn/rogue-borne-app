@@ -33,7 +33,7 @@ class Monster: SKSpriteNode {
         
         self.location = dungeonLocation.init(x: 20, y: 20)
         
-        let texture = SKTexture(imageNamed: "RB_Monster1")
+        let texture = SKTexture(imageNamed: "monster_1")
         super.init(texture: texture, color: SKColor.clear, size: texture.size())
         
         self.name = "monster"

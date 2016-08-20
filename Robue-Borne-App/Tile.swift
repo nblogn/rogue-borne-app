@@ -47,6 +47,7 @@ enum Tile: Int {
     case corridorVertical
     case corridorHorizontal
     case door
+    case fan
     
     var description:String {
         switch self {
@@ -64,6 +65,8 @@ enum Tile: Int {
             return "corridorHorizontal"
         case .door:
             return "Door"
+        case .fan:
+            return "fan"
         }
     }
     
@@ -83,6 +86,8 @@ enum Tile: Int {
             return "bricksNormal"
         case .door:
             return "Door"
+        case .fan:
+            return "fan"
         }
     }
     
@@ -133,12 +138,14 @@ class TileClass: SKSpriteNode {
                 self.passable = true
             case Tile.door:
                 self.passable = true
+            case Tile.fan:
+                self.passable = false
             }
         
         self.discovered = false
 
         let texture = SKTexture(imageNamed: self.tileType.image)
-        super.init(texture: texture, color: SKColor.clear, size: texture.size())
+        super.init(texture: texture, color: SKColor.clear, size: cgTileSize)
         
         self.size = cgTileSize
         
