@@ -12,23 +12,37 @@ import SpriteKit
 
 class CombatCoordinator {
 
+    var myDungeonLevel: DungeonLevel?
+    
+    init() {
+        
+    }
+    
+    
+    func setDungeonLevel (dungeonLevelToSet: DungeonLevel) -> Void {
+
+        self.myDungeonLevel = dungeonLevelToSet
+
+    }
+    
     
     func doTurn () -> Void {
         
-        //for each monster (within range? not sleeping?)
+        //for each monster (within range? And not sleeping?)
             //move
             //attack
         
     }
     
     
-    private func monstersAttack() -> Void {
+    private func monsterAttack() -> Void {
+        
+        
         
     }
     
     
-    //NOT BEING USED YET
-    
+    //COPIED -- NOT BEING USED YET
     private func moveMonster(dungeonLevel: DungeonLevel) -> Void {
         // Let's just move randomly for now.
         // Pick a cardinal direction and check for collision

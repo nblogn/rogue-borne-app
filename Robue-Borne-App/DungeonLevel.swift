@@ -21,6 +21,8 @@ class DungeonLevel: SKNode {
     var monsters: [Monster]
     let levelExit: Item
     
+    let combatCoordinator: CombatCoordinator
+    
     //Add a background
     let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "gold-heatsink"), color: SKColor.clear, size: SKTexture(imageNamed: "gold-heatsink").size())
     
@@ -52,8 +54,9 @@ class DungeonLevel: SKNode {
         
         self.monsters = [Monster()]
         
+        self.combatCoordinator = CombatCoordinator()
+
         super.init()
-        
         
         self.addChild(myDungeonMap)
 
@@ -217,16 +220,17 @@ class DungeonLevel: SKNode {
         //Set the hero's light:
         //Note that ambient/falloff have issues in spritekit:
         //http://stackoverflow.com/questions/29828324/spritekit-sklightnode-falloff-property-has-no-effect
-        heroTorch.lightColor = SKColor(red: 1.0, green: 0.3, blue: 0.5, alpha: 0.5)
-        heroTorch.isEnabled = true
+        heroTorch.lightColor = SKColor(red: 1.0, green: 0.3, blue: 0.5, alpha: 0.7)
+        heroTorch.isEnabled = false
         heroTorch.categoryBitMask = LightCategory.Hero
         heroTorch.zPosition = 52
         heroTorch.position = CGPoint (x: 0, y: 0)
-        
+        heroTorch.ambientColor = SKColor.red.withAlphaComponent(0.1)
+            
         //NOTE: THESE ARE IMPORTANT; shadowColor drastically changes shit.
         //heroTorch.ambientColor = UIColor.redColor()
         heroTorch.falloff = 1
-        heroTorch.shadowColor = SKColor.black.withAlphaComponent(1.0)
+        heroTorch.shadowColor = SKColor.black.withAlphaComponent(0.7)
         
         myHero.addChild(heroTorch)
         

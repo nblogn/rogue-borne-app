@@ -237,7 +237,7 @@ class PlayScene: SKScene {
             // This just multiplies your velocity with the scroll duration.
             let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: velocity.y * CGFloat(scrollDuration))
             
-            let newPos = CGPoint(x: pos.x - p.x, y: pos.y + p.y)
+            let newPos = CGPoint(x: pos.x + p.x, y: pos.y - p.y)
             //newPos = self.boundLayerPos(newPos)
             selectedNode.removeAllActions()
             
