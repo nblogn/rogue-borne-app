@@ -329,6 +329,9 @@ class PlayScene: SKScene {
             
             switch touchedNode.name! {
                 case "RB_Cntrl_Up":
+
+                    //myDungeonLevel.combatCoordinator.doTurn(heroTurnAction: HeroAction(), dungeonLevel: myDungeonLevel)
+                    
                     myDungeonLevel.moveHero(x: 0, y: 1)
                     myDungeonLevel.moveMonster()
                     centerCameraOnPlayer = true

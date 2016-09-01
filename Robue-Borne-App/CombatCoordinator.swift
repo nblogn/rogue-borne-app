@@ -25,10 +25,16 @@ class CombatCoordinator {
             //Can the hero move? If so...
                 //Can the hero attack?
                 //Can the monsters attach?
+       
+        /*
+        switch heroTurnAction {
+        //case .moveTo(DungeonLocation):
+//            let moveTo =
+//            moveHero(x: <#T##Int#>, y: <#T##Int#>, dungeonLevel: <#T##DungeonLevel#>)
+        }
         
-        //heroTurnAction.move
-        
-        
+        //https://appventure.me/2015/10/17/advanced-practical-enum-examples/
+        */
         
     }
     

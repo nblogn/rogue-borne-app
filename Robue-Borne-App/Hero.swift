@@ -13,14 +13,17 @@ import SpriteKit
 
 
 //This closely matches the control input, I think
-struct HeroAction {
+enum HeroAction {
 
-    let move: DungeonLocation
+    case moveTo(DungeonLocation)
+    case moveBy(DungeonLocation)
+    case transportTo(DungeonLocation)
+
+    /*Etc...
+    case castSpell()
+    case rangedAttack()
+    case closeAttack()*/
     
-    //Not int, just not sure what these are yet.
-    let castSpell: Int
-    let rangedAttack: Int
-    let closeAttack: Int
     
 }
 
