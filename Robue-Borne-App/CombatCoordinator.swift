@@ -12,27 +12,54 @@ import SpriteKit
 
 class CombatCoordinator {
 
-    var myDungeonLevel: DungeonLevel?
     
     init() {
         
     }
     
-    
-    func setDungeonLevel (dungeonLevelToSet: DungeonLevel) -> Void {
 
-        self.myDungeonLevel = dungeonLevelToSet
-
-    }
     
-    
-    func doTurn () -> Void {
+    func doTurn (heroTurnAction: HeroAction, dungeonLevel: DungeonLevel) -> Void {
         
         //for each monster (within range? And not sleeping?)
-            //move
-            //attack
+            //Can the hero move? If so...
+                //Can the hero attack?
+                //Can the monsters attach?
+        
+        //heroTurnAction.move
+        
+        
         
     }
+    
+    
+    
+    private func moveHero(x:Int, y:Int, dungeonLevel: DungeonLevel) {
+        
+        switch dungeonLevel.myDungeonMap.dungeonMap[dungeonLevel.myHero.location.y + y][dungeonLevel.myHero.location.x + x].tileType {
+            
+        case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
+            
+            //Figure out new hero location/position
+            dungeonLevel.myHero.location.x = dungeonLevel.myHero.location.x + x
+            dungeonLevel.myHero.location.y = dungeonLevel.myHero.location.y + y
+            let xyPointDiff = convertBoardCoordinatetoCGPoint(x: dungeonLevel.myHero.location.x, y:dungeonLevel.myHero.location.y)
+            
+            //Move the background for parallax effect:
+            let newBackgroundX = dungeonLevel.dungeonBackground.position.x + (CGFloat(tileSize.width) * CGFloat(x)*0.5)
+            let newBackgroundY = dungeonLevel.dungeonBackground.position.y + (CGFloat(tileSize.height) * CGFloat(y)*0.35)
+            let newDungeonBackgroundPosition = CGPoint(x: newBackgroundX, y: newBackgroundY)
+            
+            //Run the actions; do I need to group these to do in parallel???
+            dungeonLevel.dungeonBackground.run(SKAction.move(to: newDungeonBackgroundPosition, duration: 0.1))
+            dungeonLevel.myHero.run(SKAction.move(to: xyPointDiff, duration: 0.1))
+            
+        default: break
+        }
+        
+    }//moveHero()
+
+    
     
     
     private func monsterAttack() -> Void {
@@ -128,9 +155,6 @@ class CombatCoordinator {
     }//moveMonster()
 
     
-    
-    func fight () {
-        
-    }
+
     
 }

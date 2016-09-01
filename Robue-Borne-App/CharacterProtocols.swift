@@ -12,19 +12,12 @@ import Foundation
 
 
 
-struct dungeonLocation {
-    var x: Int
-    var y: Int
-}
-
-
-
 protocol basicCharacterAbilities {
     var hitPoints: Int {get set}
-    var location: dungeonLocation {get set}
+    var location: DungeonLocation {get set}
 
     func getStats() -> String
-    func getCurrentLocation() -> dungeonLocation
+    func getCurrentLocation() -> DungeonLocation
 }
 
 

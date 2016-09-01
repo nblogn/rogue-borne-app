@@ -48,7 +48,7 @@ class CharacterDetailsPopup: SKNode {
             let temp = nodeToDetail as! Hero
             let stats: String = temp.getStats()
             
-            let location: dungeonLocation = temp.getCurrentLocation()
+            let location: DungeonLocation = temp.getCurrentLocation()
             
             let memText = GenericText.init(name: "statsText", text: stats)
             memText.position = CGPoint(x: 150, y: 450)

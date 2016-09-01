@@ -450,7 +450,7 @@ class DungeonLevel: SKNode {
     //
     //=====================================================================================================//
 
-    func getRoomDetailsForLocation (_ location: dungeonLocation) -> DungeonMap.DungeonRoom? {
+    func getRoomDetailsForLocation (_ location: DungeonLocation) -> DungeonMap.DungeonRoom? {
         
         var tempRoom: DungeonMap.DungeonRoom? = nil
         
@@ -484,10 +484,10 @@ class DungeonLevel: SKNode {
     
     
     //Set a farthest (furthest?) path location away from the given (hero's) starting point
-    func getFurthestLocationFromLocation(_ sourceLocation: dungeonLocation) -> dungeonLocation {
+    func getFurthestLocationFromLocation(_ sourceLocation: DungeonLocation) -> DungeonLocation {
         
         
-        let furthestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
+        let furthestLocation: DungeonLocation = DungeonLocation(x: 1, y: 1)
         
         //Implement farthest (or furthest) path algorithm...
         
@@ -497,9 +497,9 @@ class DungeonLevel: SKNode {
     
     
     
-    func getClosestLocationToLocation(_ sourceLocation: dungeonLocation) -> dungeonLocation {
+    func getClosestLocationToLocation(_ sourceLocation: DungeonLocation) -> DungeonLocation {
         
-        let closestLocation: dungeonLocation = dungeonLocation(x: 1, y: 1)
+        let closestLocation: DungeonLocation = DungeonLocation(x: 1, y: 1)
         
         //Implement nearest path algorithm...
         

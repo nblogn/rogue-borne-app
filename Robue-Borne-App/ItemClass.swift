@@ -13,7 +13,7 @@ import SpriteKit
 
 class Item: SKSpriteNode {
     
-    var location: dungeonLocation
+    var location: DungeonLocation
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -21,7 +21,7 @@ class Item: SKSpriteNode {
     
     init() { //Need to override with the image name... or more, to make this more configurable
         
-        self.location = dungeonLocation.init(x: 15, y: 15)
+        self.location = DungeonLocation.init(x: 15, y: 15)
         
         let texture = SKTexture(imageNamed: "Door")
         super.init(texture: texture, color: SKColor.clear, size: texture.size())
@@ -31,7 +31,7 @@ class Item: SKSpriteNode {
         
     }
     
-    func getCurrentLocation() -> dungeonLocation {
+    func getCurrentLocation() -> DungeonLocation {
         
         return location
         

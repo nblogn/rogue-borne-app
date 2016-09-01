@@ -12,13 +12,25 @@ import Darwin
 import SpriteKit
 
 
+//This closely matches the control input, I think
+struct HeroAction {
+
+    let move: DungeonLocation
+    
+    //Not int, just not sure what these are yet.
+    let castSpell: Int
+    let rangedAttack: Int
+    let closeAttack: Int
+    
+}
+
 
 class Hero: SKSpriteNode, basicCharacterAbilities {
     
 
     
     var hitPoints: Int = 20
-    var location: dungeonLocation
+    var location: DungeonLocation
 
     
     
@@ -31,7 +43,7 @@ class Hero: SKSpriteNode, basicCharacterAbilities {
     
     init() {
 
-        self.location = dungeonLocation.init(x: 10, y: 10)
+        self.location = DungeonLocation.init(x: 10, y: 10)
 
         let heroTexture = SKTexture(imageNamed: "Jaia_bw_head")
         let heroTexture_n = SKTexture(imageNamed: "Jaia_bw_n.png")
@@ -50,7 +62,7 @@ class Hero: SKSpriteNode, basicCharacterAbilities {
     
     
     
-    func getCurrentLocation() -> dungeonLocation {
+    func getCurrentLocation() -> DungeonLocation {
         
         return location
     
