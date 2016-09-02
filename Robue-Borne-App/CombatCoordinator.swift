@@ -18,7 +18,9 @@ class CombatCoordinator {
     }
     
 
-    //-------------------------------------------------------------------------------------------//
+    
+    
+    //------------------------------------------- doTurn ----------------------------------------//
     //
     // Coordinates all things that happen in a turn
     //
@@ -31,8 +33,6 @@ class CombatCoordinator {
 
     func doTurn (heroTurnAction: HeroAction, dungeonLevel: DungeonLevel) -> Void {
         
-       
-        
         switch heroTurnAction {
         case let .moveBy(amount):
             moveHeroBy(byAmount: amount, dungeonLevel: dungeonLevel)
@@ -40,13 +40,12 @@ class CombatCoordinator {
             break
         }
         
-        
         moveMonsters(dungeonLevel: dungeonLevel)
-        
         
     }
     
     
+
     
     
     //-------------------------------------------------------------------------------------------//
@@ -61,6 +60,14 @@ class CombatCoordinator {
         switch dungeonLevel.myDungeonMap.dungeonMap[dungeonLevel.myHero.location.y + byAmount.y][dungeonLevel.myHero.location.x + byAmount.x].tileType {
             
         case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
+            
+            
+            
+            //Check for monster! 
+            //If Monster, then heroMeleeAttack()
+            
+            
+            
             
             //Figure out new hero location/position
             dungeonLevel.myHero.location.x = dungeonLevel.myHero.location.x + byAmount.x

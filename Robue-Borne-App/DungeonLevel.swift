@@ -324,6 +324,20 @@ class DungeonLevel: SKNode {
     
     
     
+    //=====================================================================================================//
+    // Return Tile information.
+    // Given a tile location, return any object on top of it.
+    //=====================================================================================================//
+
+    func getTileContents(forTile: DungeonLocation){
+        
+        
+        //return monsters or items or whatever shit is on the tile location.
+    }
+    
+    
+    
+    
     
     //=====================================================================================================//
     // Return Room information -- doing this for debugging, but may be useful later
