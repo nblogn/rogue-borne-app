@@ -329,31 +329,20 @@ class PlayScene: SKScene {
             
             switch touchedNode.name! {
                 case "RB_Cntrl_Up":
-
-                    //myDungeonLevel.combatCoordinator.doTurn(heroTurnAction: HeroAction(), dungeonLevel: myDungeonLevel)
-                    
-                    myDungeonLevel.moveHero(x: 0, y: 1)
-                    myDungeonLevel.moveMonster()
+                    myDungeonLevel.combatCoordinator.doTurn(heroTurnAction: HeroAction.moveBy(DungeonLocation(x: 0, y: 1)), dungeonLevel: myDungeonLevel)
                     centerCameraOnPlayer = true
 
-                
                 case "RB_Cntrl_Down":
-                    myDungeonLevel.moveHero(x: 0, y: -1)
-                    myDungeonLevel.moveMonster()
+                    myDungeonLevel.combatCoordinator.doTurn(heroTurnAction: HeroAction.moveBy(DungeonLocation(x: 0, y: -1)), dungeonLevel: myDungeonLevel)
                     centerCameraOnPlayer = true
-
                 
                 case "RB_Cntrl_Right":
-                    myDungeonLevel.moveHero(x: 1, y: 0)
-                    myDungeonLevel.moveMonster()
+                    myDungeonLevel.combatCoordinator.doTurn(heroTurnAction: HeroAction.moveBy(DungeonLocation(x: 1, y: 0)), dungeonLevel: myDungeonLevel)
                     centerCameraOnPlayer = true
-
 
                 case "RB_Cntrl_Left":
-                    myDungeonLevel.moveHero(x: -1, y: 0)
-                    myDungeonLevel.moveMonster()
+                    myDungeonLevel.combatCoordinator.doTurn(heroTurnAction: HeroAction.moveBy(DungeonLocation(x: -1, y: 0)), dungeonLevel: myDungeonLevel)
                     centerCameraOnPlayer = true
-
                 
                 case "RB_Cntrl_Middle":
                     //rest and move monsters

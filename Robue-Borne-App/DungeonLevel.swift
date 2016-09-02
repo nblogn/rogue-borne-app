@@ -28,10 +28,8 @@ class DungeonLevel: SKNode {
     
     //let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "#imageLiteral(resourceName: "gold-heatsink")"), normalMap: SKTexture(imageNamed: "#imageLiteral(resourceName: "gold-heatsink-n")"))
     
-    
     //Add a light source for the hero...
     var heroTorch = SKLightNode()
-    
     
     //Add room lights
     var roomLights = [SKLightNode()]
@@ -323,124 +321,6 @@ class DungeonLevel: SKNode {
         
     }
     
-    
-    
-    
-    //-------------------------------------------------------------------------------------------//
-    //
-    // MOVE characters and monsters
-    //
-    //-------------------------------------------------------------------------------------------//
-    
-    func moveHero(x:Int, y:Int) {
-        
-        switch myDungeonMap.dungeonMap[myHero.location.y + y][myHero.location.x + x].tileType {
-            
-        case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
-
-            //Figure out new hero location/position
-            myHero.location.x = myHero.location.x + x
-            myHero.location.y = myHero.location.y + y
-            let xyPointDiff = convertBoardCoordinatetoCGPoint(x: myHero.location.x, y:myHero.location.y)
-            
-            //Move the background for parallax effect:
-            let newBackgroundX = dungeonBackground.position.x + (CGFloat(tileSize.width) * CGFloat(x)*0.5)
-            let newBackgroundY = dungeonBackground.position.y + (CGFloat(tileSize.height) * CGFloat(y)*0.35)
-            let newDungeonBackgroundPosition = CGPoint(x: newBackgroundX, y: newBackgroundY)
-            
-            //Run the actions; do I need to group these to do in parallel???
-            dungeonBackground.run(SKAction.move(to: newDungeonBackgroundPosition, duration: 0.1))
-            myHero.run(SKAction.move(to: xyPointDiff, duration: 0.1))
-            
-        default: break
-        }
-        
-    }//moveHero()
-    
-    
-    func moveMonster() -> Void {
-        // Let's just move randomly for now.
-        // Pick a cardinal direction and check for collision
-        // Repeat until a successful move has occurred or
-        // the number of tries reaches 5. Dude could be trapped
-        // like a Piner in a closet and we don't want to hang
-        // JOSH: LOL!
-        
-        var hasMoved: Bool=false
-        var numTries: Int=0
-        var direction: Int
-        
-        
-        while ( hasMoved == false ) && ( numTries < 5) {
-            
-            direction = Int(arc4random_uniform(4))
-            
-            
-            switch direction {
-            case 0:
-                // Try north
-                
-                switch myDungeonMap.dungeonMap[aMonster.getCurrentLocation().y-1][aMonster.getCurrentLocation().x].tileType  {
-                    
-                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
-                    aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y-1)
-                    hasMoved = true
-                default:
-                    break
-                }
-                
-            case 1:
-                // Try south
-                
-                switch myDungeonMap.dungeonMap[aMonster.getCurrentLocation().y+1][aMonster.getCurrentLocation().x].tileType {
-                    
-                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
-                    aMonster.setCurrentLocation(aMonster.getCurrentLocation().x, Y: aMonster.getCurrentLocation().y+1)
-                    hasMoved = true
-                default:
-                    break
-                }
-                
-                
-            case 2:
-                // Try east
-                
-                switch myDungeonMap.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x-1].tileType {
-                    
-                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
-                    aMonster.setCurrentLocation(aMonster.getCurrentLocation().x-1, Y: aMonster.getCurrentLocation().y)
-                    hasMoved = true
-                default:
-                    break
-                }
-                
-                
-            case 3:
-                // Try west
-                
-                switch myDungeonMap.dungeonMap[aMonster.getCurrentLocation().y][aMonster.getCurrentLocation().x+1].tileType {
-                    
-                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
-                    aMonster.setCurrentLocation(aMonster.getCurrentLocation().x+1, Y: aMonster.getCurrentLocation().y)
-                    hasMoved = true
-                default:
-                    break
-                }
-                
-                
-            default:
-                
-                print("Fell through monster move switch")
-            }
-            
-            numTries += 1
-        }
-        
-        let xyPointDiff = convertBoardCoordinatetoCGPoint(x: aMonster.location.x, y:aMonster.location.y)
-        
-        aMonster.run(SKAction.move(to: xyPointDiff, duration: 0.1))
-        
-    }//moveMonster()
     
     
     

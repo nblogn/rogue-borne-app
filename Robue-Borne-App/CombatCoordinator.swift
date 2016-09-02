@@ -14,46 +14,62 @@ class CombatCoordinator {
 
     
     init() {
-        
+        //nothing right now
     }
     
 
-    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // Coordinates all things that happen in a turn
+    //
+    //  Move the hero
+    //  for each monster (within range? And not sleeping?)
+    //      Can the hero attack?
+    //      Can the monsters attach?
+    //
+    //-------------------------------------------------------------------------------------------//
+
     func doTurn (heroTurnAction: HeroAction, dungeonLevel: DungeonLevel) -> Void {
         
-        //for each monster (within range? And not sleeping?)
-            //Can the hero move? If so...
-                //Can the hero attack?
-                //Can the monsters attach?
        
-        /*
+        
         switch heroTurnAction {
-        //case .moveTo(DungeonLocation):
-//            let moveTo =
-//            moveHero(x: <#T##Int#>, y: <#T##Int#>, dungeonLevel: <#T##DungeonLevel#>)
+        case let .moveBy(amount):
+            moveHeroBy(byAmount: amount, dungeonLevel: dungeonLevel)
+        default:
+            break
         }
         
-        //https://appventure.me/2015/10/17/advanced-practical-enum-examples/
-        */
+        
+        moveMonsters(dungeonLevel: dungeonLevel)
+        
         
     }
     
     
     
-    private func moveHero(x:Int, y:Int, dungeonLevel: DungeonLevel) {
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // Move the hero
+    //
+    //-------------------------------------------------------------------------------------------//
+    
+    //This moves the hero one turn by the amount given (right now, +1 in the direction pushed)
+    private func moveHeroBy(byAmount:DungeonLocation, dungeonLevel: DungeonLevel) {
         
-        switch dungeonLevel.myDungeonMap.dungeonMap[dungeonLevel.myHero.location.y + y][dungeonLevel.myHero.location.x + x].tileType {
+        switch dungeonLevel.myDungeonMap.dungeonMap[dungeonLevel.myHero.location.y + byAmount.y][dungeonLevel.myHero.location.x + byAmount.x].tileType {
             
         case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
             
             //Figure out new hero location/position
-            dungeonLevel.myHero.location.x = dungeonLevel.myHero.location.x + x
-            dungeonLevel.myHero.location.y = dungeonLevel.myHero.location.y + y
+            dungeonLevel.myHero.location.x = dungeonLevel.myHero.location.x + byAmount.x
+            dungeonLevel.myHero.location.y = dungeonLevel.myHero.location.y + byAmount.y
             let xyPointDiff = convertBoardCoordinatetoCGPoint(x: dungeonLevel.myHero.location.x, y:dungeonLevel.myHero.location.y)
             
             //Move the background for parallax effect:
-            let newBackgroundX = dungeonLevel.dungeonBackground.position.x + (CGFloat(tileSize.width) * CGFloat(x)*0.5)
-            let newBackgroundY = dungeonLevel.dungeonBackground.position.y + (CGFloat(tileSize.height) * CGFloat(y)*0.35)
+            let newBackgroundX = dungeonLevel.dungeonBackground.position.x + (CGFloat(tileSize.width) * CGFloat(byAmount.x)*0.5)
+            let newBackgroundY = dungeonLevel.dungeonBackground.position.y + (CGFloat(tileSize.height) * CGFloat(byAmount.y)*0.35)
             let newDungeonBackgroundPosition = CGPoint(x: newBackgroundX, y: newBackgroundY)
             
             //Run the actions; do I need to group these to do in parallel???
@@ -63,20 +79,54 @@ class CombatCoordinator {
         default: break
         }
         
-    }//moveHero()
+    }
+    
+    
+    //This moves to a target location, !!one turn at a time!!
+    //For eventual fast travel and auto-exploration.
+    private func moveHeroTo(destination: DungeonLocation, dungeonLevel: DungeonLevel) {
+        
+        
+    }
+
+    
+    //Teleport moves a long distance in ONE turn.
+    private func teleportHero(x:Int, y:Int, dungeonLevel: DungeonLevel) {
+        
+        
+    }
 
     
     
     
-    private func monsterAttack() -> Void {
-        
-        
+    
+    //-------------------------------------------------------------------------------------------//
+    //
+    // Hero attacks
+    //
+    //-------------------------------------------------------------------------------------------//
+
+    private func heroMeleeAttack() {
         
     }
     
     
+    private func heroScriptAttach() {
+        
+    }
+    
+    
+    
+    
+
+    //-------------------------------------------------------------------------------------------//
+    //
+    // Move the monsters
+    //
+    //-------------------------------------------------------------------------------------------//
+    
     //COPIED -- NOT BEING USED YET
-    private func moveMonster(dungeonLevel: DungeonLevel) -> Void {
+    private func moveMonsters(dungeonLevel: DungeonLevel) -> Void {
         // Let's just move randomly for now.
         // Pick a cardinal direction and check for collision
         // Repeat until a successful move has occurred or
@@ -162,5 +212,11 @@ class CombatCoordinator {
 
     
 
+    
+    private func monsterAttack() -> Void {
+        
+        
+        
+    }
     
 }
