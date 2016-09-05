@@ -12,13 +12,22 @@ import SpriteKit
 class DungeonLevel: SKNode {
 
     
+    //-------------------------------------------------------------------------------------------//
+    //
+    //Global lets and vars for the class
+    //
+    //-------------------------------------------------------------------------------------------//
+    
     let initDungeonType: String
     
-    
     let myDungeonMap = DungeonMap()
+
     let myHero: Hero
+
     let aMonster: Monster
     var monsters: [Monster]
+    var monsterDictionary: Dictionary<String, Monster>
+    
     let levelExit: Item
     
     let combatCoordinator: CombatCoordinator
@@ -34,6 +43,13 @@ class DungeonLevel: SKNode {
     //Add room lights
     var roomLights = [SKLightNode()]
     
+    
+
+    //-------------------------------------------------------------------------------------------//
+    //
+    // INITS and BuildDungeonLevel
+    //
+    //-------------------------------------------------------------------------------------------//
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -43,9 +59,8 @@ class DungeonLevel: SKNode {
     
     init(dungeonType: String) {
         
-        
         self.myHero = Hero()
-        self.aMonster = Monster()
+
         self.levelExit = Item()
         
         self.initDungeonType = dungeonType
@@ -53,11 +68,13 @@ class DungeonLevel: SKNode {
         self.monsters = [Monster()]
         
         self.combatCoordinator = CombatCoordinator()
-
+        
+        self.aMonster = Monster()
+        self.monsterDictionary = ["aMonster": aMonster]
+        
         super.init()
         
         self.addChild(myDungeonMap)
-
         
     }
     
@@ -274,6 +291,17 @@ class DungeonLevel: SKNode {
             monsters[roomIterator].location.x = randXPosition
             monsters[roomIterator].location.y = randYPosition
 
+            
+            
+            
+            //Add a monster to the dictionary
+            monsterDictionary[monsters[roomIterator].location.createKeyFromLocation()] = monsters[roomIterator]
+            
+            
+            
+            
+            
+            
             monsters[roomIterator].position = convertBoardCoordinatetoCGPoint(x: randXPosition, y: randYPosition)
             
             
@@ -330,6 +358,9 @@ class DungeonLevel: SKNode {
     //=====================================================================================================//
 
     func getTileContents(forTile: DungeonLocation){
+        
+        //search all mosters (array) for proper coordinates
+        
         
         
         //return monsters or items or whatever shit is on the tile location.

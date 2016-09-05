@@ -16,14 +16,8 @@ class Monster: SKSpriteNode {
     
     var hp: Int
     
-    struct dungeonLocation {
-        var x: Int
-        var y: Int
-    }
-    
-    
-    var location: dungeonLocation
-    
+    var location: DungeonLocation
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -31,7 +25,7 @@ class Monster: SKSpriteNode {
     init() {
         self.hp = 100
         
-        self.location = dungeonLocation.init(x: 20, y: 20)
+        self.location = DungeonLocation.init(x: 20, y: 20)
         
         let texture = SKTexture(imageNamed: "monster_1")
         super.init(texture: texture, color: SKColor.clear, size: texture.size())
@@ -47,7 +41,7 @@ class Monster: SKSpriteNode {
         location.y = Y
     }
     
-    func getCurrentLocation() -> dungeonLocation {
+    func getCurrentLocation() -> DungeonLocation {
         
         return location
         

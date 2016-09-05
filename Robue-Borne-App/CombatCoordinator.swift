@@ -57,31 +57,31 @@ class CombatCoordinator {
     //This moves the hero one turn by the amount given (right now, +1 in the direction pushed)
     private func moveHeroBy(byAmount:DungeonLocation, dungeonLevel: DungeonLevel) {
         
+        
+        let newLocationToMoveTo = DungeonLocation(x: (dungeonLevel.myHero.location.x + byAmount.x), y: (dungeonLevel.myHero.location.y + byAmount.y))
+        
         switch dungeonLevel.myDungeonMap.dungeonMap[dungeonLevel.myHero.location.y + byAmount.y][dungeonLevel.myHero.location.x + byAmount.x].tileType {
             
         case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
             
-            
-            
             //Check for monster! 
-            //If Monster, then heroMeleeAttack()
+            //If Monster at this point in dictionary, then heroMeleeAttack()
+            if (dungeonLevel.monsterDictionary[newLocationToMoveTo.createKeyFromLocation()] == nil) {
             
-            
-            
-            
-            //Figure out new hero location/position
-            dungeonLevel.myHero.location.x = dungeonLevel.myHero.location.x + byAmount.x
-            dungeonLevel.myHero.location.y = dungeonLevel.myHero.location.y + byAmount.y
-            let xyPointDiff = convertBoardCoordinatetoCGPoint(x: dungeonLevel.myHero.location.x, y:dungeonLevel.myHero.location.y)
-            
-            //Move the background for parallax effect:
-            let newBackgroundX = dungeonLevel.dungeonBackground.position.x + (CGFloat(tileSize.width) * CGFloat(byAmount.x)*0.5)
-            let newBackgroundY = dungeonLevel.dungeonBackground.position.y + (CGFloat(tileSize.height) * CGFloat(byAmount.y)*0.35)
-            let newDungeonBackgroundPosition = CGPoint(x: newBackgroundX, y: newBackgroundY)
-            
-            //Run the actions; do I need to group these to do in parallel???
-            dungeonLevel.dungeonBackground.run(SKAction.move(to: newDungeonBackgroundPosition, duration: 0.1))
-            dungeonLevel.myHero.run(SKAction.move(to: xyPointDiff, duration: 0.1))
+                //Figure out new hero location/position
+                dungeonLevel.myHero.location.x = dungeonLevel.myHero.location.x + byAmount.x
+                dungeonLevel.myHero.location.y = dungeonLevel.myHero.location.y + byAmount.y
+                let xyPointDiff = convertBoardCoordinatetoCGPoint(x: dungeonLevel.myHero.location.x, y:dungeonLevel.myHero.location.y)
+                
+                //Move the background for parallax effect:
+                let newBackgroundX = dungeonLevel.dungeonBackground.position.x + (CGFloat(tileSize.width) * CGFloat(byAmount.x)*0.5)
+                let newBackgroundY = dungeonLevel.dungeonBackground.position.y + (CGFloat(tileSize.height) * CGFloat(byAmount.y)*0.35)
+                let newDungeonBackgroundPosition = CGPoint(x: newBackgroundX, y: newBackgroundY)
+                
+                //Run the actions; do I need to group these to do in parallel???
+                dungeonLevel.dungeonBackground.run(SKAction.move(to: newDungeonBackgroundPosition, duration: 0.1))
+                dungeonLevel.myHero.run(SKAction.move(to: xyPointDiff, duration: 0.1))
+            }
             
         default: break
         }
