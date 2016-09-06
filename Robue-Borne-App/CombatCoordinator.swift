@@ -66,8 +66,8 @@ class CombatCoordinator {
             
             //Check for monster! 
             //If Monster at this point in dictionary, then heroMeleeAttack()
-            if (dungeonLevel.monsterDictionary[newLocationToMoveTo.createKeyFromLocation()] == nil) {
-            
+            if (dungeonLevel.monsterDictionary[newLocationToMoveTo] == nil) {
+  
                 //Figure out new hero location/position
                 dungeonLevel.myHero.location.x = dungeonLevel.myHero.location.x + byAmount.x
                 dungeonLevel.myHero.location.y = dungeonLevel.myHero.location.y + byAmount.y

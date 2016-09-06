@@ -25,9 +25,8 @@ class DungeonLevel: SKNode {
     let myHero: Hero
 
     let aMonster: Monster
-    var monsters: [Monster]
-    var monsterDictionary: Dictionary<String, Monster>
-    
+    var monsterDictionary: Dictionary<DungeonLocation, Monster>
+
     let levelExit: Item
     
     let combatCoordinator: CombatCoordinator
@@ -64,13 +63,11 @@ class DungeonLevel: SKNode {
         self.levelExit = Item()
         
         self.initDungeonType = dungeonType
-        
-        self.monsters = [Monster()]
-        
+                
         self.combatCoordinator = CombatCoordinator()
         
         self.aMonster = Monster()
-        self.monsterDictionary = ["aMonster": aMonster]
+        self.monsterDictionary = [aMonster.location: aMonster]
         
         super.init()
         
@@ -276,50 +273,36 @@ class DungeonLevel: SKNode {
     
     func initMosters () {
     
+
         // ADD ONE MONSTER IN EVERY ROOM
         for roomIterator in 0...myDungeonMap.dungeonRooms.count-1 {
             
-            monsters.insert(Monster.init(), at: roomIterator)
             
             //Find a random coordinate within the room
             let roomWidth = myDungeonMap.dungeonRooms[roomIterator].location.x2 - myDungeonMap.dungeonRooms[roomIterator].location.x1 - 2
-            let randXPosition = Int(arc4random_uniform(UInt32(roomWidth))) + myDungeonMap.dungeonRooms[roomIterator].location.x1 + 1
-            
+            let randXLocation = Int(arc4random_uniform(UInt32(roomWidth))) + myDungeonMap.dungeonRooms[roomIterator].location.x1 + 1
             let roomHeight = myDungeonMap.dungeonRooms[roomIterator].location.y2 - myDungeonMap.dungeonRooms[roomIterator].location.y1 - 2
-            let randYPosition = Int(arc4random_uniform(UInt32(roomHeight))) + myDungeonMap.dungeonRooms[roomIterator].location.y1 + 1
-            
-            monsters[roomIterator].location.x = randXPosition
-            monsters[roomIterator].location.y = randYPosition
+            let randYLocation = Int(arc4random_uniform(UInt32(roomHeight))) + myDungeonMap.dungeonRooms[roomIterator].location.y1 + 1
+            let randomDungeonLocation = DungeonLocation(x: randXLocation, y: randYLocation)
 
             
-            
-            
             //Add a monster to the dictionary
-            monsterDictionary[monsters[roomIterator].location.createKeyFromLocation()] = monsters[roomIterator]
-            
-            
-            
-            
-            
-            
-            monsters[roomIterator].position = convertBoardCoordinatetoCGPoint(x: randXPosition, y: randYPosition)
-            
+            monsterDictionary[randomDungeonLocation] = Monster.init()
+            monsterDictionary[randomDungeonLocation]?.position = convertDungeonLocationtoCGPoint(dungeonLocation: randomDungeonLocation)
             
             //Set a somewhat random HP value on the MONSTER
-            monsters[roomIterator].hp = 100
-            
+            monsterDictionary[randomDungeonLocation]?.hp = 100
             
             //Pick one of the six random monster images.
             //Eventually, this should be picking one of the random monster types (sub-classes or protocols)
             let randMonster = Int(arc4random_uniform(6)) + 1
 
-            
             //Give monster some random look (here? Somewhere else?)
-            monsters[roomIterator].texture = SKTexture(imageNamed: "monster_" + String(randMonster))
-            monsters[roomIterator].size = SKTexture(imageNamed: "monster_" + String(randMonster)).size()
+            monsterDictionary[randomDungeonLocation]?.texture = SKTexture(imageNamed: "monster_" + String(randMonster))
+            monsterDictionary[randomDungeonLocation]?.size = SKTexture(imageNamed: "monster_" + String(randMonster)).size()
             
-            //Add the MONSTER
-            self.addChild(monsters[roomIterator])
+            //Add the MONSTER Sprite to the level
+            self.addChild(monsterDictionary[randomDungeonLocation]!)
             
         }
 

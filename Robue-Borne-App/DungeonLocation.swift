@@ -19,9 +19,9 @@ struct DungeonLocation: Hashable {
     var y: Int
     
     var hashValue: Int {
-        return ((self.x*1000)+self.y)
+        let hashString = (String(self.x)+","+String(self.y))
+        return hashString.hashValue
     }
-    
     
     static func == (lhs: DungeonLocation, rhs: DungeonLocation) -> Bool {
         
@@ -101,5 +101,26 @@ func convertBoardCoordinatetoCGPoint (x: Int, y: Int, mini: Bool = false) -> CGP
     
 }
 
+
+func convertDungeonLocationtoCGPoint (dungeonLocation: DungeonLocation, mini: Bool = false) -> CGPoint {
+    
+    let retX: Int
+    let retY: Int
+    
+    if mini == true {
+        
+        retX = dungeonLocation.x * miniTileSize.width
+        retY = dungeonLocation.y * miniTileSize.height
+        
+    } else {
+        
+        retX = dungeonLocation.x * tileSize.width
+        retY = dungeonLocation.y * tileSize.height
+        
+    }
+    
+    return CGPoint(x: retX, y: retY)
+    
+}
 
 
