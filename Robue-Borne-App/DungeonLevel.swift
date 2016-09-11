@@ -58,7 +58,7 @@ class DungeonLevel: SKNode {
     
     init(dungeonType: String) {
         
-        self.myHero = LivingThing(withThingType: KindsOfLivingThings.hero)
+        self.myHero = LivingThing(withThingType: KindsOfLivingThings.hero, atLocation: DungeonLocation(x: 1, y: 1))
 
         self.levelExit = Item()
         
@@ -66,7 +66,7 @@ class DungeonLevel: SKNode {
                 
         self.combatCoordinator = CombatCoordinator()
         
-        self.aMonster = LivingThing(withThingType: KindsOfLivingThings.monster)
+        self.aMonster = LivingThing(withThingType: KindsOfLivingThings.monster, atLocation: DungeonLocation(x:1, y:1))
         self.monsterDictionary = [aMonster.location: aMonster]
         
         super.init()
@@ -287,7 +287,8 @@ class DungeonLevel: SKNode {
 
             
             //Add a monster to the dictionary
-            monsterDictionary[randomDungeonLocation] = LivingThing.init(withThingType: KindsOfLivingThings.monster)
+            monsterDictionary[randomDungeonLocation] = LivingThing.init(withThingType: KindsOfLivingThings.monster, atLocation: randomDungeonLocation)
+            
             monsterDictionary[randomDungeonLocation]?.position = convertDungeonLocationtoCGPoint(dungeonLocation: randomDungeonLocation)
             
             //Set a somewhat random HP value on the MONSTER

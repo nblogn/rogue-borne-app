@@ -48,11 +48,10 @@ class LivingThing: SKSpriteNode {
     
     var location: DungeonLocation
     var hitPoints: Int
-
-    
-    
     let thingType: KindsOfLivingThings
     
+    
+    let hpMeter: SKSpriteNode
     
     
     required init?(coder aDecoder: NSCoder) {
@@ -62,12 +61,12 @@ class LivingThing: SKSpriteNode {
     
     
     
-    init(withThingType: KindsOfLivingThings) {
+    init(withThingType: KindsOfLivingThings, atLocation: DungeonLocation) {
         
         let texture: SKTexture
         let texture_n: SKTexture
         
-        self.location = DungeonLocation.init(x: 10, y: 10)
+        self.location = atLocation
         
         self.thingType = withThingType
         
@@ -83,8 +82,15 @@ class LivingThing: SKSpriteNode {
             self.hitPoints = 5
         }
         
-        super.init(texture: texture, color: SKColor.clear, size: cgTileSize)
         
+        //Hit Points meter (on character)
+        hpMeter = SKSpriteNode(color: UIColor(red: 0.4, green: 0.0, blue: 0.0, alpha: 0.95), size: CGSize(width: tileSize.width, height: (tileSize.height/10)))
+        hpMeter.anchorPoint = CGPoint(x: 0, y: 0)
+        hpMeter.position = CGPoint(x: -(tileSize.width/2), y: -(tileSize.height/2))
+        hpMeter.zPosition = 51
+        
+        super.init(texture: texture, color: SKColor.clear, size: cgTileSize)
+
         
         if self.thingType == .hero {
             self.name = "hero"
@@ -94,8 +100,17 @@ class LivingThing: SKSpriteNode {
         }
         
         
+        self.addChild(hpMeter)
+
         
         self.zPosition = 50
+        
+    }
+    
+    
+    func updateStatsView() -> Void {
+        
+        
         
     }
     

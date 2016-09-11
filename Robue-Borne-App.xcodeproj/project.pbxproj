@@ -207,14 +207,14 @@
 			name = Dungeon;
 			sourceTree = "<group>";
 		};
-		03602A131D8478E100AB92CE /* Characters */ = {
+		03602A131D8478E100AB92CE /* Living things (that move) */ = {
 			isa = PBXGroup;
 			children = (
 				03D53B961CBCAA71009DBD30 /* CharacterProtocols.swift */,
 				03602A101D84789A00AB92CE /* LivingThing.swift */,
 				035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */,
 			);
-			name = Characters;
+			name = "Living things (that move)";
 			sourceTree = "<group>";
 		};
 		03602A141D84790700AB92CE /* User Interface */ = {
@@ -230,7 +230,7 @@
 			name = "User Interface";
 			sourceTree = "<group>";
 		};
-		03602A151D847F8C00AB92CE /* Items */ = {
+		03602A151D847F8C00AB92CE /* Items (that are stagnant) */ = {
 			isa = PBXGroup;
 			children = (
 				03D53B941CBCAA37009DBD30 /* ItemProtocols.swift */,
@@ -238,7 +238,7 @@
 				03E3A0D91CAF9B0C0044758D /* Light.swift */,
 				03337F861CB8800200C8CE98 /* FireParticle.sks */,
 			);
-			name = Items;
+			name = "Items (that are stagnant)";
 			sourceTree = "<group>";
 		};
 		03659F671D8500600026005D /* Startup */ = {
@@ -317,8 +317,8 @@
 				03659F671D8500600026005D /* Startup */,
 				03602A141D84790700AB92CE /* User Interface */,
 				03602A121D8478B100AB92CE /* Dungeon */,
-				03602A131D8478E100AB92CE /* Characters */,
-				03602A151D847F8C00AB92CE /* Items */,
+				03602A131D8478E100AB92CE /* Living things (that move) */,
+				03602A151D847F8C00AB92CE /* Items (that are stagnant) */,
 				03659F681D850C7C0026005D /* Helpers */,
 			);
 			path = "Robue-Borne-App";
