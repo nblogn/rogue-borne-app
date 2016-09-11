@@ -25,11 +25,15 @@
 		035C2F591CB4B59D0087651F /* cb9_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 035C2F4F1CB4B59D0087651F /* cb9_n.png */; };
 		035C2F5A1CB4B59D0087651F /* cb10_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 035C2F501CB4B59D0087651F /* cb10_n.png */; };
 		035F06AF1CC2F70600C53A49 /* CharacterDetailsPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */; };
+		03602A111D84789A00AB92CE /* LivingThing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03602A101D84789A00AB92CE /* LivingThing.swift */; };
 		036264611CEEC72B0060257D /* MiniMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 036264601CEEC72B0060257D /* MiniMapView.swift */; };
 		0371554E1D56538900047B84 /* Jaia_bw_head.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0371554D1D56538900047B84 /* Jaia_bw_head.jpg */; };
 		037155501D56629900047B84 /* jaia_bw_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 0371554F1D56629900047B84 /* jaia_bw_n.png */; };
 		037235C71D5FCAD300549610 /* 643931_l_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 037235C61D5FCAD300549610 /* 643931_l_n.png */; };
 		038229E51C8CBC4700D84701 /* DPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038229E41C8CBC4700D84701 /* DPad.swift */; };
+		038A21051D84DAE800E32EED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 038A21011D84DAE800E32EED /* LaunchScreen.storyboard */; };
+		038A21061D84DAE800E32EED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 038A21031D84DAE800E32EED /* Main.storyboard */; };
+		038A21091D84E10F00E32EED /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 038A21081D84E10F00E32EED /* GameScene.sks */; };
 		0394FFFA1C702FCB00654A19 /* RB_Grass_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF51C702FCB00654A19 /* RB_Grass_2x.png */; };
 		0394FFFB1C702FCB00654A19 /* RB_Wall_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF61C702FCB00654A19 /* RB_Wall_2x.png */; };
 		0394FFFC1C702FCB00654A19 /* RB_Dude_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0394FFF71C702FCB00654A19 /* RB_Dude_2x.png */; };
@@ -43,17 +47,13 @@
 		03B453601C93DEAD00E937D0 /* Monster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B4535F1C93DEAD00E937D0 /* Monster.swift */; };
 		03B453621C93DEBB00E937D0 /* ItemClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B453611C93DEBB00E937D0 /* ItemClass.swift */; };
 		03C1DE741C6C3C8D00CDCF8F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE731C6C3C8D00CDCF8F /* AppDelegate.swift */; };
-		03C1DE761C6C3C8D00CDCF8F /* StartScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03C1DE751C6C3C8D00CDCF8F /* StartScene.sks */; };
-		03C1DE781C6C3C8D00CDCF8F /* StartScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE771C6C3C8D00CDCF8F /* StartScene.swift */; };
+		03C1DE781C6C3C8D00CDCF8F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE771C6C3C8D00CDCF8F /* GameScene.swift */; };
 		03C1DE7A1C6C3C8D00CDCF8F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE791C6C3C8D00CDCF8F /* GameViewController.swift */; };
-		03C1DE7D1C6C3C8D00CDCF8F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03C1DE7B1C6C3C8D00CDCF8F /* Main.storyboard */; };
 		03C1DE7F1C6C3C8D00CDCF8F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03C1DE7E1C6C3C8D00CDCF8F /* Assets.xcassets */; };
-		03C1DE821C6C3C8D00CDCF8F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03C1DE801C6C3C8D00CDCF8F /* LaunchScreen.storyboard */; };
 		03C1DE8D1C6C3C8D00CDCF8F /* Robue_Borne_AppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE8C1C6C3C8D00CDCF8F /* Robue_Borne_AppTests.swift */; };
 		03C1DE981C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DE971C6C3C8D00CDCF8F /* Robue_Borne_AppUITests.swift */; };
 		03C1DEA61C6C420E00CDCF8F /* DungeonMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */; };
 		03C1DEA81C6C467500CDCF8F /* Hero.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C1DEA71C6C467500CDCF8F /* Hero.swift */; };
-		03C64A151CC456AE00DC8968 /* GenericRoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */; };
 		03C7B7611D2E1588002981D6 /* FeatureList-TODO.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 03C7B7601D2E1588002981D6 /* FeatureList-TODO.rtf */; };
 		03CF64421D28267E0003D197 /* GenericRoundSpriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CF64411D28267E0003D197 /* GenericRoundSpriteButton.swift */; };
 		03D001BA1C9F843100685F29 /* CorridorVertical.png in Resources */ = {isa = PBXBuildFile; fileRef = 03D001B71C9F843100685F29 /* CorridorVertical.png */; };
@@ -105,11 +105,15 @@
 		035C2F4F1CB4B59D0087651F /* cb9_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb9_n.png; sourceTree = "<group>"; };
 		035C2F501CB4B59D0087651F /* cb10_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cb10_n.png; sourceTree = "<group>"; };
 		035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CharacterDetailsPopup.swift; sourceTree = "<group>"; };
+		03602A101D84789A00AB92CE /* LivingThing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LivingThing.swift; sourceTree = "<group>"; };
 		036264601CEEC72B0060257D /* MiniMapView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MiniMapView.swift; sourceTree = "<group>"; };
 		0371554D1D56538900047B84 /* Jaia_bw_head.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Jaia_bw_head.jpg; sourceTree = "<group>"; };
 		0371554F1D56629900047B84 /* jaia_bw_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jaia_bw_n.png; sourceTree = "<group>"; };
 		037235C61D5FCAD300549610 /* 643931_l_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 643931_l_n.png; sourceTree = "<group>"; };
 		038229E41C8CBC4700D84701 /* DPad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPad.swift; sourceTree = "<group>"; };
+		038A21021D84DAE800E32EED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		038A21041D84DAE800E32EED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		038A21081D84E10F00E32EED /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		0394FFF51C702FCB00654A19 /* RB_Grass_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Grass_2x.png; path = "Robue-Borne-App/RB_Grass_2x.png"; sourceTree = "<group>"; };
 		0394FFF61C702FCB00654A19 /* RB_Wall_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Wall_2x.png; path = "Robue-Borne-App/RB_Wall_2x.png"; sourceTree = "<group>"; };
 		0394FFF71C702FCB00654A19 /* RB_Dude_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = RB_Dude_2x.png; path = "Robue-Borne-App/RB_Dude_2x.png"; sourceTree = "<group>"; };
@@ -124,12 +128,9 @@
 		03B453611C93DEBB00E937D0 /* ItemClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemClass.swift; sourceTree = "<group>"; };
 		03C1DE701C6C3C8D00CDCF8F /* Robue-Borne-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Robue-Borne-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C1DE731C6C3C8D00CDCF8F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		03C1DE751C6C3C8D00CDCF8F /* StartScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = StartScene.sks; sourceTree = "<group>"; };
-		03C1DE771C6C3C8D00CDCF8F /* StartScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScene.swift; sourceTree = "<group>"; };
+		03C1DE771C6C3C8D00CDCF8F /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		03C1DE791C6C3C8D00CDCF8F /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		03C1DE7C1C6C3C8D00CDCF8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		03C1DE7E1C6C3C8D00CDCF8F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		03C1DE811C6C3C8D00CDCF8F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		03C1DE831C6C3C8D00CDCF8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03C1DE881C6C3C8D00CDCF8F /* Robue-Borne-AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Robue-Borne-AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		03C1DE8C1C6C3C8D00CDCF8F /* Robue_Borne_AppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Robue_Borne_AppTests.swift; sourceTree = "<group>"; };
@@ -139,7 +140,6 @@
 		03C1DE991C6C3C8D00CDCF8F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; fileEncoding = 4; path = DungeonMap.swift; sourceTree = "<group>"; };
 		03C1DEA71C6C467500CDCF8F /* Hero.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hero.swift; sourceTree = "<group>"; };
-		03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericRoundButton.swift; sourceTree = "<group>"; };
 		03C7B7601D2E1588002981D6 /* FeatureList-TODO.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = "FeatureList-TODO.rtf"; sourceTree = "<group>"; };
 		03CF64411D28267E0003D197 /* GenericRoundSpriteButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericRoundSpriteButton.swift; sourceTree = "<group>"; };
 		03D001B71C9F843100685F29 /* CorridorVertical.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CorridorVertical.png; sourceTree = "<group>"; };
@@ -197,6 +197,80 @@
 			name = CircuitFloors;
 			sourceTree = "<group>";
 		};
+		03602A121D8478B100AB92CE /* Dungeon */ = {
+			isa = PBXGroup;
+			children = (
+				0333EC381CCBD44700BB0522 /* DungeonLevel.swift */,
+				03D94CCD1D519FC500773311 /* CombatCoordinator.swift */,
+				03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */,
+				03E1BC161D582FCB00D92E54 /* DungeonMapView.swift */,
+				0335B99B1D77E53F00A65634 /* DungeonLocation.swift */,
+				03D001BD1C9FAAF000685F29 /* Tile.swift */,
+				036264601CEEC72B0060257D /* MiniMapView.swift */,
+			);
+			name = Dungeon;
+			sourceTree = "<group>";
+		};
+		03602A131D8478E100AB92CE /* Characters */ = {
+			isa = PBXGroup;
+			children = (
+				03D53B961CBCAA71009DBD30 /* CharacterProtocols.swift */,
+				03602A101D84789A00AB92CE /* LivingThing.swift */,
+				03C1DEA71C6C467500CDCF8F /* Hero.swift */,
+				03B4535F1C93DEAD00E937D0 /* Monster.swift */,
+				035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */,
+			);
+			name = Characters;
+			sourceTree = "<group>";
+		};
+		03602A141D84790700AB92CE /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				03C1DE7E1C6C3C8D00CDCF8F /* Assets.xcassets */,
+				038A21081D84E10F00E32EED /* GameScene.sks */,
+				03C1DE771C6C3C8D00CDCF8F /* GameScene.swift */,
+				03EE7FDD1C6FA1DC00244144 /* PlayScene.swift */,
+				039A0BBA1CF1899000C489D6 /* LoadingView.swift */,
+				038229E41C8CBC4700D84701 /* DPad.swift */,
+			);
+			name = "User Interface";
+			sourceTree = "<group>";
+		};
+		03602A151D847F8C00AB92CE /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				03D53B941CBCAA37009DBD30 /* ItemProtocols.swift */,
+				03B453611C93DEBB00E937D0 /* ItemClass.swift */,
+				03E3A0D91CAF9B0C0044758D /* Light.swift */,
+				03337F861CB8800200C8CE98 /* FireParticle.sks */,
+			);
+			name = Items;
+			sourceTree = "<group>";
+		};
+		03659F671D8500600026005D /* Startup */ = {
+			isa = PBXGroup;
+			children = (
+				03C1DE831C6C3C8D00CDCF8F /* Info.plist */,
+				03C1DE731C6C3C8D00CDCF8F /* AppDelegate.swift */,
+				038A21011D84DAE800E32EED /* LaunchScreen.storyboard */,
+				038A21031D84DAE800E32EED /* Main.storyboard */,
+				03C1DE791C6C3C8D00CDCF8F /* GameViewController.swift */,
+			);
+			name = Startup;
+			sourceTree = "<group>";
+		};
+		03659F681D850C7C0026005D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				03CF64411D28267E0003D197 /* GenericRoundSpriteButton.swift */,
+				03A04D921CDB148B00A9E2E8 /* GenericText.swift */,
+				03A740111D0CA0ED0066A4DB /* SgButton.swift */,
+				03D001BF1C9FAF7300685F29 /* HelperFunctions.swift */,
+				033F8D1C1CC4204B009722FF /* testScene.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		0394FFFF1C702FDC00654A19 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -245,39 +319,13 @@
 		03C1DE721C6C3C8D00CDCF8F /* Robue-Borne-App */ = {
 			isa = PBXGroup;
 			children = (
-				03C1DE7E1C6C3C8D00CDCF8F /* Assets.xcassets */,
 				03C7B7601D2E1588002981D6 /* FeatureList-TODO.rtf */,
-				03C1DE731C6C3C8D00CDCF8F /* AppDelegate.swift */,
-				03C1DE791C6C3C8D00CDCF8F /* GameViewController.swift */,
-				03C1DE771C6C3C8D00CDCF8F /* StartScene.swift */,
-				03EE7FDD1C6FA1DC00244144 /* PlayScene.swift */,
-				03D94CCD1D519FC500773311 /* CombatCoordinator.swift */,
-				0333EC381CCBD44700BB0522 /* DungeonLevel.swift */,
-				03C1DEA51C6C420E00CDCF8F /* DungeonMap.swift */,
-				03E1BC161D582FCB00D92E54 /* DungeonMapView.swift */,
-				0335B99B1D77E53F00A65634 /* DungeonLocation.swift */,
-				03D001BD1C9FAAF000685F29 /* Tile.swift */,
-				036264601CEEC72B0060257D /* MiniMapView.swift */,
-				035F06AE1CC2F70600C53A49 /* CharacterDetailsPopup.swift */,
-				03D53B961CBCAA71009DBD30 /* CharacterProtocols.swift */,
-				039A0BBA1CF1899000C489D6 /* LoadingView.swift */,
-				038229E41C8CBC4700D84701 /* DPad.swift */,
-				03D53B941CBCAA37009DBD30 /* ItemProtocols.swift */,
-				03C1DEA71C6C467500CDCF8F /* Hero.swift */,
-				03B4535F1C93DEAD00E937D0 /* Monster.swift */,
-				03B453611C93DEBB00E937D0 /* ItemClass.swift */,
-				03E3A0D91CAF9B0C0044758D /* Light.swift */,
-				03337F861CB8800200C8CE98 /* FireParticle.sks */,
-				03C64A141CC456AE00DC8968 /* GenericRoundButton.swift */,
-				03CF64411D28267E0003D197 /* GenericRoundSpriteButton.swift */,
-				03A04D921CDB148B00A9E2E8 /* GenericText.swift */,
-				03A740111D0CA0ED0066A4DB /* SgButton.swift */,
-				03D001BF1C9FAF7300685F29 /* HelperFunctions.swift */,
-				03C1DE751C6C3C8D00CDCF8F /* StartScene.sks */,
-				03C1DE7B1C6C3C8D00CDCF8F /* Main.storyboard */,
-				033F8D1C1CC4204B009722FF /* testScene.swift */,
-				03C1DE801C6C3C8D00CDCF8F /* LaunchScreen.storyboard */,
-				03C1DE831C6C3C8D00CDCF8F /* Info.plist */,
+				03659F671D8500600026005D /* Startup */,
+				03602A141D84790700AB92CE /* User Interface */,
+				03602A121D8478B100AB92CE /* Dungeon */,
+				03602A131D8478E100AB92CE /* Characters */,
+				03602A151D847F8C00AB92CE /* Items */,
+				03659F681D850C7C0026005D /* Helpers */,
 			);
 			path = "Robue-Borne-App";
 			sourceTree = "<group>";
@@ -411,6 +459,7 @@
 				035C2F541CB4B59D0087651F /* cb4_n.png in Resources */,
 				035C2F591CB4B59D0087651F /* cb9_n.png in Resources */,
 				035C2F581CB4B59D0087651F /* cb8_n.png in Resources */,
+				038A21051D84DAE800E32EED /* LaunchScreen.storyboard in Resources */,
 				0398CEF41D61881F00DBA80F /* Icon-60@2x.jpg in Resources */,
 				035C2F571CB4B59D0087651F /* cb7_n.png in Resources */,
 				0394FFFA1C702FCB00654A19 /* RB_Grass_2x.png in Resources */,
@@ -426,9 +475,8 @@
 				032B72BB1D60E6ED0080F1AB /* 45720660_xxl.jpg in Resources */,
 				03C7B7611D2E1588002981D6 /* FeatureList-TODO.rtf in Resources */,
 				03A3A9181D4DCC13006BFFBC /* 643931_l.jpg in Resources */,
-				03C1DE761C6C3C8D00CDCF8F /* StartScene.sks in Resources */,
-				03C1DE821C6C3C8D00CDCF8F /* LaunchScreen.storyboard in Resources */,
 				0394FFFE1C702FCB00654A19 /* RB_Floor_Grey_2x.png in Resources */,
+				038A21091D84E10F00E32EED /* GameScene.sks in Resources */,
 				0394FFFB1C702FCB00654A19 /* RB_Wall_2x.png in Resources */,
 				03337F881CB8800200C8CE98 /* FireParticle.sks in Resources */,
 				0371554E1D56538900047B84 /* Jaia_bw_head.jpg in Resources */,
@@ -438,8 +486,8 @@
 				0394FFFC1C702FCB00654A19 /* RB_Dude_2x.png in Resources */,
 				0394FFFD1C702FCB00654A19 /* RB_Floor_Green_2x.png in Resources */,
 				037235C71D5FCAD300549610 /* 643931_l_n.png in Resources */,
+				038A21061D84DAE800E32EED /* Main.storyboard in Resources */,
 				03D001BB1C9F843100685F29 /* Door.png in Resources */,
-				03C1DE7D1C6C3C8D00CDCF8F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,10 +520,9 @@
 				03D53B971CBCAA71009DBD30 /* CharacterProtocols.swift in Sources */,
 				03B453621C93DEBB00E937D0 /* ItemClass.swift in Sources */,
 				039A0BBB1CF1899000C489D6 /* LoadingView.swift in Sources */,
-				03C1DE781C6C3C8D00CDCF8F /* StartScene.swift in Sources */,
+				03C1DE781C6C3C8D00CDCF8F /* GameScene.swift in Sources */,
 				03C1DEA81C6C467500CDCF8F /* Hero.swift in Sources */,
 				03B453601C93DEAD00E937D0 /* Monster.swift in Sources */,
-				03C64A151CC456AE00DC8968 /* GenericRoundButton.swift in Sources */,
 				03E3A0DA1CAF9B0C0044758D /* Light.swift in Sources */,
 				033F8D1D1CC4204B009722FF /* testScene.swift in Sources */,
 				03C1DE7A1C6C3C8D00CDCF8F /* GameViewController.swift in Sources */,
@@ -488,6 +535,7 @@
 				03D001C01C9FAF7300685F29 /* HelperFunctions.swift in Sources */,
 				03D53B951CBCAA37009DBD30 /* ItemProtocols.swift in Sources */,
 				03C1DEA61C6C420E00CDCF8F /* DungeonMap.swift in Sources */,
+				03602A111D84789A00AB92CE /* LivingThing.swift in Sources */,
 				03E1BC171D582FCB00D92E54 /* DungeonMapView.swift in Sources */,
 				0333EC391CCBD44700BB0522 /* DungeonLevel.swift in Sources */,
 			);
@@ -525,20 +573,20 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		03C1DE7B1C6C3C8D00CDCF8F /* Main.storyboard */ = {
+		038A21011D84DAE800E32EED /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				03C1DE7C1C6C3C8D00CDCF8F /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		03C1DE801C6C3C8D00CDCF8F /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				03C1DE811C6C3C8D00CDCF8F /* Base */,
+				038A21021D84DAE800E32EED /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		038A21031D84DAE800E32EED /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				038A21041D84DAE800E32EED /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

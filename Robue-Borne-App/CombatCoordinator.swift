@@ -64,8 +64,7 @@ class CombatCoordinator {
             
         case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
             
-            //Check for monster! 
-            //If Monster at this point in dictionary, then heroMeleeAttack()
+            //Check for monster! If no Monster at this point in dictionary move, else heroMeleeAttack()
             if (dungeonLevel.monsterDictionary[newLocationToMoveTo] == nil) {
   
                 //Figure out new hero location/position
@@ -81,7 +80,13 @@ class CombatCoordinator {
                 //Run the actions; do I need to group these to do in parallel???
                 dungeonLevel.dungeonBackground.run(SKAction.move(to: newDungeonBackgroundPosition, duration: 0.1))
                 dungeonLevel.myHero.run(SKAction.move(to: xyPointDiff, duration: 0.1))
+
+            } else {
+
+                //Fight the monster the player moved into
+                heroMeleeAttack()
             }
+            
             
         default: break
         }
@@ -223,6 +228,11 @@ class CombatCoordinator {
     private func monsterAttack() -> Void {
         
         
+        
+    }
+    
+    
+    private func attackCalculator() -> Void {
         
     }
     

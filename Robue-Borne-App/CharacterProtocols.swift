@@ -12,13 +12,15 @@ import Foundation
 
 
 
-protocol basicCharacterAbilities {
+protocol BasicCharacterAbilities {
     var hitPoints: Int {get set}
     var location: DungeonLocation {get set}
 
     func getStats() -> String
     func getCurrentLocation() -> DungeonLocation
 }
+
+//extension basicCharacterAbilities where Self: BasicCharacterAbilities
 
 
 

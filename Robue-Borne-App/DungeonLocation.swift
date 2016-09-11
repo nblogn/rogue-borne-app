@@ -76,9 +76,7 @@ struct DungeonLocation: Hashable {
 
 //-------------------------------------------------------------------------------------------//
 //Handling board coordinate space
-//Generic func to place a tile on the board.
-//Given a board position convert to CGPoint
-//From me: I probably need some conversions of array coordinates to CGPoint coordinate...
+//Given a board position (or, preferably, a DungeonLocation) convert to CGPoint
 //-------------------------------------------------------------------------------------------//
 func convertBoardCoordinatetoCGPoint (x: Int, y: Int, mini: Bool = false) -> CGPoint {
     

@@ -8,57 +8,40 @@
 
 import SpriteKit
 
-class StartScene: SKScene {
+class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
-        self.backgroundColor = SKColor(red: 0.13, green: 0.1, blue: 0.15, alpha: 0.9)
+        //self.backgroundColor = SKColor(red: 0.13, green: 0.1, blue: 0.15, alpha: 0.9)
         
         
-        let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(StartScene.handleTapFrom(_:)))
+        let gestureTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(GameScene.handleTapFrom(_:)))
         self.view!.addGestureRecognizer(gestureTapRecognizer)
 
         
-        
-        let myTitle = SKLabelNode(fontNamed:"Chalkduster")
-        myTitle.text = "Mimeophobia"
-        myTitle.fontSize = 45
-        myTitle.fontColor = SKColor.red
-        myTitle.position = CGPoint(x:self.frame.midX, y:self.frame.midY+200)
-        self.addChild(myTitle)
-        
-        let mySubTitle = SKLabelNode(fontNamed: "cochin")
-        mySubTitle.text = "...Or How I Learned To Love My Doppleganger"
-        mySubTitle.fontSize = 20
-        mySubTitle.fontColor = SKColor.red
-        mySubTitle.position = CGPoint(x:self.frame.midX, y:self.frame.midY+150)
-        self.addChild(mySubTitle)
-
-        
         let createCellMapButton = GenericRoundSpriteButtonWithName("cellMapButton", text: "Create a Cell Map")
-        createCellMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-40)
+        createCellMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-20)
         self.addChild(createCellMapButton)
         
         
         let createCellAutoMapButton = GenericRoundSpriteButtonWithName("cellAutoMapButton", text: "Create a Cellular Automata Map")
-        createCellAutoMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-110)
+        createCellAutoMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-70)
         self.addChild(createCellAutoMapButton)
         
 
         let createBigBangMapButton = GenericRoundSpriteButtonWithName("bigBangMapButton", text: "Create a Best Fit, left to Right Map")
-        createBigBangMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-180)
+        createBigBangMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-120)
         self.addChild(createBigBangMapButton)
         
         
         let testSceneMapButton = GenericRoundSpriteButtonWithName("testScenePlayground", text: "Test Shit Goes Here")
-        testSceneMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-250)
+        testSceneMapButton.position = CGPoint(x:self.frame.midX, y:self.frame.midY-170)
         self.addChild(testSceneMapButton)
 
     }
     
     
-    
-    
+
     
     //-------------------------------------------------------------------------------------------//
     //
@@ -111,10 +94,7 @@ class StartScene: SKScene {
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        
 
-        
     }
     
    

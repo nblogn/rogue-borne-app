@@ -40,9 +40,9 @@ class GenericRoundSpriteButtonWithName: SKSpriteNode {
         
         //////////
         //Create button text
-        let buttonText = SKLabelNode(fontNamed:"Cochin")
+        let buttonText = SKLabelNode(fontNamed:"HelveticaBold")
         buttonText.text = text
-        buttonText.fontSize = 28
+        buttonText.fontSize = 20
         buttonText.fontColor = SKColor.white
         buttonText.zPosition = 100
         buttonText.name = name
@@ -54,7 +54,7 @@ class GenericRoundSpriteButtonWithName: SKSpriteNode {
         let buttonSize = CGSize(width: textBounds.width, height: textBounds.height)
         
         //Init super class
-        let buttonColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.7)
+        let buttonColor = UIColor(red: 0.2, green: 0.1, blue: 0.3, alpha: 0.8)
         super.init(texture:nil, color: buttonColor, size: buttonSize)
 
         //Set self properties

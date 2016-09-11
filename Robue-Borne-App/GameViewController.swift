@@ -13,21 +13,27 @@ class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        if let view = self.view as! SKView? {
+            
+            // Load the SKScene from 'GameScene.sks'
+            if let scene = GameScene(fileNamed: "GameScene") {
+                
+                // Set the scale mode to scale to fit the window WHEN ROTATED
+                scene.scaleMode = .aspectFill
 
-        if let scene = StartScene(fileNamed:"StartScene") {
-            // Configure the view.
-            let skView = self.view as! SKView
-            skView.showsFPS = true
-            skView.showsNodeCount = true
+                // Present the scene
+                view.presentScene(scene)
+            }
             
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
-            skView.ignoresSiblingOrder = true
+            //For perf, I've read...
+            view.ignoresSiblingOrder = true
             
-            /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .aspectFill
-            
-            skView.presentScene(scene)
+            view.showsFPS = true
+            view.showsNodeCount = true
         }
+        
     }
 
     override var shouldAutorotate: Bool {

@@ -18,9 +18,7 @@ import SpriteKit
 //
 //-----------------------------------------------------------------------------------------------//
 class PlayScene: SKScene {
-    
-    
-    
+
     //-------------------------------------------------------------------------------------------//
     //
     //lets and vars for the class
@@ -55,7 +53,6 @@ class PlayScene: SKScene {
 
     //Init with the dungeonType (NOTE: not an override since I'm adding attributes)
     init(size: CGSize, dungeonType: String) {
-        
         
         //INIT UI Elements
         //TODO: Design pattern for naming? Name here or in the init of the class?
@@ -149,33 +146,35 @@ class PlayScene: SKScene {
         //////////
         //Configure and add the d-pad
         myDPad.zPosition = 100
-        myDPad.position = CGPoint(x: -525, y:-400)
+        myDPad.position = CGPoint(x: -620, y:-360)
         //myDPad.xScale = 0.7
         //myDPad.yScale = 0.85
         myCamera.addChild(myDPad)
 
         
+        print("PlayScene Size: ", self.size)
+        
         //////////
         //Set the background...
-        self.backgroundColor = SKColor(red: 0.3, green: 0.03, blue: 0.01, alpha: 0.5)
+        self.backgroundColor = SKColor(red: 1.0, green: 0.03, blue: 0.01, alpha: 0.5)
         
         
         //////////
         //Button to return to main menu
         let mainMenuButton = GenericRoundSpriteButtonWithName("mainMenuButton", text: "Main Menu")
-        mainMenuButton.position = CGPoint(x: -400, y:350)
+        mainMenuButton.position = CGPoint(x: -500, y:300)
         myCamera.addChild(mainMenuButton)
 
         //////////
         //Button to show mini map
         let miniMapButton = GenericRoundSpriteButtonWithName("miniMapButton", text: "Map")
-        miniMapButton.position = CGPoint(x: -400, y:275)
+        miniMapButton.position = CGPoint(x: -500, y:250)
         myCamera.addChild(miniMapButton)
 
         /////////
         //Torch GenericRoundSpriteButton
-        let spriteButton = GenericRoundSpriteButtonWithName("torch", text: "Torch")
-        spriteButton.position = CGPoint(x: -400, y: 200)
+        let spriteButton = GenericRoundSpriteButtonWithName("torch", text: "Lights")
+        spriteButton.position = CGPoint(x: -500, y: 200)
         myCamera.addChild(spriteButton)
         
         
@@ -237,7 +236,7 @@ class PlayScene: SKScene {
             // This just multiplies your velocity with the scroll duration.
             let p = CGPoint(x: velocity.x * CGFloat(scrollDuration), y: velocity.y * CGFloat(scrollDuration))
             
-            let newPos = CGPoint(x: pos.x + p.x, y: pos.y - p.y)
+            let newPos = CGPoint(x: pos.x - p.x, y: pos.y + p.y)
             //newPos = self.boundLayerPos(newPos)
             selectedNode.removeAllActions()
             
@@ -302,10 +301,7 @@ class PlayScene: SKScene {
                 
             }
             
-            
         }
-
-        
 
     }
 
@@ -353,8 +349,8 @@ class PlayScene: SKScene {
                 case "mainMenuButton":
                     //Go back to the StartScene if Main Menu is pressed
                     let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-                    let startScene = StartScene(size: self.size)
-                    self.view?.presentScene(startScene, transition: reveal)
+                    let gameScene = SKScene(size: self.size)
+                    self.view?.presentScene(gameScene, transition: reveal)
                 
                 case "miniMapButton":
                     //Popup OR CLOSE the minimap
