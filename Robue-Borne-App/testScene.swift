@@ -29,9 +29,9 @@ class TestScene: SKScene {
         self.addChild(light)
         
         
-        let myHero: Hero = Hero ()
-        let aMonster: Monster = Monster ()
-        let heroTorch: SKLightNode = SKLightNode ()
+        let myHero: LivingThing = LivingThing(withThingType: KindsOfLivingThings.hero)
+        let aMonster: LivingThing = LivingThing(withThingType: KindsOfLivingThings.monster)
+        let heroTorch: SKLightNode = SKLightNode()
         
         
         //////////

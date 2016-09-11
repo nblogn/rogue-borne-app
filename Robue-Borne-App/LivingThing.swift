@@ -47,8 +47,13 @@ class LivingThing: SKSpriteNode {
     
     
     var location: DungeonLocation
-    var hitPoints: Int = 20
+    var hitPoints: Int
 
+    
+    
+    let thingType: KindsOfLivingThings
+    
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -57,45 +62,40 @@ class LivingThing: SKSpriteNode {
     
     
     
-    init(livingThing: KindsOfLivingThings) {
+    init(withThingType: KindsOfLivingThings) {
+        
+        let texture: SKTexture
+        let texture_n: SKTexture
         
         self.location = DungeonLocation.init(x: 10, y: 10)
         
-        let heroTexture = SKTexture(imageNamed: "Jaia_bw_head")
-        let heroTexture_n = SKTexture(imageNamed: "Jaia_bw_n.png")
+        self.thingType = withThingType
         
-        super.init(texture: heroTexture, color: SKColor.clear, size: cgTileSize)
         
-        print(heroTexture.size())
+        //Init textures based on thingType
+        if self.thingType == .hero {
+            texture = SKTexture(imageNamed: "Jaia_bw_head")
+            texture_n = SKTexture(imageNamed: "Jaia_bw_n.png")
+            self.hitPoints = 20
+        } else {//monster
+            texture = SKTexture(imageNamed: "monster_1")
+            texture_n = SKTexture(imageNamed: "Jaia_bw_n.png")
+            self.hitPoints = 5
+        }
         
-        //super.init(texture: heroTexture, normalMap: heroTexture_n)
+        super.init(texture: texture, color: SKColor.clear, size: cgTileSize)
         
-        self.normalTexture = heroTexture_n
-        self.name = "hero"
+        
+        if self.thingType == .hero {
+            self.name = "hero"
+            self.normalTexture = texture_n
+        } else if self.thingType == .monster {
+            self.name = "monster"
+        }
+        
+        
+        
         self.zPosition = 50
-        
-    }
-    
-    
-    init(monster: Monster) {
-        
-        monster.hp = 100
-        
-        self.location = DungeonLocation.init(x: 20, y: 20)
-        
-        let texture = SKTexture(imageNamed: "monster_1")
-        super.init(texture: texture, color: SKColor.clear, size: texture.size())
-        
-        self.name = "monster"
-        self.zPosition = 50
-        
-        
-    }
-    
-    
-    func getCurrentLocation() -> DungeonLocation {
-        
-        return location
         
     }
     
@@ -108,6 +108,19 @@ class LivingThing: SKSpriteNode {
     
     
     
+    func getCurrentLocation() -> DungeonLocation {
+        
+        return location
+        
+    }
+
+
+    
+    func setCurrentLocation(_ X: Int, Y: Int) -> Void {
+        location.x = X
+        location.y = Y
+    }
+
     
 }
 

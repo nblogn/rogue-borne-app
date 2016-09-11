@@ -22,10 +22,10 @@ class DungeonLevel: SKNode {
     
     let myDungeonMap = DungeonMap()
 
-    let myHero: Hero
+    let myHero: LivingThing
 
-    let aMonster: Monster
-    var monsterDictionary: Dictionary<DungeonLocation, Monster>
+    let aMonster: LivingThing
+    var monsterDictionary: Dictionary<DungeonLocation, LivingThing>
 
     let levelExit: Item
     
@@ -58,7 +58,7 @@ class DungeonLevel: SKNode {
     
     init(dungeonType: String) {
         
-        self.myHero = Hero()
+        self.myHero = LivingThing(withThingType: KindsOfLivingThings.hero)
 
         self.levelExit = Item()
         
@@ -66,7 +66,7 @@ class DungeonLevel: SKNode {
                 
         self.combatCoordinator = CombatCoordinator()
         
-        self.aMonster = Monster()
+        self.aMonster = LivingThing(withThingType: KindsOfLivingThings.monster)
         self.monsterDictionary = [aMonster.location: aMonster]
         
         super.init()
@@ -287,11 +287,11 @@ class DungeonLevel: SKNode {
 
             
             //Add a monster to the dictionary
-            monsterDictionary[randomDungeonLocation] = Monster.init()
+            monsterDictionary[randomDungeonLocation] = LivingThing.init(withThingType: KindsOfLivingThings.monster)
             monsterDictionary[randomDungeonLocation]?.position = convertDungeonLocationtoCGPoint(dungeonLocation: randomDungeonLocation)
             
             //Set a somewhat random HP value on the MONSTER
-            monsterDictionary[randomDungeonLocation]?.hp = 100
+            //monsterDictionary[randomDungeonLocation]?.hp = 100
             
             //Pick one of the six random monster images.
             //Eventually, this should be picking one of the random monster types (sub-classes or protocols)

@@ -36,49 +36,58 @@ class CharacterDetailsPopup: SKNode {
         
         detailsModal.addChild(exitButton)
         
-        /////////////////
-        //Hero details
-        if nodeToDetail.isKind(of: Hero.self) {
+        
+        //Ensure the node we touched is a LivingThing
+        if nodeToDetail.isKind(of: LivingThing.self) {
             
             
-            print("touchedNode is a Hero")
-            print (nodeToDetail)
-            
-            //Force cast nodeToDetail to Hero (from SKNode)
-            let temp = nodeToDetail as! Hero
-            let stats: String = temp.getStats()
-            
-            let location: DungeonLocation = temp.getCurrentLocation()
-            
-            let memText = GenericText.init(name: "statsText", text: stats)
-            memText.position = CGPoint(x: 150, y: 450)
+            //Force-cast generic SKNode into the LivingThing type
+            let livingThingToDetail = nodeToDetail as! LivingThing
             
             
-            
-            
-            let roomInfoText = dungeonLevel.getRoomDetailsForLocation(location)?.roomType
-            
-            let dungeonRoomText: GenericText
-            
-            if roomInfoText != nil {
-                dungeonRoomText = GenericText.init(name: "hi", text: roomInfoText!)
+            /////////////////
+            //Hero details
+            if (livingThingToDetail.thingType == .hero) || (livingThingToDetail.thingType == .monster) {
+
+                //debug
+                print("touchedNode is a Hero or Monster")
+                print(nodeToDetail)
+                print(livingThingToDetail.hitPoints)
+                ///debug
+                
+                let stats: String = livingThingToDetail.getStats()
+                
+                let location: DungeonLocation = livingThingToDetail.getCurrentLocation()
+                
+                let memText = GenericText.init(name: "statsText", text: stats)
+                memText.position = CGPoint(x: 150, y: 450)
+                
+                let roomInfoText = dungeonLevel.getRoomDetailsForLocation(location)?.roomType
+                
+                let dungeonRoomText: GenericText
+                
+                if roomInfoText != nil {
+                    dungeonRoomText = GenericText.init(name: "hi", text: roomInfoText!)
+                } else {
+                    dungeonRoomText = GenericText.init(name: "hi", text: "Not in a room!")
+                }
+                
+                dungeonRoomText.position = CGPoint(x: 150, y:400)
+                
+                detailsModal.addChild(memText)
+                detailsModal.addChild(dungeonRoomText)
+                
             } else {
-                dungeonRoomText = GenericText.init(name: "hi", text: "Not in a room!")
+                //In case I want a different view for Monsters or something
             }
             
-            dungeonRoomText.position = CGPoint(x: 150, y:400)
-            
-            
-            detailsModal.addChild(memText)
-            detailsModal.addChild(dungeonRoomText)
-            
-            print(temp.hitPoints)
 
-        
         /////////////////
-        //Hero details
-        } else if nodeToDetail.isKind(of: Monster.self) {
-            
+        //Not a living thing
+        } else {
+            //Do nothing, but might want to detail other shit later
+            //...Such as items
+            //...or even just generic shit, like "hey, this is a piece of dirt"
         }
         
     }

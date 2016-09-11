@@ -349,8 +349,13 @@ class PlayScene: SKScene {
                 case "mainMenuButton":
                     //Go back to the StartScene if Main Menu is pressed
                     let reveal = SKTransition.flipHorizontal(withDuration: 0.5)
-                    let gameScene = SKScene(size: self.size)
-                    self.view?.presentScene(gameScene, transition: reveal)
+
+                    // Load the SKScene from 'GameScene.sks'
+                    if let scene = GameScene(fileNamed: "GameScene") {
+                        // Set the scale mode to scale to fit the window WHEN ROTATED
+                        scene.scaleMode = .aspectFill
+                        self.view?.presentScene(scene, transition: reveal)
+                    }
                 
                 case "miniMapButton":
                     //Popup OR CLOSE the minimap
