@@ -17,23 +17,17 @@ class DungeonLevel: SKNode {
     //Global lets and vars for the class
     //
     //-------------------------------------------------------------------------------------------//
-    
     let initDungeonType: String
-    
     let myDungeonMap = DungeonMap()
-
     let myHero: LivingThing
-
     let aMonster: LivingThing
     var monsterDictionary: Dictionary<DungeonLocation, LivingThing>
-
     let levelExit: Item
-    
     let combatCoordinator: CombatCoordinator
+    
     
     //Add a background
     let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "gold-heatsink"), color: SKColor.clear, size: SKTexture(imageNamed: "gold-heatsink").size())
-    
     //let dungeonBackground = SKSpriteNode(texture: SKTexture(imageNamed: "#imageLiteral(resourceName: "gold-heatsink")"), normalMap: SKTexture(imageNamed: "#imageLiteral(resourceName: "gold-heatsink-n")"))
     
     //Add a light source for the hero...
@@ -49,13 +43,11 @@ class DungeonLevel: SKNode {
     // INITS and BuildDungeonLevel
     //
     //-------------------------------------------------------------------------------------------//
-
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    
-    
+
     init(dungeonType: String) {
         
         self.myHero = LivingThing(withThingType: KindsOfLivingThings.hero, atLocation: DungeonLocation(x: 1, y: 1))
@@ -133,7 +125,6 @@ class DungeonLevel: SKNode {
     // Initialize lighting
     //
     //-------------------------------------------------------------------------------------------//
-    
     func initLighting () {
         
         //https://www.reddit.com/r/spritekit/comments/31vrmy/light_effect/
@@ -218,7 +209,6 @@ class DungeonLevel: SKNode {
     // Initialize hero
     //
     //-------------------------------------------------------------------------------------------//
-
     func initHero () {
         
         myHero.location.x = myDungeonMap.dungeonRooms[myDungeonMap.dungeonRooms.count - 1].location.x1+1
@@ -256,7 +246,6 @@ class DungeonLevel: SKNode {
     // Initialize items (...treasue...)
     //
     //-------------------------------------------------------------------------------------------//
-
     func initItems () {
         
         
@@ -270,7 +259,6 @@ class DungeonLevel: SKNode {
     // Initialize monsters
     //
     //-------------------------------------------------------------------------------------------//
-    
     func initMosters () {
     
 
@@ -340,12 +328,9 @@ class DungeonLevel: SKNode {
     // Return Tile information.
     // Given a tile location, return any object on top of it.
     //=====================================================================================================//
-
     func getTileContents(forTile: DungeonLocation){
         
-        //search all mosters (array) for proper coordinates
-        
-        
+        //search all mosters (dictionary) for proper coordinates
         
         //return monsters or items or whatever shit is on the tile location.
     }
@@ -356,9 +341,8 @@ class DungeonLevel: SKNode {
     
     //=====================================================================================================//
     // Return Room information -- doing this for debugging, but may be useful later
-    //
+    // TODO --> Rooms should be a dictionary too
     //=====================================================================================================//
-
     func getRoomDetailsForLocation (_ location: DungeonLocation) -> DungeonMap.DungeonRoom? {
         
         var tempRoom: DungeonMap.DungeonRoom? = nil

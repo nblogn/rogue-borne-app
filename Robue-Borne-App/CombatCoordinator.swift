@@ -33,6 +33,7 @@ class CombatCoordinator {
 
     func doTurn (heroTurnAction: HeroAction, dungeonLevel: DungeonLevel) -> Void {
         
+        //Hero's turn
         switch heroTurnAction {
         case let .moveBy(amount):
             moveHeroBy(byAmount: amount, dungeonLevel: dungeonLevel)
@@ -40,6 +41,7 @@ class CombatCoordinator {
             break
         }
         
+        //Monster's turn
         moveMonsters(dungeonLevel: dungeonLevel)
         
     }
@@ -84,7 +86,7 @@ class CombatCoordinator {
             } else {
 
                 //Fight the monster the player moved into
-                heroMeleeAttack()
+                heroMeleeAttack(attackLocation: newLocationToMoveTo, dungeonLevel: dungeonLevel)
             }
             
             
@@ -118,7 +120,15 @@ class CombatCoordinator {
     //
     //-------------------------------------------------------------------------------------------//
 
-    private func heroMeleeAttack() {
+    private func heroMeleeAttack(attackLocation: DungeonLocation, dungeonLevel: DungeonLevel) {
+        
+        
+        let victim = dungeonLevel.monsterDictionary[attackLocation]!
+        
+        //attackCalculator(attackType, victim)
+        
+        victim.hit(hpLost: 1)
+        
         
     }
     
@@ -137,8 +147,24 @@ class CombatCoordinator {
     //
     //-------------------------------------------------------------------------------------------//
     
-    //COPIED -- NOT BEING USED YET
+    
     private func moveMonsters(dungeonLevel: DungeonLevel) -> Void {
+    
+        //let monster:
+        
+        for monster in dungeonLevel.monsterDictionary {
+            
+            //if in same room...
+                //if within the range that the monster can see/sense -- TODO later
+                    //Monster starts attack AI
+            //else move randomly or rest
+            
+        }
+    
+    }
+    
+    //COPIED -- NOT BEING USED YET
+    private func moveMonsterRandomDirection(dungeonLevel: DungeonLevel) -> Void {
         // Let's just move randomly for now.
         // Pick a cardinal direction and check for collision
         // Repeat until a successful move has occurred or
@@ -222,6 +248,7 @@ class CombatCoordinator {
         
     }//moveMonster()
 
+    
     
 
     

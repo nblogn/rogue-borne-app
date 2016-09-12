@@ -48,6 +48,7 @@ class LivingThing: SKSpriteNode {
     
     var location: DungeonLocation
     var hitPoints: Int
+    let maxHitPoints: Int
     let thingType: KindsOfLivingThings
     
     
@@ -76,10 +77,12 @@ class LivingThing: SKSpriteNode {
             texture = SKTexture(imageNamed: "Jaia_bw_head")
             texture_n = SKTexture(imageNamed: "Jaia_bw_n.png")
             self.hitPoints = 20
+            self.maxHitPoints = 20
         } else {//monster
             texture = SKTexture(imageNamed: "monster_1")
             texture_n = SKTexture(imageNamed: "Jaia_bw_n.png")
             self.hitPoints = 5
+            self.maxHitPoints = 5
         }
         
         
@@ -108,9 +111,60 @@ class LivingThing: SKSpriteNode {
     }
     
     
-    func updateStatsView() -> Void {
+    
+    func hit(hpLost: Int) -> Void {
         
         
+        //First check to see if we're still alive
+        if hitPoints != 0 {
+            
+            hitPoints = hitPoints - hpLost
+            
+            let actionSequence = SKAction.sequence([
+                SKAction.rotate(byAngle: CGFloat(M_PI/8.0), duration:0.1),
+                SKAction.rotate(byAngle: CGFloat(-M_PI/4.0), duration:0.1),
+                SKAction.rotate(byAngle: CGFloat(M_PI/4.0), duration:0.1),
+                SKAction.rotate(byAngle: CGFloat(-M_PI/4.0), duration:0.1),
+                SKAction.rotate(byAngle: CGFloat(M_PI/8.0), duration:0.1)])
+            
+            self.run(actionSequence)
+            
+            if hitPoints == 0 {
+                updateStatsView()
+                dead()
+            } else {
+                updateStatsView()
+            }
+            
+        }
+        
+    }
+    
+    
+    func dead() -> Void {
+
+        //Fade and blink out
+        let scale = SKAction.scale(to: 0.1, duration: 0.5)
+        let fade = SKAction.fadeOut(withDuration: 0.5)
+        let remove = SKAction.run() {
+            //Remove from parent--but it's still in the dictionary, hrmm.
+            //I might want to do this in the parent, and also remove from dictionary
+            self.removeFromParent()
+        }
+        
+        let sequence = SKAction.sequence([scale, fade, remove])
+
+        self.run(sequence)
+        
+    }
+    
+    
+    
+    private func updateStatsView() -> Void {
+        
+        let hpWidth = Int(Float(tileSize.width) * (Float(hitPoints) / Float(maxHitPoints)))
+        
+        hpMeter.size = CGSize(width: hpWidth, height: (tileSize.height/10))
         
     }
     
