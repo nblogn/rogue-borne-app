@@ -186,8 +186,10 @@ class LivingThing: SKSpriteNode {
 
     
     func setCurrentLocation(_ X: Int, Y: Int) -> Void {
+        print("hashValue BEFORE setting current location of LivingThing: ", location.hashValue)
         location.x = X
         location.y = Y
+        print("hashValue AFTER setting current location of LivingThing: ", location.hashValue)
     }
 
     

@@ -300,7 +300,7 @@ class DungeonLevel: SKNode {
         
         
         //////////
-        //Set the SINGLE monsters
+        //Set the SINGLE monsters -- Bosses?
         aMonster.location.x = myDungeonMap.dungeonRooms[0].location.x1 + 1
         aMonster.location.y = myDungeonMap.dungeonRooms[0].location.y1 + 1
         aMonster.position = convertBoardCoordinatetoCGPoint(x: aMonster.location.x, y: aMonster.location.y)

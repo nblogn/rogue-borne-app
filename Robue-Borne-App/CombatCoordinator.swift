@@ -66,6 +66,8 @@ class CombatCoordinator {
             
         case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
             
+            print("New her location to move to:", newLocationToMoveTo)
+            print("Hash of new hero location to move to:", newLocationToMoveTo.hashValue)
             //Check for monster! If no Monster at this point in dictionary move, else heroMeleeAttack()
             if (dungeonLevel.monsterDictionary[newLocationToMoveTo] == nil) {
   
@@ -132,8 +134,13 @@ class CombatCoordinator {
         
     }
     
+
+    private func heroRangedAttack () {
+        
+    }
     
-    private func heroScriptAttach() {
+    
+    private func heroScript() {
         
     }
     
@@ -147,24 +154,30 @@ class CombatCoordinator {
     //
     //-------------------------------------------------------------------------------------------//
     
-    
     private func moveMonsters(dungeonLevel: DungeonLevel) -> Void {
     
         //let monster:
         
         for monster in dungeonLevel.monsterDictionary {
             
-            //if in same room...
-                //if within the range that the monster can see/sense -- TODO later
-                    //Monster starts attack AI
-            //else move randomly or rest
+            //if in range of attack
+            
+            //Else
+            
+                //if in same room...
+                    //if within the range that the monster can see/sense -- TODO later
+                        //Monster starts attack AI
+                //else move randomly or rest
+            
+            
+                    moveMonsterRandomDirection(dungeonLevel: dungeonLevel, monsterToMove: monster.value)
             
         }
     
     }
     
-    //COPIED -- NOT BEING USED YET
-    private func moveMonsterRandomDirection(dungeonLevel: DungeonLevel) -> Void {
+
+    private func moveMonsterRandomDirection(dungeonLevel: DungeonLevel, monsterToMove: LivingThing) -> Void {
         // Let's just move randomly for now.
         // Pick a cardinal direction and check for collision
         // Repeat until a successful move has occurred or
@@ -176,7 +189,9 @@ class CombatCoordinator {
         var numTries: Int=0
         var direction: Int
         
-        
+        //remove the about to be moved monster from the location dictionary, we'll update after we've moved...
+        dungeonLevel.monsterDictionary.removeValue(forKey: monsterToMove.location)
+
         while ( hasMoved == false ) && ( numTries < 5) {
             
             direction = Int(arc4random_uniform(4))
@@ -185,55 +200,41 @@ class CombatCoordinator {
             switch direction {
             case 0:
                 // Try north
-                
-                switch dungeonLevel.myDungeonMap.dungeonMap[dungeonLevel.aMonster.getCurrentLocation().y-1][dungeonLevel.aMonster.getCurrentLocation().x].tileType  {
-                    
-                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
-                    dungeonLevel.aMonster.setCurrentLocation(dungeonLevel.aMonster.getCurrentLocation().x, Y: dungeonLevel.aMonster.getCurrentLocation().y-1)
+                if checkForValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x, y: monsterToMove.getCurrentLocation().y-1)) {
+
+                    monsterToMove.setCurrentLocation(monsterToMove.getCurrentLocation().x, Y: monsterToMove.getCurrentLocation().y-1)
                     hasMoved = true
-                default:
-                    break
                 }
+
                 
             case 1:
                 // Try south
-                
-                switch dungeonLevel.myDungeonMap.dungeonMap[dungeonLevel.aMonster.getCurrentLocation().y+1][dungeonLevel.aMonster.getCurrentLocation().x].tileType {
-                    
-                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
-                    dungeonLevel.aMonster.setCurrentLocation(dungeonLevel.aMonster.getCurrentLocation().x, Y: dungeonLevel.aMonster.getCurrentLocation().y+1)
+                if checkForValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x, y: monsterToMove.getCurrentLocation().y+1)) {
+
+                    monsterToMove.setCurrentLocation(monsterToMove.getCurrentLocation().x, Y: monsterToMove.getCurrentLocation().y+1)
                     hasMoved = true
-                default:
-                    break
+                    
                 }
-                
+
                 
             case 2:
                 // Try east
-                
-                switch dungeonLevel.myDungeonMap.dungeonMap[dungeonLevel.aMonster.getCurrentLocation().y][dungeonLevel.aMonster.getCurrentLocation().x-1].tileType {
-                    
-                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
-                    dungeonLevel.aMonster.setCurrentLocation(dungeonLevel.aMonster.getCurrentLocation().x-1, Y: dungeonLevel.aMonster.getCurrentLocation().y)
+                if checkForValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x-1, y: monsterToMove.getCurrentLocation().y)) {
+
+                    monsterToMove.setCurrentLocation(monsterToMove.getCurrentLocation().x-1, Y: monsterToMove.getCurrentLocation().y)
                     hasMoved = true
-                default:
-                    break
                 }
-                
+
                 
             case 3:
                 // Try west
-                
-                switch dungeonLevel.myDungeonMap.dungeonMap[dungeonLevel.aMonster.getCurrentLocation().y][dungeonLevel.aMonster.getCurrentLocation().x+1].tileType {
-                    
-                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
-                    dungeonLevel.aMonster.setCurrentLocation(dungeonLevel.aMonster.getCurrentLocation().x+1, Y: dungeonLevel.aMonster.getCurrentLocation().y)
+                if checkForValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x+1, y: monsterToMove.getCurrentLocation().y)) {
+
+                    monsterToMove.setCurrentLocation(monsterToMove.getCurrentLocation().x+1, Y: monsterToMove.getCurrentLocation().y)
                     hasMoved = true
-                default:
-                    break
                 }
-                
-                
+                    
+
             default:
                 
                 print("Fell through monster move switch")
@@ -242,13 +243,35 @@ class CombatCoordinator {
             numTries += 1
         }
         
-        let xyPointDiff = convertBoardCoordinatetoCGPoint(x: dungeonLevel.aMonster.location.x, y: dungeonLevel.aMonster.location.y)
         
-        dungeonLevel.aMonster.run(SKAction.move(to: xyPointDiff, duration: 0.1))
+        //Add the monster back into the dictionary at the new location...
+        dungeonLevel.monsterDictionary[monsterToMove.location] = monsterToMove
+
+        //Do the visual move...
+        let xyPointDiff = convertBoardCoordinatetoCGPoint(x: monsterToMove.location.x, y: monsterToMove.location.y)
+        monsterToMove.run(SKAction.move(to: xyPointDiff, duration: 0.1))
+        
         
     }//moveMonster()
 
     
+    
+    private func checkForValidMove(dungeonLevel: DungeonLevel, locationToCheck: DungeonLocation) -> Bool {
+        
+        if (dungeonLevel.myHero.location != locationToCheck) && (dungeonLevel.monsterDictionary[locationToCheck]==nil) {
+            
+            switch dungeonLevel.myDungeonMap.dungeonMap[locationToCheck.y][locationToCheck.x].tileType {
+                case .door, .corridorHorizontal, .corridorVertical, .grass, .ground:
+                    return true
+                default:
+                    return false
+            }
+            
+        } else {
+            return false
+        }
+        
+    }
     
 
     

@@ -30,6 +30,7 @@
 		0371554E1D56538900047B84 /* Jaia_bw_head.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 0371554D1D56538900047B84 /* Jaia_bw_head.jpg */; };
 		037155501D56629900047B84 /* jaia_bw_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 0371554F1D56629900047B84 /* jaia_bw_n.png */; };
 		037235C71D5FCAD300549610 /* 643931_l_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 037235C61D5FCAD300549610 /* 643931_l_n.png */; };
+		037887051D8A53BB004214E3 /* YouWinYouDied.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037887041D8A53BB004214E3 /* YouWinYouDied.swift */; };
 		038229E51C8CBC4700D84701 /* DPad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 038229E41C8CBC4700D84701 /* DPad.swift */; };
 		038A21051D84DAE800E32EED /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 038A21011D84DAE800E32EED /* LaunchScreen.storyboard */; };
 		038A21061D84DAE800E32EED /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 038A21031D84DAE800E32EED /* Main.storyboard */; };
@@ -108,6 +109,7 @@
 		0371554D1D56538900047B84 /* Jaia_bw_head.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Jaia_bw_head.jpg; sourceTree = "<group>"; };
 		0371554F1D56629900047B84 /* jaia_bw_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jaia_bw_n.png; sourceTree = "<group>"; };
 		037235C61D5FCAD300549610 /* 643931_l_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 643931_l_n.png; sourceTree = "<group>"; };
+		037887041D8A53BB004214E3 /* YouWinYouDied.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouWinYouDied.swift; sourceTree = "<group>"; };
 		038229E41C8CBC4700D84701 /* DPad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DPad.swift; sourceTree = "<group>"; };
 		038A21021D84DAE800E32EED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		038A21041D84DAE800E32EED /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				038A21081D84E10F00E32EED /* GameScene.sks */,
 				03C1DE771C6C3C8D00CDCF8F /* GameScene.swift */,
 				03EE7FDD1C6FA1DC00244144 /* PlayScene.swift */,
+				037887041D8A53BB004214E3 /* YouWinYouDied.swift */,
 				039A0BBA1CF1899000C489D6 /* LoadingView.swift */,
 				038229E41C8CBC4700D84701 /* DPad.swift */,
 			);
@@ -514,6 +517,7 @@
 				03D53B971CBCAA71009DBD30 /* CharacterProtocols.swift in Sources */,
 				03B453621C93DEBB00E937D0 /* ItemClass.swift in Sources */,
 				039A0BBB1CF1899000C489D6 /* LoadingView.swift in Sources */,
+				037887051D8A53BB004214E3 /* YouWinYouDied.swift in Sources */,
 				03C1DE781C6C3C8D00CDCF8F /* GameScene.swift in Sources */,
 				03E3A0DA1CAF9B0C0044758D /* Light.swift in Sources */,
 				033F8D1D1CC4204B009722FF /* testScene.swift in Sources */,
