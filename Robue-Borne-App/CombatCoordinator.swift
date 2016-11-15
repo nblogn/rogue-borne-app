@@ -41,7 +41,7 @@ class CombatCoordinator {
             break
         }
         
-        //Monster's turn
+        //Monsters' turn
         moveMonsters(dungeonLevel: dungeonLevel)
         
     }
@@ -200,7 +200,7 @@ class CombatCoordinator {
             switch direction {
             case 0:
                 // Try north
-                if checkForValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x, y: monsterToMove.getCurrentLocation().y-1)) {
+                if isValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x, y: monsterToMove.getCurrentLocation().y-1)) {
 
                     monsterToMove.setCurrentLocation(monsterToMove.getCurrentLocation().x, Y: monsterToMove.getCurrentLocation().y-1)
                     hasMoved = true
@@ -209,7 +209,7 @@ class CombatCoordinator {
                 
             case 1:
                 // Try south
-                if checkForValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x, y: monsterToMove.getCurrentLocation().y+1)) {
+                if isValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x, y: monsterToMove.getCurrentLocation().y+1)) {
 
                     monsterToMove.setCurrentLocation(monsterToMove.getCurrentLocation().x, Y: monsterToMove.getCurrentLocation().y+1)
                     hasMoved = true
@@ -219,7 +219,7 @@ class CombatCoordinator {
                 
             case 2:
                 // Try east
-                if checkForValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x-1, y: monsterToMove.getCurrentLocation().y)) {
+                if isValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x-1, y: monsterToMove.getCurrentLocation().y)) {
 
                     monsterToMove.setCurrentLocation(monsterToMove.getCurrentLocation().x-1, Y: monsterToMove.getCurrentLocation().y)
                     hasMoved = true
@@ -228,7 +228,7 @@ class CombatCoordinator {
                 
             case 3:
                 // Try west
-                if checkForValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x+1, y: monsterToMove.getCurrentLocation().y)) {
+                if isValidMove(dungeonLevel: dungeonLevel, locationToCheck: DungeonLocation(x: monsterToMove.getCurrentLocation().x+1, y: monsterToMove.getCurrentLocation().y)) {
 
                     monsterToMove.setCurrentLocation(monsterToMove.getCurrentLocation().x+1, Y: monsterToMove.getCurrentLocation().y)
                     hasMoved = true
@@ -256,7 +256,7 @@ class CombatCoordinator {
 
     
     
-    private func checkForValidMove(dungeonLevel: DungeonLevel, locationToCheck: DungeonLocation) -> Bool {
+    private func isValidMove(dungeonLevel: DungeonLevel, locationToCheck: DungeonLocation) -> Bool {
         
         if (dungeonLevel.myHero.location != locationToCheck) && (dungeonLevel.monsterDictionary[locationToCheck]==nil) {
             
@@ -273,6 +273,9 @@ class CombatCoordinator {
         
     }
     
+    private func isLocationWithinRangeOfAttack() -> Bool {
+        return false
+    }
 
     
     private func monsterAttack() -> Void {
