@@ -87,7 +87,7 @@ class CombatCoordinator {
 
             } else {
 
-                //Fight the monster the player moved into
+                //Fight the monster the player tried to move into
                 heroMeleeAttack(attackLocation: newLocationToMoveTo, dungeonLevel: dungeonLevel)
             }
             
@@ -134,6 +134,7 @@ class CombatCoordinator {
         
     }
     
+    //maybe heroAttack
 
     private func heroRangedAttack () {
         
@@ -160,7 +161,7 @@ class CombatCoordinator {
         
         for monster in dungeonLevel.monsterDictionary {
             
-            //if in range of attack
+            //if in range of attack, including hallways
             
             //Else
             
@@ -176,7 +177,9 @@ class CombatCoordinator {
     
     }
     
-
+    
+    
+    
     private func moveMonsterRandomDirection(dungeonLevel: DungeonLevel, monsterToMove: LivingThing) -> Void {
         // Let's just move randomly for now.
         // Pick a cardinal direction and check for collision
@@ -256,6 +259,7 @@ class CombatCoordinator {
 
     
     
+    //Thinking this should work with spritenode's physics function. EG, make the walls have physics.
     private func isValidMove(dungeonLevel: DungeonLevel, locationToCheck: DungeonLocation) -> Bool {
         
         if (dungeonLevel.myHero.location != locationToCheck) && (dungeonLevel.monsterDictionary[locationToCheck]==nil) {

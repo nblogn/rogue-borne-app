@@ -342,6 +342,8 @@ class PlayScene: SKScene {
                 
                 case "RB_Cntrl_Middle":
                     //rest and move monsters
+                    myDungeonLevel.combatCoordinator.doTurn(heroTurnAction: HeroAction.moveBy(DungeonLocation(x: 0, y: 0)), dungeonLevel: myDungeonLevel)
+
                     //Temp...
                     scaleDungeonLevelToFitIntoPlayScene()
                     centerCameraOnPlayer = true
